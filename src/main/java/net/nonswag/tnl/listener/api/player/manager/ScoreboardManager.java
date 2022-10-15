@@ -66,7 +66,7 @@ public abstract class ScoreboardManager extends Manager {
                 allTeam.displayName(Component.text(Message.format(team.getDisplayName(), all)));
                 allTeam.prefix(Component.text(Message.format(team.getPrefix(), all)));
                 allTeam.suffix(Component.text(Message.format(team.getSuffix(), all)));
-                allTeam.color(NamedTextColor.nearestTo(team.color()));
+                allTeam.setColor(team.getColor());
                 for (String entry : allTeam.getEntries()) allTeam.removeEntry(entry);
                 for (String entry : team.getEntries()) allTeam.addEntry(entry);
                 for (org.bukkit.scoreboard.Team.Option option : org.bukkit.scoreboard.Team.Option.values()) {
