@@ -26,8 +26,6 @@ public record CommandManager(@Nonnull Plugin plugin) {
     private static final List<String> FOR_REMOVAL = new ArrayList<>();
 
     static {
-        // SpigotConfig.sendNamespaced = false;
-        // SpigotConfig.logCommands = false;
         if (!configuration.getJsonElement().isJsonArray()) {
             JsonArray array = new JsonArray();
             FOR_REMOVAL.addAll(Arrays.asList("ver", "version", "reload", "rl", "spigot", "weather", "time", "paper",

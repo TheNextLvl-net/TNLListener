@@ -19,6 +19,7 @@ import net.nonswag.tnl.listener.events.ChatMentionEvent;
 import net.nonswag.tnl.listener.events.PlayerChatEvent;
 import net.nonswag.tnl.listener.utils.Messages;
 import org.bukkit.plugin.messaging.ChannelNameTooLongException;
+import org.spigotmc.SpigotConfig;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -157,7 +158,7 @@ public abstract class Messenger extends Manager {
     }
 
     public void sendPluginMessage(@Nonnull String channel, @Nonnull String... message) {
-        // if (SpigotConfig.bungee) sendLegacyPluginMessage(channel, message);
+        if (SpigotConfig.bungee) sendLegacyPluginMessage(channel, message);
         sendModernPluginMessage(channel, message);
     }
 

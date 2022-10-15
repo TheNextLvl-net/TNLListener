@@ -1,34 +1,31 @@
 package net.nonswag.tnl.listener.api.event;
 
+import com.destroystokyo.paper.event.server.ServerExceptionEvent;
+import com.destroystokyo.paper.exception.ServerEventException;
+import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.core.api.logger.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 
-public abstract class TNLEvent extends org.bukkit.event.Event implements Cancellable {
+@Getter
+@Setter
+public abstract class TNLEvent extends Event implements Cancellable {
 
+    @Getter
     @Nonnull
-    private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList handlerList = new HandlerList();
 
     private boolean cancelled = false;
 
     protected TNLEvent() {
         super(!Bukkit.isPrimaryThread());
-    }
-
-    @Override
-    public boolean isCancelled() {
-        return cancelled;
-    }
-
-    @Override
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
     }
 
     public boolean call() {
@@ -38,7 +35,9 @@ public abstract class TNLEvent extends org.bukkit.event.Event implements Cancell
             try {
                 registration.callEvent(this);
             } catch (Throwable t) {
-                Logger.error.println("Could not pass event " + getEventName() + " to " + plugin.getName() + plugin.getDescription().getVersion(), t);
+                String string = "Could not pass event %s to %s (%s)".formatted(getEventName(), plugin.getName(), plugin.getDescription().getVersion());
+                new ServerExceptionEvent(new ServerEventException(string, t, registration.getPlugin(), registration.getListener(), this)).callEvent();
+                Logger.error.println(string);
             }
         }
         return !isCancelled();
@@ -53,31 +52,14 @@ public abstract class TNLEvent extends org.bukkit.event.Event implements Cancell
     @Nonnull
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    @Nonnull
-    public static HandlerList getHandlerList() {
-        return handlers;
+        return handlerList;
     }
 
     @Override
     public String toString() {
         return "TNLEvent{" +
                 "cancelled=" + cancelled +
+                ", eventName='" + getEventName() + '\'' +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TNLEvent tnlEvent = (TNLEvent) o;
-        return cancelled == tnlEvent.cancelled;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(cancelled);
     }
 }
