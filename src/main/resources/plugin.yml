@@ -1,0 +1,7 @@
+name: "TNLListener"
+version: "5.1"
+author: "NonSwag"
+api-version: "1.13"
+load: "STARTUP"
+website: "https://www.thenextlvl.net"
+main: "net.nonswag.tnl.listener.Bootstrap"
