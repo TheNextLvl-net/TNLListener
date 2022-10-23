@@ -4,13 +4,14 @@ import com.google.common.collect.ImmutableList;
 import lombok.Getter;
 import net.nonswag.core.api.command.CommandSource;
 import net.nonswag.core.api.command.Invocation;
+import net.nonswag.tnl.listener.api.command.Usable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class SubCommand {
+public abstract class SubCommand implements Usable {
 
     @Getter
     @Nonnull
@@ -45,10 +46,12 @@ public abstract class SubCommand {
         return new ArrayList<>();
     }
 
+    @Override
     public boolean canUse(@Nonnull CommandSource source) {
         return true;
     }
 
+    @Override
     public void usage(@Nonnull Invocation invocation) {
         invocation.source().sendMessage("%prefix% §c/" + invocation.label() + " " + getName());
     }

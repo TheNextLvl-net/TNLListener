@@ -30,10 +30,10 @@ public class PluginCommand extends SimpleCommand {
 
     public static void sendPlugins(@Nonnull CommandSource source) {
         if (Manager.getInstance().isPublishPlugins() || source.hasPermission("tnl.manage")) {
-            if (!Manager.getInstance().isPluginsGUI() || !source.isPlayer()) {
+            if (!Manager.getInstance().isPluginsGUI() || !(source instanceof TNLPlayer player)) {
                 List<String> pluginList = PluginManager.getPlugins(false);
                 source.sendMessage("%prefix% §7Plugins §8(§6" + pluginList.size() + "§8)§8: §6" + String.join("§8, §6", pluginList));
-            } else ((TNLPlayer) source.player()).interfaceManager().openGUI(PluginsGUI.getInstance());
+            } else player.interfaceManager().openGUI(PluginsGUI.getInstance());
         } else throw new InsufficientPermissionException("tnl.manage");
     }
 }

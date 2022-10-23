@@ -26,6 +26,10 @@ public final class Messages {
     @Nonnull
     public static final MessageKey CONSOLE_COMMAND = new MessageKey("console-command").register();
     @Nonnull
+    public static final MessageKey CANT_EXECUTE_COMMAND = new MessageKey("cant-execute-command").register();
+    @Nonnull
+    public static final MessageKey INVALID_COMMAND_USAGE = new MessageKey("invalid-command-usage").register();
+    @Nonnull
     public static final MessageKey FIRST_JOIN_MESSAGE = new MessageKey("first-join-message").register();
     @Nonnull
     public static final MessageKey JOIN_MESSAGE = new MessageKey("join-message").register();
@@ -66,6 +70,8 @@ public final class Messages {
         Message.getEnglish().setDefault(UNKNOWN_COMMAND, "%prefix%§c The command §8(§4%command%§8)§c doesn't exist");
         Message.getEnglish().setDefault(PLAYER_COMMAND, "%prefix%§c This is a player command");
         Message.getEnglish().setDefault(CONSOLE_COMMAND, "%prefix%§c This is a console command");
+        Message.getEnglish().setDefault(CANT_EXECUTE_COMMAND, "%prefix%§c You can't execute this command");
+        Message.getEnglish().setDefault(INVALID_COMMAND_USAGE, "%prefix%§c You are using the command wrong");
         Message.getEnglish().setDefault(FIRST_JOIN_MESSAGE, "%prefix%§6 %player%§a joined the game §8(§7the first time§8)");
         Message.getEnglish().setDefault(JOIN_MESSAGE, "%prefix%§6 %player%§a joined the game");
         Message.getEnglish().setDefault(QUIT_MESSAGE, "%prefix%§4 %player%§c left the game");
@@ -85,6 +91,8 @@ public final class Messages {
         Message.getGerman().setDefault(UNKNOWN_COMMAND, "%prefix%§c Der command §8(§4%command%§8)§c existiert nicht");
         Message.getGerman().setDefault(PLAYER_COMMAND, "%prefix%§c Das ist ein spieler command");
         Message.getGerman().setDefault(CONSOLE_COMMAND, "%prefix%§c Das ist ein konsolen command");
+        Message.getGerman().setDefault(CANT_EXECUTE_COMMAND, "%prefix%§c Du kannst diesen command nicht ausführen");
+        Message.getGerman().setDefault(INVALID_COMMAND_USAGE, "%prefix%§c Du benutzt den command falsch");
         Message.getGerman().setDefault(FIRST_JOIN_MESSAGE, "%prefix%§6 %player%§a ist dem server beigetreten §8(§7zum ersten mal§8)");
         Message.getGerman().setDefault(JOIN_MESSAGE, "%prefix%§6 %player%§a ist dem server beigetreten");
         Message.getGerman().setDefault(QUIT_MESSAGE, "%prefix%§4 %player%§c hat den server verlassen");

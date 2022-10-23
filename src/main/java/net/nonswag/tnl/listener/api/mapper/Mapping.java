@@ -27,6 +27,7 @@ import net.nonswag.tnl.listener.api.plugin.PluginHelper;
 import net.nonswag.tnl.listener.api.plugin.PluginUpdate;
 import net.nonswag.tnl.listener.api.plugin.Updatable;
 import net.nonswag.tnl.listener.api.version.Version;
+import net.nonswag.tnl.listener.api.world.WorldHelper;
 import net.nonswag.tnl.listener.events.mapping.MappingDisableEvent;
 import net.nonswag.tnl.listener.events.mapping.MappingEnableEvent;
 import net.nonswag.tnl.listener.events.mapping.MappingLoadEvent;
@@ -180,6 +181,9 @@ public abstract class Mapping extends PluginBuilder implements Updatable {
 
     @Nonnull
     public abstract PluginHelper pluginHelper();
+
+    @Nonnull
+    public abstract WorldHelper worldHelper();
 
     @Nonnull
     public abstract Packets packets();

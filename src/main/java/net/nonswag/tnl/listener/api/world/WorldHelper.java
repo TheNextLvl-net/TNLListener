@@ -1,5 +1,8 @@
 package net.nonswag.tnl.listener.api.world;
 
+import lombok.Getter;
+import net.nonswag.tnl.listener.api.mapper.Mapping;
+import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -9,10 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class WorldHelper {
+public abstract class WorldHelper {
+
+    @Getter
+    @Nonnull
+    private static final WorldHelper instance = Mapping.get().worldHelper();
 
     @Nonnull
-    public static List<Block> cylinder(@Nonnull Location center, int radius, int size, @Nonnull Predicate<Block> condition) {
+    public List<Block> cylinder(@Nonnull Location center, int radius, int size, @Nonnull Predicate<Block> condition) {
         World world = center.getWorld();
         List<Block> cylinder = new ArrayList<>();
         if (world == null || size < 1 || radius < 1) return cylinder;
@@ -30,7 +37,7 @@ public class WorldHelper {
     }
 
     @Nonnull
-    public static List<Block> sphere(@Nonnull Location center, int radius, @Nonnull Predicate<Block> condition) {
+    public List<Block> sphere(@Nonnull Location center, int radius, @Nonnull Predicate<Block> condition) {
         World world = center.getWorld();
         List<Block> sphere = new ArrayList<>();
         if (world == null || radius < 1) return sphere;
@@ -46,4 +53,26 @@ public class WorldHelper {
         }
         return sphere;
     }
+
+    @Nonnull
+    public abstract Dimension getDimension(@Nonnull World world);
+
+    public abstract boolean isRegistered(@Nonnull Dimension dimension);
+
+    @Nonnull
+    public abstract List<TNLPlayer> getPlayers(@Nonnull World world);
+
+    public boolean hasPlayers(@Nonnull World world) {
+        return !getPlayers(world).isEmpty();
+    }
+
+    public boolean hasPlayer(@Nonnull World world, @Nonnull TNLPlayer player) {
+        return getPlayers(world).contains(player);
+    }
+
+    public void removePlayers(@Nonnull World world) {
+        getPlayers(world).forEach(all -> removePlayer(world, all));
+    }
+
+    public abstract void removePlayer(@Nonnull World world, @Nonnull TNLPlayer player);
 }

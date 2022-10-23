@@ -1,6 +1,7 @@
 package net.nonswag.tnl.listener.api.command.simple;
 
 import net.nonswag.core.api.command.CommandSource;
+import net.nonswag.core.api.platform.PlatformPlayer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -17,6 +18,6 @@ public abstract class PlayerSubCommand extends SubCommand {
 
     @Override
     public boolean canUse(@Nonnull CommandSource source) {
-        return source.isPlayer();
+        return source instanceof PlatformPlayer;
     }
 }

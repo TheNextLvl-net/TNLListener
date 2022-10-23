@@ -1,9 +1,7 @@
 package net.nonswag.tnl.listener.api.command.exceptions;
 
 import lombok.Getter;
-import net.nonswag.core.api.command.CommandSource;
 import net.nonswag.core.api.command.Invocation;
-import net.nonswag.core.api.message.Message;
 import net.nonswag.core.api.message.Placeholder;
 import net.nonswag.tnl.listener.utils.Messages;
 
@@ -21,11 +19,6 @@ public class UnknownPlayerException extends CommandException {
 
     @Override
     public void handle(@Nonnull Invocation invocation) {
-        CommandSource source = invocation.source();
-        if (source.isConsole()) {
-            source.sendMessage(Message.format(Messages.UNKNOWN_PLAYER.message(), new Placeholder("player", getPlayer())));
-        } else if (source.isPlayer()) {
-            source.player().sendMessage(Messages.UNKNOWN_PLAYER, new Placeholder("player", getPlayer()));
-        }
+        invocation.source().sendMessage(Messages.UNKNOWN_PLAYER, new Placeholder("player", getPlayer()));
     }
 }

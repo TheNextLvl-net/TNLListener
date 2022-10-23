@@ -72,6 +72,7 @@ public abstract class SimpleCommand extends TNLCommand {
         return suggestions;
     }
 
+    @Override
     public void usage(@Nonnull Invocation invocation) {
         CommandSource source = invocation.source();
         for (SubCommand command : subCommands.values()) {
@@ -106,9 +107,5 @@ public abstract class SimpleCommand extends TNLCommand {
             if (command.getAliases().contains(alias.toLowerCase())) return command;
         }
         return null;
-    }
-
-    public boolean canUse(@Nonnull CommandSource source) {
-        return true;
     }
 }

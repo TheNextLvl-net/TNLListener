@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Getter
-public abstract class TNLCommand extends BukkitCommand {
+public abstract class TNLCommand extends BukkitCommand implements Usable {
 
     @Nullable
     private final String permission;
@@ -66,8 +66,7 @@ public abstract class TNLCommand extends BukkitCommand {
         } catch (CommandException e) {
             e.handle(invocation);
         } catch (Throwable t) {
-            if (source.isPlayer()) {
-                TNLPlayer player = (TNLPlayer) source.player();
+            if (source instanceof TNLPlayer player) {
                 player.messenger().sendMessage(Messages.COMMAND_ERROR, new Placeholder("command", "/" + getName()));
                 if (player.permissionManager().hasPermission("tnl.admin")) Logger.error.println(t);
             } else {
@@ -96,8 +95,7 @@ public abstract class TNLCommand extends BukkitCommand {
             suggestions = suggest(new Invocation(source, label, args));
         } catch (Exception e) {
             suggestions = new ArrayList<>();
-            if (source.isPlayer()) {
-                TNLPlayer player = (TNLPlayer) source.player();
+            if (source instanceof TNLPlayer player) {
                 player.messenger().sendMessage(Messages.TAB_COMPLETE_ERROR, new Placeholder("command", "/" + getName()));
                 if (player.permissionManager().hasPermission("tnl.admin")) Logger.error.println(e);
             } else {
@@ -118,10 +116,6 @@ public abstract class TNLCommand extends BukkitCommand {
     @Nonnull
     protected List<String> suggest(@Nonnull Invocation invocation) {
         return new ArrayList<>();
-    }
-
-    public boolean canUse(@Nonnull CommandSource source) {
-        return true;
     }
 
     @Nonnull
@@ -156,5 +150,17 @@ public abstract class TNLCommand extends BukkitCommand {
     public TNLCommand setOwner(@Nullable Plugin owner) {
         this.owner = owner;
         return this;
+    }
+
+    @Override
+    public boolean canUse(@Nonnull CommandSource source) {
+        return true;
+    }
+
+    @Override
+    public void usage(@Nonnull Invocation invocation) {
+        String usage = getUsage();
+        if (!usage.isEmpty()) invocation.source().sendMessage(usage);
+        else invocation.source().sendMessage(Messages.INVALID_COMMAND_USAGE);
     }
 }
