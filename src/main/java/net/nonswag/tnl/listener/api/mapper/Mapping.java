@@ -222,7 +222,7 @@ public abstract class Mapping extends PluginBuilder implements Updatable {
         public abstract EntityDestroyPacket entityDestroyPacket(int... destroyIds);
 
         @Nonnull
-        public abstract EntityEquipmentPacket entityEquipmentPacket(int entityId, @Nonnull HashMap<SlotType, ItemStack> equipment);
+        public abstract EntityEquipmentPacket entityEquipmentPacket(int entityId, @Nonnull HashMap<SlotType, TNLItem> equipment);
 
         @Nonnull
         public abstract GameStateChangePacket gameStateChangePacket(@Nonnull GameStateChangePacket.Identifier identifier, float state);
