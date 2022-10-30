@@ -1,7 +1,7 @@
 package net.nonswag.tnl.listener.api.player.manager;
 
 import net.nonswag.core.api.message.Message;
-import net.nonswag.tnl.listener.api.packets.EntityStatusPacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.EntityStatusPacket;
 
 import javax.annotation.Nonnull;
 

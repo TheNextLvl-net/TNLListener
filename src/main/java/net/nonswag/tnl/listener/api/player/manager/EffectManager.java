@@ -1,7 +1,7 @@
 package net.nonswag.tnl.listener.api.player.manager;
 
 import net.nonswag.tnl.listener.Bootstrap;
-import net.nonswag.tnl.listener.api.packets.GameStateChangePacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.GameStateChangePacket;
 import org.bukkit.Effect;
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;

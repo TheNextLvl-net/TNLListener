@@ -2,7 +2,7 @@ package net.nonswag.tnl.listener.api.player.manager;
 
 import net.nonswag.tnl.holograms.api.Hologram;
 import net.nonswag.tnl.listener.Bootstrap;
-import net.nonswag.tnl.listener.api.packets.*;
+import net.nonswag.tnl.listener.api.packets.outgoing.*;
 import net.nonswag.tnl.listener.api.player.npc.FakePlayer;
 import net.nonswag.tnl.listener.api.scheduler.Task;
 import org.bukkit.Location;

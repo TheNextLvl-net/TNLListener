@@ -2,7 +2,7 @@ package net.nonswag.tnl.listener.api.player.manager;
 
 import net.nonswag.core.api.reflection.Reflection;
 import net.nonswag.tnl.listener.Bootstrap;
-import net.nonswag.tnl.listener.api.packets.EntityStatusPacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.EntityStatusPacket;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.ServerOperator;
 

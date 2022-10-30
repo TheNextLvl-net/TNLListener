@@ -3,6 +3,7 @@ package net.nonswag.tnl.listener.listeners;
 import net.nonswag.tnl.listener.Bootstrap;
 import net.nonswag.tnl.listener.api.item.ItemType;
 import net.nonswag.tnl.listener.api.item.TNLItem;
+import net.nonswag.tnl.listener.api.player.Hand;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import net.nonswag.tnl.listener.events.CompostEvent;
 import net.nonswag.tnl.listener.events.PlayerBottleFillEvent;
@@ -29,9 +30,9 @@ public class InteractListener implements Listener {
         if (!event.getReason().equals(CauldronLevelChangeEvent.ChangeReason.BOTTLE_FILL) || player == null) return;
         ItemStack itemStack = player.inventoryManager().getInventory().getItemInMainHand();
         ItemStack itemStack1 = player.inventoryManager().getInventory().getItemInOffHand();
-        PlayerBottleFillEvent.Hand hand;
-        if (itemStack.getType().equals(Material.GLASS_BOTTLE)) hand = PlayerBottleFillEvent.Hand.MAIN_HAND;
-        else if (itemStack1.getType().equals(Material.GLASS_BOTTLE)) hand = PlayerBottleFillEvent.Hand.OFF_HAND;
+        Hand hand;
+        if (itemStack.getType().equals(Material.GLASS_BOTTLE)) hand = Hand.MAIN_HAND;
+        else if (itemStack1.getType().equals(Material.GLASS_BOTTLE)) hand = Hand.OFF_HAND;
         else return;
         var fillEvent = new PlayerBottleFillEvent(player, TNLItem.create(itemStack), event.getBlock(), hand);
         if (fillEvent.getHand().isMainHand()) {

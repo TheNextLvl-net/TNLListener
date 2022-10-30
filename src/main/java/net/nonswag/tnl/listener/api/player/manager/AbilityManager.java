@@ -1,7 +1,7 @@
 package net.nonswag.tnl.listener.api.player.manager;
 
 import net.nonswag.tnl.listener.Bootstrap;
-import net.nonswag.tnl.listener.api.packets.EntityMetadataPacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.EntityMetadataPacket;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;

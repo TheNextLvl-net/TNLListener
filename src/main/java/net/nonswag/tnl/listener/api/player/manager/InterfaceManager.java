@@ -5,7 +5,7 @@ import net.nonswag.core.api.message.Message;
 import net.nonswag.core.api.object.MutualGetter;
 import net.nonswag.tnl.listener.api.gui.GUI;
 import net.nonswag.tnl.listener.api.location.BlockLocation;
-import net.nonswag.tnl.listener.api.packets.*;
+import net.nonswag.tnl.listener.api.packets.outgoing.*;
 import net.nonswag.tnl.listener.api.sign.SignMenu;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;

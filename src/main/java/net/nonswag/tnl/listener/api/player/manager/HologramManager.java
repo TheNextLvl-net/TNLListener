@@ -6,7 +6,7 @@ import net.nonswag.tnl.holograms.api.Hologram;
 import net.nonswag.tnl.holograms.api.event.SendEvent;
 import net.nonswag.tnl.listener.api.entity.TNLArmorStand;
 import net.nonswag.tnl.listener.api.location.Position;
-import net.nonswag.tnl.listener.api.packets.*;
+import net.nonswag.tnl.listener.api.packets.outgoing.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 

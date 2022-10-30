@@ -1,6 +1,6 @@
 package net.nonswag.tnl.listener.api.player.manager;
 
-import net.nonswag.tnl.listener.api.packets.CooldownPacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.CooldownPacket;
 import org.bukkit.Material;
 
 import javax.annotation.Nonnull;

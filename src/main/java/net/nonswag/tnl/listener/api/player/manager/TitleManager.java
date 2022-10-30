@@ -1,7 +1,7 @@
 package net.nonswag.tnl.listener.api.player.manager;
 
 import net.nonswag.core.api.object.Pair;
-import net.nonswag.tnl.listener.api.packets.TitlePacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.TitlePacket;
 import net.nonswag.tnl.listener.api.title.Title;
 
 import javax.annotation.Nonnull;

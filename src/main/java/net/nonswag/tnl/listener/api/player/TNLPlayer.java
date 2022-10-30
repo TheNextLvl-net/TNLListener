@@ -17,8 +17,8 @@ import net.nonswag.tnl.listener.api.item.TNLItem;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import net.nonswag.tnl.listener.api.mods.ModPlayer;
 import net.nonswag.tnl.listener.api.mods.labymod.LabyPlayer;
-import net.nonswag.tnl.listener.api.packets.GameStateChangePacket;
-import net.nonswag.tnl.listener.api.packets.WorldBorderPacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.GameStateChangePacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.WorldBorderPacket;
 import net.nonswag.tnl.listener.api.packets.injection.Injection;
 import net.nonswag.tnl.listener.api.player.manager.*;
 import net.nonswag.tnl.listener.api.registrations.RegistrationManager;
@@ -113,6 +113,7 @@ public abstract class TNLPlayer implements CommandSource, PlatformPlayer, TNLEnt
     private Player player;
     @Getter
     @Nonnull
+    @Deprecated
     private final List<Injection<?>> injections = new ArrayList<>();
     @Nonnull
     private final HashMap<Class<? extends Manager>, Manager> managers = new HashMap<>();
@@ -186,14 +187,17 @@ public abstract class TNLPlayer implements CommandSource, PlatformPlayer, TNLEnt
     @Override
     public abstract void setPing(int ping);
 
+    @Deprecated
     public <P> void inject(@Nonnull Injection<P> injection) {
         getInjections().add(injection);
     }
 
+    @Deprecated
     public <P> void uninject(@Nonnull Injection<P> injection) {
         getInjections().remove(injection);
     }
 
+    @Deprecated
     @SuppressWarnings("WhileLoopReplaceableByForEach")
     protected boolean handleInjections(@Nonnull Object packet) {
         boolean success = true;

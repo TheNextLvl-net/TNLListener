@@ -2,7 +2,7 @@ package net.nonswag.tnl.listener.api.player.manager;
 
 import net.nonswag.tnl.listener.Bootstrap;
 import net.nonswag.tnl.listener.api.bossbar.TNLBossBar;
-import net.nonswag.tnl.listener.api.packets.BossBarPacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.BossBarPacket;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

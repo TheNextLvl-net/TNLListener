@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.event.PlayerEvent;
 import net.nonswag.tnl.listener.api.item.TNLItem;
+import net.nonswag.tnl.listener.api.player.Hand;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.block.Block;
 
@@ -28,17 +29,5 @@ public class PlayerBottleFillEvent extends PlayerEvent {
         this.itemStack = itemStack;
         this.block = block;
         this.hand = hand;
-    }
-
-    public enum Hand {
-        MAIN_HAND, OFF_HAND;
-
-        public boolean isMainHand() {
-            return equals(MAIN_HAND);
-        }
-
-        public boolean isOffHand() {
-            return equals(OFF_HAND);
-        }
     }
 }

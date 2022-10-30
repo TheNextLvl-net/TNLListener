@@ -10,7 +10,7 @@ import net.nonswag.core.api.object.Pair;
 import net.nonswag.tnl.listener.api.gui.iterators.GUIIterator;
 import net.nonswag.tnl.listener.api.item.ItemType;
 import net.nonswag.tnl.listener.api.item.TNLItem;
-import net.nonswag.tnl.listener.api.packets.SetSlotPacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.SetSlotPacket;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.Material;
 import org.bukkit.Sound;

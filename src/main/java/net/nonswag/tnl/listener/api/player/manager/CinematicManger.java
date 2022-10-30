@@ -7,7 +7,7 @@ import net.nonswag.tnl.listener.api.cinematic.CinematicRecordException;
 import net.nonswag.tnl.listener.api.cinematic.Recording;
 import net.nonswag.tnl.listener.api.entity.TNLArmorStand;
 import net.nonswag.tnl.listener.api.gamemode.Gamemode;
-import net.nonswag.tnl.listener.api.packets.*;
+import net.nonswag.tnl.listener.api.packets.outgoing.*;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.Location;
 

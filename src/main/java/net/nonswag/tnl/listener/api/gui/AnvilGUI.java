@@ -2,7 +2,7 @@ package net.nonswag.tnl.listener.api.gui;
 
 import com.google.common.collect.ImmutableList;
 import lombok.Getter;
-import net.nonswag.tnl.listener.api.packets.WindowDataPacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.WindowDataPacket;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.event.inventory.InventoryType;
 

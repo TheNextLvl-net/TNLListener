@@ -1,7 +1,7 @@
 package net.nonswag.tnl.listener.api.player.manager;
 
 import lombok.Getter;
-import net.nonswag.tnl.listener.api.packets.ResourcePackPacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.ResourcePackPacket;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

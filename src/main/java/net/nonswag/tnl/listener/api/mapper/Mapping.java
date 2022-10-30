@@ -17,9 +17,7 @@ import net.nonswag.tnl.listener.api.location.BlockLocation;
 import net.nonswag.tnl.listener.api.location.Position;
 import net.nonswag.tnl.listener.api.logger.LogManager;
 import net.nonswag.tnl.listener.api.mapper.errors.MappingError;
-import net.nonswag.tnl.listener.api.packets.*;
-import net.nonswag.tnl.listener.api.packets.listener.PacketReader;
-import net.nonswag.tnl.listener.api.packets.listener.PacketWriter;
+import net.nonswag.tnl.listener.api.packets.outgoing.*;
 import net.nonswag.tnl.listener.api.player.GameProfile;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import net.nonswag.tnl.listener.api.plugin.PluginBuilder;
@@ -295,9 +293,8 @@ public abstract class Mapping extends PluginBuilder implements Updatable {
         @Nonnull
         public abstract ResourcePackPacket resourcePackPacket(@Nonnull String url, @Nullable String hash, @Nullable String prompt, boolean required);
 
-        public abstract void registerPacketReader(@Nonnull PacketReader reader);
-
-        public abstract void registerPacketWriter(@Nonnull PacketWriter writer);
+        @Nonnull
+        public abstract ItemTakePacket itemTakePacket(int itemId, int collectorId, int amount);
     }
 
     @Nonnull
