@@ -1,6 +1,7 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.bossbar.TNLBossBar;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.boss.BossBar;
@@ -8,6 +9,7 @@ import org.bukkit.boss.BossBar;
 import javax.annotation.Nonnull;
 
 @Getter
+@Setter
 public abstract class BossBarPacket extends PacketBuilder {
 
     @Nonnull
@@ -21,20 +23,8 @@ public abstract class BossBarPacket extends PacketBuilder {
     }
 
     @Nonnull
-    public BossBarPacket setAction(@Nonnull Action action) {
-        this.action = action;
-        return this;
-    }
-
-    @Nonnull
-    public BossBarPacket setBossBar(@Nonnull BossBar bossBar) {
-        this.bossBar = bossBar;
-        return this;
-    }
-
-    @Nonnull
     public static BossBarPacket create(@Nonnull Action action, @Nonnull BossBar bossBar) {
-        return Mapping.get().packets().bossBarPacket(action, bossBar);
+        return Mapping.get().packetManager().outgoing().bossBarPacket(action, bossBar);
     }
 
     @Nonnull

@@ -1,6 +1,7 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.location.BlockLocation;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.block.Block;
@@ -8,6 +9,7 @@ import org.bukkit.block.Block;
 import javax.annotation.Nonnull;
 
 @Getter
+@Setter
 public abstract class BlockBreakAnimationPacket extends PacketBuilder {
 
     @Nonnull
@@ -20,20 +22,8 @@ public abstract class BlockBreakAnimationPacket extends PacketBuilder {
     }
 
     @Nonnull
-    public BlockBreakAnimationPacket setLocation(@Nonnull BlockLocation location) {
-        this.location = location;
-        return this;
-    }
-
-    @Nonnull
-    public BlockBreakAnimationPacket setState(int state) {
-        this.state = state;
-        return this;
-    }
-
-    @Nonnull
     public static BlockBreakAnimationPacket create(@Nonnull BlockLocation location, int state) {
-        return Mapping.get().packets().blockBreakAnimationPacket(location, state);
+        return Mapping.get().packetManager().outgoing().blockBreakAnimationPacket(location, state);
     }
 
     @Nonnull

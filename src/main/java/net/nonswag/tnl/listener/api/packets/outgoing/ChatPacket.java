@@ -1,12 +1,14 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
 import javax.annotation.Nonnull;
 import java.util.UUID;
 
 @Getter
+@Setter
 public abstract class ChatPacket extends PacketBuilder {
 
     @Nonnull
@@ -26,26 +28,8 @@ public abstract class ChatPacket extends PacketBuilder {
     }
 
     @Nonnull
-    public ChatPacket setMessage(@Nonnull String message) {
-        this.message = message;
-        return this;
-    }
-
-    @Nonnull
-    public ChatPacket setSender(@Nonnull UUID sender) {
-        this.sender = sender;
-        return this;
-    }
-
-    @Nonnull
-    public ChatPacket setType(@Nonnull Type type) {
-        this.type = type;
-        return this;
-    }
-
-    @Nonnull
     public static ChatPacket create(@Nonnull String message, @Nonnull Type type, @Nonnull UUID sender) {
-        return Mapping.get().packets().chatPacket(message, type, sender);
+        return Mapping.get().packetManager().outgoing().chatPacket(message, type, sender);
     }
 
     @Nonnull

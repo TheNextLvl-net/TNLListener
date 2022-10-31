@@ -1,12 +1,14 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.entity.Entity;
 
 import javax.annotation.Nonnull;
 
 @Getter
+@Setter
 public abstract class MountPacket extends PacketBuilder {
 
     private int holderId;
@@ -18,20 +20,8 @@ public abstract class MountPacket extends PacketBuilder {
     }
 
     @Nonnull
-    public MountPacket setHolderId(int holderId) {
-        this.holderId = holderId;
-        return this;
-    }
-
-    @Nonnull
-    public MountPacket setMounts(int[] mounts) {
-        this.mounts = mounts;
-        return this;
-    }
-
-    @Nonnull
     public static MountPacket create(int holderId, int[] mounts) {
-        return Mapping.get().packets().mountPacket(holderId, mounts);
+        return Mapping.get().packetManager().outgoing().mountPacket(holderId, mounts);
     }
 
     @Nonnull

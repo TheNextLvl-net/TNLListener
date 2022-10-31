@@ -3,13 +3,14 @@ package net.nonswag.tnl.listener.api.packets.incoming;
 import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.location.BlockPosition;
+import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.NamespacedKey;
 
 import javax.annotation.Nonnull;
 
 @Getter
 @Setter
-public class SetJigsawBlockPacket implements IncomingPacket {
+public abstract class SetJigsawBlockPacket extends PacketBuilder {
     @Nonnull
     private BlockPosition position;
     @Nonnull
@@ -23,9 +24,9 @@ public class SetJigsawBlockPacket implements IncomingPacket {
     @Nonnull
     private JointType joint;
 
-    public SetJigsawBlockPacket(@Nonnull BlockPosition position, @Nonnull NamespacedKey name,
-                                @Nonnull NamespacedKey target, @Nonnull NamespacedKey pool,
-                                @Nonnull String finalState, @Nonnull JointType joint) {
+    protected SetJigsawBlockPacket(@Nonnull BlockPosition position, @Nonnull NamespacedKey name,
+                                   @Nonnull NamespacedKey target, @Nonnull NamespacedKey pool,
+                                   @Nonnull String finalState, @Nonnull JointType joint) {
         this.position = position;
         this.name = name;
         this.target = target;
@@ -36,5 +37,12 @@ public class SetJigsawBlockPacket implements IncomingPacket {
 
     public enum JointType {
         ROLLABLE, ALIGNED
+    }
+
+    @Nonnull
+    public static SetJigsawBlockPacket create(@Nonnull BlockPosition position, @Nonnull NamespacedKey name,
+                                              @Nonnull NamespacedKey target, @Nonnull NamespacedKey pool,
+                                              @Nonnull String finalState, @Nonnull JointType joint) {
+        return Mapping.get().packetManager().incoming().setJigsawBlockPacket(position, name, target, pool, finalState, joint);
     }
 }

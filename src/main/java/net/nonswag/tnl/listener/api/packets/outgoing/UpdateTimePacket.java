@@ -1,11 +1,13 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
 import javax.annotation.Nonnull;
 
 @Getter
+@Setter
 public abstract class UpdateTimePacket extends PacketBuilder {
 
     private long age;
@@ -20,7 +22,7 @@ public abstract class UpdateTimePacket extends PacketBuilder {
 
     @Nonnull
     public static UpdateTimePacket create(long age, long timestamp, boolean cycle) {
-        return Mapping.get().packets().updateTimePacket(age, timestamp, cycle);
+        return Mapping.get().packetManager().outgoing().updateTimePacket(age, timestamp, cycle);
     }
 
     @Nonnull
@@ -31,23 +33,5 @@ public abstract class UpdateTimePacket extends PacketBuilder {
     @Nonnull
     public static UpdateTimePacket create(long timestamp) {
         return create(timestamp, timestamp, true);
-    }
-
-    @Nonnull
-    public UpdateTimePacket setAge(long age) {
-        this.age = age;
-        return this;
-    }
-
-    @Nonnull
-    public UpdateTimePacket setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-        return this;
-    }
-
-    @Nonnull
-    public UpdateTimePacket setCycle(boolean cycle) {
-        this.cycle = cycle;
-        return this;
     }
 }

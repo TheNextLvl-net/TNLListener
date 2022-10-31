@@ -1,12 +1,14 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.entity.Entity;
 
 import javax.annotation.Nonnull;
 
 @Getter
+@Setter
 public abstract class EntityDestroyPacket extends PacketBuilder {
 
     private int[] destroyIds;
@@ -16,14 +18,8 @@ public abstract class EntityDestroyPacket extends PacketBuilder {
     }
 
     @Nonnull
-    public EntityDestroyPacket setDestroyIds(int[] destroyIds) {
-        this.destroyIds = destroyIds;
-        return this;
-    }
-
-    @Nonnull
     public static EntityDestroyPacket create(int... destroyIds) {
-        return Mapping.get().packets().entityDestroyPacket(destroyIds);
+        return Mapping.get().packetManager().outgoing().entityDestroyPacket(destroyIds);
     }
 
     @Nonnull

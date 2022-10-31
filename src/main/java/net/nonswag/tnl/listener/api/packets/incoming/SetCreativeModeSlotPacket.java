@@ -2,19 +2,25 @@ package net.nonswag.tnl.listener.api.packets.incoming;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.inventory.ItemStack;
+import net.nonswag.tnl.listener.api.item.TNLItem;
+import net.nonswag.tnl.listener.api.mapper.Mapping;
 
 import javax.annotation.Nonnull;
 
 @Getter
 @Setter
-public class SetCreativeModeSlotPacket implements IncomingPacket {
+public abstract class SetCreativeModeSlotPacket extends PacketBuilder {
     @Nonnull
-    private ItemStack stack;
+    private TNLItem item;
     private int slot;
 
-    public SetCreativeModeSlotPacket(int slot, @Nonnull ItemStack stack) {
+    protected SetCreativeModeSlotPacket(int slot, @Nonnull TNLItem item) {
         this.slot = slot;
-        this.stack = stack;
+        this.item = item;
+    }
+
+    @Nonnull
+    public static SetCreativeModeSlotPacket create(int slot, @Nonnull TNLItem item) {
+        return Mapping.get().packetManager().incoming().setCreativeModeSlotPacket(slot, item);
     }
 }

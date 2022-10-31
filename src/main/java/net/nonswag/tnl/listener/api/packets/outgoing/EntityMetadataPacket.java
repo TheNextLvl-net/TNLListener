@@ -1,70 +1,54 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.entity.Entity;
 
 import javax.annotation.Nonnull;
 
 @Getter
-public abstract class EntityMetadataPacket<W> extends PacketBuilder {
+@Setter
+public abstract class EntityMetadataPacket<M> extends PacketBuilder {
 
     private int entityId;
     @Nonnull
-    private W dataWatcher;
+    private M metadata;
     private boolean updateAll;
 
-    protected EntityMetadataPacket(int entityId, @Nonnull W dataWatcher, boolean updateAll) {
+    protected EntityMetadataPacket(int entityId, @Nonnull M metadata, boolean updateAll) {
         this.entityId = entityId;
-        this.dataWatcher = dataWatcher;
+        this.metadata = metadata;
         this.updateAll = updateAll;
     }
 
     @Nonnull
-    public EntityMetadataPacket<W> setEntityId(int entityId) {
-        this.entityId = entityId;
-        return this;
+    public static <M> EntityMetadataPacket<M> create(int entityId, @Nonnull M dataWatcher, boolean updateAll) {
+        return Mapping.get().packetManager().outgoing().entityMetadataPacket(entityId, dataWatcher, updateAll);
     }
 
     @Nonnull
-    public EntityMetadataPacket<W> setDataWatcher(@Nonnull W dataWatcher) {
-        this.dataWatcher = dataWatcher;
-        return this;
-    }
-
-    @Nonnull
-    public EntityMetadataPacket<W> setUpdateAll(boolean updateAll) {
-        this.updateAll = updateAll;
-        return this;
-    }
-
-    @Nonnull
-    public static <W> EntityMetadataPacket<W> create(int entityId, @Nonnull W dataWatcher, boolean updateAll) {
-        return Mapping.get().packets().entityMetadataPacket(entityId, dataWatcher, updateAll);
-    }
-
-    @Nonnull
-    public static <W> EntityMetadataPacket<W> create(int entityId, @Nonnull W dataWatcher) {
+    public static <M> EntityMetadataPacket<M> create(int entityId, @Nonnull M dataWatcher) {
         return create(entityId, dataWatcher, true);
     }
 
     @Nonnull
-    public static <W> EntityMetadataPacket<W> create(@Nonnull Entity entity, @Nonnull W dataWatcher, boolean updateAll) {
+    public static <M> EntityMetadataPacket<M> create(@Nonnull Entity entity, @Nonnull M dataWatcher, boolean updateAll) {
         return create(entity.getEntityId(), dataWatcher, updateAll);
     }
 
     @Nonnull
-    public static <W> EntityMetadataPacket<W> create(@Nonnull Entity entity, @Nonnull W dataWatcher) {
+    public static <M> EntityMetadataPacket<M> create(@Nonnull Entity entity, @Nonnull M dataWatcher) {
         return create(entity.getEntityId(), dataWatcher);
     }
 
     @Nonnull
-    public static <W> EntityMetadataPacket<W> create(@Nonnull Entity entity) {
+    public static <M> EntityMetadataPacket<M> create(@Nonnull Entity entity) {
         return create(entity, true);
     }
 
     @Nonnull
-    public static <W> EntityMetadataPacket<W> create(@Nonnull Entity entity, boolean updateAll) {
-        return Mapping.get().packets().entityMetadataPacket(entity, updateAll);
+    public static <M> EntityMetadataPacket<M> create(@Nonnull Entity entity, boolean updateAll) {
+        return Mapping.get().packetManager().outgoing().entityMetadataPacket(entity, updateAll);
     }
 }

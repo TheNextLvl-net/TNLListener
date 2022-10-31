@@ -1,11 +1,13 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
 import javax.annotation.Nonnull;
 
 @Getter
+@Setter
 public abstract class WindowDataPacket extends PacketBuilder {
 
     private int windowId, property, value;
@@ -17,26 +19,8 @@ public abstract class WindowDataPacket extends PacketBuilder {
     }
 
     @Nonnull
-    public WindowDataPacket setWindowId(int windowId) {
-        this.windowId = windowId;
-        return this;
-    }
-
-    @Nonnull
-    public WindowDataPacket setProperty(int property) {
-        this.property = property;
-        return this;
-    }
-
-    @Nonnull
-    public WindowDataPacket setValue(int value) {
-        this.value = value;
-        return this;
-    }
-
-    @Nonnull
     public static WindowDataPacket create(int windowId, int property, int value) {
-        return Mapping.get().packets().windowDataPacket(windowId, property, value);
+        return Mapping.get().packetManager().outgoing().windowDataPacket(windowId, property, value);
     }
 
     @Nonnull

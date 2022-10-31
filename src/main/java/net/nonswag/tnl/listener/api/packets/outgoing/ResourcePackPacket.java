@@ -1,12 +1,14 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 @Getter
+@Setter
 public abstract class ResourcePackPacket extends PacketBuilder {
 
     @Nonnull
@@ -23,32 +25,8 @@ public abstract class ResourcePackPacket extends PacketBuilder {
     }
 
     @Nonnull
-    public ResourcePackPacket setUrl(@Nonnull String url) {
-        this.url = url;
-        return this;
-    }
-
-    @Nonnull
-    public ResourcePackPacket setHash(@Nullable String hash) {
-        this.hash = hash;
-        return this;
-    }
-
-    @Nonnull
-    public ResourcePackPacket setPrompt(@Nullable String prompt) {
-        this.prompt = prompt;
-        return this;
-    }
-
-    @Nonnull
-    public ResourcePackPacket setRequired(boolean required) {
-        this.required = required;
-        return this;
-    }
-
-    @Nonnull
     public static ResourcePackPacket create(@Nonnull String url, @Nullable String hash, @Nullable String prompt, boolean required) {
-        return Mapping.get().packets().resourcePackPacket(url, hash, prompt, required);
+        return Mapping.get().packetManager().outgoing().resourcePackPacket(url, hash, prompt, required);
     }
 
     @Nonnull

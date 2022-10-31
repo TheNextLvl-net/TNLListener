@@ -1,12 +1,14 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.Chunk;
 
 import javax.annotation.Nonnull;
 
 @Getter
+@Setter
 public abstract class MapChunkPacket extends PacketBuilder {
 
     @Nonnull
@@ -19,20 +21,8 @@ public abstract class MapChunkPacket extends PacketBuilder {
     }
 
     @Nonnull
-    public MapChunkPacket setChunk(@Nonnull Chunk chunk) {
-        this.chunk = chunk;
-        return this;
-    }
-
-    @Nonnull
-    public MapChunkPacket setSection(int section) {
-        this.section = section;
-        return this;
-    }
-
-    @Nonnull
     public static MapChunkPacket create(@Nonnull Chunk chunk, int section) {
-        return Mapping.get().packets().mapChunkPacket(chunk, section);
+        return Mapping.get().packetManager().outgoing().mapChunkPacket(chunk, section);
     }
 
     @Nonnull

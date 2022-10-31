@@ -1,12 +1,14 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.Material;
 
 import javax.annotation.Nonnull;
 
 @Getter
+@Setter
 public abstract class CooldownPacket extends PacketBuilder {
 
     @Nonnull
@@ -19,19 +21,7 @@ public abstract class CooldownPacket extends PacketBuilder {
     }
 
     @Nonnull
-    public CooldownPacket setItem(@Nonnull Material item) {
-        this.item = item;
-        return this;
-    }
-
-    @Nonnull
-    public CooldownPacket setCooldown(int cooldown) {
-        this.cooldown = cooldown;
-        return this;
-    }
-
-    @Nonnull
     public static CooldownPacket create(@Nonnull Material item, int cooldown) {
-        return Mapping.get().packets().cooldownPacket(item, cooldown);
+        return Mapping.get().packetManager().outgoing().cooldownPacket(item, cooldown);
     }
 }

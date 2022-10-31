@@ -1,12 +1,14 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.border.VirtualBorder;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
 import javax.annotation.Nonnull;
 
 @Getter
+@Setter
 public abstract class WorldBorderPacket extends PacketBuilder {
 
     @Nonnull
@@ -20,20 +22,8 @@ public abstract class WorldBorderPacket extends PacketBuilder {
     }
 
     @Nonnull
-    public WorldBorderPacket setWorldBorder(@Nonnull VirtualBorder border) {
-        this.border = border;
-        return this;
-    }
-
-    @Nonnull
-    public WorldBorderPacket setAction(@Nonnull Action action) {
-        this.action = action;
-        return this;
-    }
-
-    @Nonnull
     public static WorldBorderPacket create(@Nonnull VirtualBorder virtualBorder, @Nonnull Action action) {
-        return Mapping.get().packets().worldBorderPacket(virtualBorder, action);
+        return Mapping.get().packetManager().outgoing().worldBorderPacket(virtualBorder, action);
     }
 
     @Getter

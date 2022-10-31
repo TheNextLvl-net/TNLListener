@@ -2,15 +2,23 @@ package net.nonswag.tnl.listener.api.packets.incoming;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.nonswag.tnl.listener.api.mapper.Mapping;
+
+import javax.annotation.Nonnull;
 
 @Getter
 @Setter
-public class WindowButtonClickPacket implements IncomingPacket {
+public abstract class WindowButtonClickPacket extends PacketBuilder {
     private int containerId;
     private int buttonId;
 
-    public WindowButtonClickPacket(int containerId, int buttonId) {
+    protected WindowButtonClickPacket(int containerId, int buttonId) {
         this.containerId = containerId;
         this.buttonId = buttonId;
+    }
+
+    @Nonnull
+    public static WindowButtonClickPacket create(int containerId, int buttonId) {
+        return Mapping.get().packetManager().incoming().windowButtonClickPacket(containerId, buttonId);
     }
 }

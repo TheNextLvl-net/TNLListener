@@ -1,6 +1,7 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.core.api.object.MutualGetter;
 import net.nonswag.tnl.listener.api.gamemode.Gamemode;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
@@ -9,6 +10,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 @Getter
+@Setter
 public abstract class GameStateChangePacket extends PacketBuilder {
 
     @Nullable
@@ -46,20 +48,8 @@ public abstract class GameStateChangePacket extends PacketBuilder {
     }
 
     @Nonnull
-    public GameStateChangePacket setIdentifier(@Nonnull Identifier identifier) {
-        this.identifier = identifier;
-        return this;
-    }
-
-    @Nonnull
-    public GameStateChangePacket setState(float state) {
-        this.state = state;
-        return this;
-    }
-
-    @Nonnull
     public static GameStateChangePacket create(@Nonnull Identifier identifier, float state) {
-        return Mapping.get().packets().gameStateChangePacket(identifier, state);
+        return Mapping.get().packetManager().outgoing().gameStateChangePacket(identifier, state);
     }
 
     @Nonnull

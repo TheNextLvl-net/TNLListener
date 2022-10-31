@@ -1,6 +1,7 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.item.SlotType;
 import net.nonswag.tnl.listener.api.item.TNLItem;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
@@ -11,6 +12,7 @@ import javax.annotation.Nonnull;
 import java.util.HashMap;
 
 @Getter
+@Setter
 public abstract class EntityEquipmentPacket extends PacketBuilder {
 
     @Nonnull
@@ -23,20 +25,8 @@ public abstract class EntityEquipmentPacket extends PacketBuilder {
     }
 
     @Nonnull
-    public EntityEquipmentPacket setEntityId(int entityId) {
-        this.entityId = entityId;
-        return this;
-    }
-
-    @Nonnull
-    public EntityEquipmentPacket setEquipment(@Nonnull HashMap<SlotType, TNLItem> equipment) {
-        this.equipment = equipment;
-        return this;
-    }
-
-    @Nonnull
     public static EntityEquipmentPacket create(int entityId, @Nonnull HashMap<SlotType, TNLItem> equipment) {
-        return Mapping.get().packets().entityEquipmentPacket(entityId, equipment);
+        return Mapping.get().packetManager().outgoing().entityEquipmentPacket(entityId, equipment);
     }
 
     @Nonnull

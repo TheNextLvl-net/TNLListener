@@ -3,12 +3,14 @@ package net.nonswag.tnl.listener.api.packets.incoming;
 import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.location.BlockPosition;
+import net.nonswag.tnl.listener.api.location.Direction;
+import net.nonswag.tnl.listener.api.mapper.Mapping;
 
 import javax.annotation.Nonnull;
 
 @Getter
 @Setter
-public class PlayerActionPacket implements IncomingPacket {
+public abstract class PlayerActionPacket extends PacketBuilder {
     @Nonnull
     private Action action;
     @Nonnull
@@ -17,7 +19,7 @@ public class PlayerActionPacket implements IncomingPacket {
     private Direction direction;
     private int sequence;
 
-    public PlayerActionPacket(@Nonnull Action action, @Nonnull BlockPosition position, @Nonnull Direction direction, int sequence) {
+    protected PlayerActionPacket(@Nonnull Action action, @Nonnull BlockPosition position, @Nonnull Direction direction, int sequence) {
         this.action = action;
         this.position = position;
         this.direction = direction;
@@ -34,7 +36,8 @@ public class PlayerActionPacket implements IncomingPacket {
         SWAP_ITEM_WITH_OFFHAND
     }
 
-    public enum Direction {
-        UP, DOWN, NORTH, SOUTH, EAST, WEST
+    @Nonnull
+    public static PlayerActionPacket create(@Nonnull Action action, @Nonnull BlockPosition position, @Nonnull Direction direction, int sequence) {
+        return Mapping.get().packetManager().incoming().playerActionPacket(action, position, direction, sequence);
     }
 }

@@ -1,6 +1,7 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.location.Position;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.Location;
@@ -9,6 +10,7 @@ import org.bukkit.entity.Entity;
 import javax.annotation.Nonnull;
 
 @Getter
+@Setter
 public abstract class EntityTeleportPacket extends PacketBuilder {
 
     private int entityId;
@@ -21,20 +23,8 @@ public abstract class EntityTeleportPacket extends PacketBuilder {
     }
 
     @Nonnull
-    public EntityTeleportPacket setEntityId(int entityId) {
-        this.entityId = entityId;
-        return this;
-    }
-
-    @Nonnull
-    public EntityTeleportPacket setPosition(@Nonnull Position position) {
-        this.position = position;
-        return this;
-    }
-
-    @Nonnull
     public static EntityTeleportPacket create(int entityId, @Nonnull Position position) {
-        return Mapping.get().packets().entityTeleportPacket(entityId, position);
+        return Mapping.get().packetManager().outgoing().entityTeleportPacket(entityId, position);
     }
 
     @Nonnull

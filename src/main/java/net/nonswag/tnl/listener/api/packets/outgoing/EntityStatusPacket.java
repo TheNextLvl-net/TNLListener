@@ -1,12 +1,14 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.entity.Entity;
 
 import javax.annotation.Nonnull;
 
 @Getter
+@Setter
 public abstract class EntityStatusPacket extends PacketBuilder {
 
     private int entityId;
@@ -19,20 +21,8 @@ public abstract class EntityStatusPacket extends PacketBuilder {
     }
 
     @Nonnull
-    public EntityStatusPacket setEntityId(int entityId) {
-        this.entityId = entityId;
-        return this;
-    }
-
-    @Nonnull
-    public EntityStatusPacket setStatus(@Nonnull Status status) {
-        this.status = status;
-        return this;
-    }
-
-    @Nonnull
     public static EntityStatusPacket create(int entityId, @Nonnull Status status) {
-        return Mapping.get().packets().entityStatusPacket(entityId, status);
+        return Mapping.get().packetManager().outgoing().entityStatusPacket(entityId, status);
     }
 
     @Nonnull
@@ -40,6 +30,7 @@ public abstract class EntityStatusPacket extends PacketBuilder {
         return create(entity.getEntityId(), status);
     }
 
+    @Getter
     public enum Status {
         BURNING((byte) 0x01),
         CROUCHING((byte) 0x02),
@@ -61,10 +52,6 @@ public abstract class EntityStatusPacket extends PacketBuilder {
 
         Status(byte id) {
             this.id = id;
-        }
-
-        public byte getId() {
-            return id;
         }
 
         @Nonnull

@@ -3,13 +3,14 @@ package net.nonswag.tnl.listener.api.packets.incoming;
 import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.chat.LastSeenMessages;
+import net.nonswag.tnl.listener.api.mapper.Mapping;
 
 import javax.annotation.Nonnull;
 import java.time.Instant;
 
 @Getter
 @Setter
-public class ChatCommandPacket implements IncomingPacket {
+public abstract class ChatCommandPacket extends PacketBuilder {
 
     @Nonnull
     private String command;
@@ -22,7 +23,7 @@ public class ChatCommandPacket implements IncomingPacket {
     private boolean signedPreview;
     private long salt;
 
-    public ChatCommandPacket(@Nonnull String command, @Nonnull Instant timeStamp, long salt, @Nonnull Entry[] argumentSignatures, boolean signedPreview, @Nonnull LastSeenMessages.Update lastSeenMessages) {
+    protected ChatCommandPacket(@Nonnull String command, @Nonnull Instant timeStamp, long salt, @Nonnull Entry[] argumentSignatures, boolean signedPreview, @Nonnull LastSeenMessages.Update lastSeenMessages) {
         this.command = command;
         this.timeStamp = timeStamp;
         this.salt = salt;
@@ -43,5 +44,10 @@ public class ChatCommandPacket implements IncomingPacket {
             this.name = name;
             this.signature = signature;
         }
+    }
+
+    @Nonnull
+    public static ChatCommandPacket create(@Nonnull String command, @Nonnull Instant timeStamp, long salt, @Nonnull Entry[] argumentSignatures, boolean signedPreview, @Nonnull LastSeenMessages.Update lastSeenMessages) {
+        return Mapping.get().packetManager().incoming().chatCommandPacket(command, timeStamp, salt, argumentSignatures, signedPreview, lastSeenMessages);
     }
 }

@@ -2,10 +2,13 @@ package net.nonswag.tnl.listener.api.packets.incoming;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.nonswag.tnl.listener.api.mapper.Mapping;
+
+import javax.annotation.Nonnull;
 
 @Getter
 @Setter
-public class MovePlayerPacket implements IncomingPacket {
+public abstract class MovePlayerPacket extends PacketBuilder {
     private double x;
     private double y;
     private double z;
@@ -25,27 +28,47 @@ public class MovePlayerPacket implements IncomingPacket {
         this.changingLook = changingLook;
     }
 
-    public static class Position extends MovePlayerPacket {
-        public Position(double x, double y, double z, boolean onGround) {
+    public static abstract class Position extends MovePlayerPacket {
+        protected Position(double x, double y, double z, boolean onGround) {
             super(x, y, z, 0, 0, onGround, true, false);
+        }
+
+        @Nonnull
+        public static Position create(double x, double y, double z, boolean onGround) {
+            return Mapping.get().packetManager().incoming().movePlayerPacket(x, y, z, onGround);
         }
     }
 
-    public static class PositionRotation extends MovePlayerPacket {
+    public static abstract class PositionRotation extends MovePlayerPacket {
         public PositionRotation(double x, double y, double z, float yaw, float pitch, boolean onGround) {
             super(x, y, z, yaw, pitch, onGround, true, true);
         }
-    }
 
-    public static class Rotation extends MovePlayerPacket {
-        public Rotation(float yaw, float pitch, boolean onGround) {
-            super(0, 0, 0, yaw, pitch, onGround, false, true);
+        @Nonnull
+        public static PositionRotation create(double x, double y, double z, float yaw, float pitch, boolean onGround) {
+            return Mapping.get().packetManager().incoming().movePlayerPacket(x, y, z, yaw, pitch, onGround);
         }
     }
 
-    public static class Status extends MovePlayerPacket {
+    public static abstract class Rotation extends MovePlayerPacket {
+        public Rotation(float yaw, float pitch, boolean onGround) {
+            super(0, 0, 0, yaw, pitch, onGround, false, true);
+        }
+
+        @Nonnull
+        public static Rotation create(float yaw, float pitch, boolean onGround) {
+            return Mapping.get().packetManager().incoming().movePlayerPacket(yaw, pitch, onGround);
+        }
+    }
+
+    public static abstract class Status extends MovePlayerPacket {
         public Status(boolean onGround) {
             super(0, 0, 0, 0, 0, onGround, false, false);
+        }
+
+        @Nonnull
+        public static Status create(boolean onGround) {
+            return Mapping.get().packetManager().incoming().movePlayerPacket(onGround);
         }
     }
 }

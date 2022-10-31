@@ -1,6 +1,7 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
@@ -8,6 +9,7 @@ import org.bukkit.util.Vector;
 import javax.annotation.Nonnull;
 
 @Getter
+@Setter
 public abstract class EntityVelocityPacket extends PacketBuilder {
 
     private int entityId;
@@ -20,20 +22,8 @@ public abstract class EntityVelocityPacket extends PacketBuilder {
     }
 
     @Nonnull
-    public EntityVelocityPacket setEntityId(int entityId) {
-        this.entityId = entityId;
-        return this;
-    }
-
-    @Nonnull
-    public EntityVelocityPacket setVector(@Nonnull Vector vector) {
-        this.vector = vector;
-        return this;
-    }
-
-    @Nonnull
     public static EntityVelocityPacket create(int entityId, @Nonnull Vector vector) {
-        return Mapping.get().packets().entityVelocityPacket(entityId, vector);
+        return Mapping.get().packetManager().outgoing().entityVelocityPacket(entityId, vector);
     }
 
     @Nonnull

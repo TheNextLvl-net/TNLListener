@@ -1,6 +1,7 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.inventory.ItemStack;
 
@@ -8,11 +9,12 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 @Getter
+@Setter
 public abstract class WindowItemsPacket extends PacketBuilder {
 
-    private int windowId;
     @Nonnull
     private List<ItemStack> items;
+    private int windowId;
 
     protected WindowItemsPacket(int windowId, @Nonnull List<ItemStack> items) {
         this.windowId = windowId;
@@ -20,20 +22,8 @@ public abstract class WindowItemsPacket extends PacketBuilder {
     }
 
     @Nonnull
-    public WindowItemsPacket setWindowId(int windowId) {
-        this.windowId = windowId;
-        return this;
-    }
-
-    @Nonnull
-    public WindowItemsPacket setItems(@Nonnull List<ItemStack> items) {
-        this.items = items;
-        return this;
-    }
-
-    @Nonnull
     public static WindowItemsPacket create(int windowId, @Nonnull List<ItemStack> items) {
-        return Mapping.get().packets().windowItemsPacket(windowId, items);
+        return Mapping.get().packetManager().outgoing().windowItemsPacket(windowId, items);
     }
 
     @Nonnull

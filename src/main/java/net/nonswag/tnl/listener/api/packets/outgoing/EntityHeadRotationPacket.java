@@ -1,12 +1,14 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.entity.Entity;
 
 import javax.annotation.Nonnull;
 
 @Getter
+@Setter
 public abstract class EntityHeadRotationPacket extends PacketBuilder {
 
     private int entityId;
@@ -18,20 +20,8 @@ public abstract class EntityHeadRotationPacket extends PacketBuilder {
     }
 
     @Nonnull
-    public EntityHeadRotationPacket setEntityId(int entityId) {
-        this.entityId = entityId;
-        return this;
-    }
-
-    @Nonnull
-    public EntityHeadRotationPacket setYaw(float yaw) {
-        this.yaw = yaw;
-        return this;
-    }
-
-    @Nonnull
     public static EntityHeadRotationPacket create(int entityId, float yaw) {
-        return Mapping.get().packets().entityHeadRotationPacket(entityId, yaw);
+        return Mapping.get().packetManager().outgoing().entityHeadRotationPacket(entityId, yaw);
     }
 
     @Nonnull

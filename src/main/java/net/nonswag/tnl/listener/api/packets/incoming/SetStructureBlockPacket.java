@@ -3,6 +3,7 @@ package net.nonswag.tnl.listener.api.packets.incoming;
 import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.location.BlockPosition;
+import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.Rotation;
 import org.bukkit.block.structure.Mirror;
 import org.bukkit.util.Vector;
@@ -11,7 +12,7 @@ import javax.annotation.Nonnull;
 
 @Getter
 @Setter
-public class SetStructureBlockPacket implements IncomingPacket {
+public abstract class SetStructureBlockPacket extends PacketBuilder {
     @Nonnull
     private BlockPosition position;
     @Nonnull
@@ -36,11 +37,11 @@ public class SetStructureBlockPacket implements IncomingPacket {
     private float integrity;
     private long seed;
 
-    public SetStructureBlockPacket(@Nonnull BlockPosition position, @Nonnull Type type, @Nonnull Mode mode,
-                                   @Nonnull String name, @Nonnull BlockPosition offset, @Nonnull Vector size,
-                                   @Nonnull Mirror mirror, @Nonnull Rotation rotation, @Nonnull String metadata,
-                                   boolean ignoreEntities, boolean showAir, boolean showBoundingBox, float integrity,
-                                   long seed) {
+    protected SetStructureBlockPacket(@Nonnull BlockPosition position, @Nonnull Type type, @Nonnull Mode mode,
+                                      @Nonnull String name, @Nonnull BlockPosition offset, @Nonnull Vector size,
+                                      @Nonnull Mirror mirror, @Nonnull Rotation rotation, @Nonnull String metadata,
+                                      boolean ignoreEntities, boolean showAir, boolean showBoundingBox, float integrity,
+                                      long seed) {
         this.position = position;
         this.type = type;
         this.mode = mode;
@@ -63,5 +64,14 @@ public class SetStructureBlockPacket implements IncomingPacket {
 
     public enum Type {
         UPDATE_DATA, SAVE_AREA, LOAD_AREA, SCAN_AREA
+    }
+
+    @Nonnull
+    public static SetStructureBlockPacket create(@Nonnull BlockPosition position, @Nonnull Type type, @Nonnull Mode mode,
+                                                 @Nonnull String name, @Nonnull BlockPosition offset, @Nonnull Vector size,
+                                                 @Nonnull Mirror mirror, @Nonnull Rotation rotation, @Nonnull String metadata,
+                                                 boolean ignoreEntities, boolean showAir, boolean showBoundingBox, float integrity,
+                                                 long seed) {
+        return Mapping.get().packetManager().incoming().setStructureBlockPacket(position, type, mode, name, offset, size, mirror, rotation, metadata, ignoreEntities, showAir, showBoundingBox, integrity, seed);
     }
 }

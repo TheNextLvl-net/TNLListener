@@ -1,11 +1,13 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
 import javax.annotation.Nonnull;
 
 @Getter
+@Setter
 public abstract class CustomPayloadPacket extends PacketBuilder {
 
     @Nonnull
@@ -19,19 +21,7 @@ public abstract class CustomPayloadPacket extends PacketBuilder {
     }
 
     @Nonnull
-    public CustomPayloadPacket setChannel(@Nonnull String channel) {
-        this.channel = channel;
-        return this;
-    }
-
-    @Nonnull
-    public CustomPayloadPacket setBytes(@Nonnull byte[]... bytes) {
-        this.bytes = bytes;
-        return this;
-    }
-
-    @Nonnull
     public static CustomPayloadPacket create(@Nonnull String channel, @Nonnull byte[]... bytes) {
-        return Mapping.get().packets().customPayloadPacket(channel, bytes);
+        return Mapping.get().packetManager().outgoing().customPayloadPacket(channel, bytes);
     }
 }

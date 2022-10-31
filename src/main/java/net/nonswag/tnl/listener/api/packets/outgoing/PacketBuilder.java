@@ -1,6 +1,8 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import net.nonswag.tnl.listener.Listener;
+import net.nonswag.tnl.listener.api.mapper.Mapping;
+import net.nonswag.tnl.listener.api.packets.PacketSendListener;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 
 import javax.annotation.Nonnull;
@@ -15,35 +17,44 @@ public abstract class PacketBuilder implements OutgoingPacket {
     @Nonnull
     public abstract <P> P build();
 
+    public void send(@Nonnull PacketSendListener after, @Nonnull TNLPlayer... players) {
+        for (TNLPlayer player : players) player.pipeline().sendPacket(build(), after);
+    }
+
     public void send(@Nonnull TNLPlayer... players) {
-        for (TNLPlayer player : players) player.pipeline().sendPacket(this.build());
+        send(player -> {
+        }, players);
+    }
+
+    public void send(@Nonnull List<TNLPlayer> players, @Nonnull PacketSendListener after) {
+        players.forEach(player -> send(after, player));
     }
 
     public void send(@Nonnull List<TNLPlayer> players) {
-        players.forEach(this::send);
+        send(players, player -> {
+        });
+    }
+
+    public void broadcast(@Nonnull Predicate<TNLPlayer> condition, @Nonnull PacketSendListener after) {
+        for (TNLPlayer all : Listener.getOnlinePlayers()) if (condition.test(all)) send(after, all);
     }
 
     public void broadcast(@Nonnull Predicate<TNLPlayer> condition) {
-        for (TNLPlayer all : Listener.getOnlinePlayers()) if (condition.test(all)) send(all);
+        broadcast(condition, player -> {
+        });
+    }
+
+    public void broadcast(@Nonnull PacketSendListener after) {
+        broadcast(player -> true, after);
     }
 
     public void broadcast() {
-        broadcast(player -> true);
+        broadcast(player -> true, player -> {
+        });
     }
 
     @Nonnull
     public static <P> PacketBuilder of(@Nonnull P packet) {
-        return new PacketBuilder() {
-            @Nonnull
-            @Override
-            public P build() {
-                return packet;
-            }
-
-            @Override
-            public void send(@Nonnull TNLPlayer... players) {
-                for (TNLPlayer player : players) player.pipeline().sendPacket(build());
-            }
-        };
+        return Mapping.get().packetManager().outgoing().map(packet);
     }
 }

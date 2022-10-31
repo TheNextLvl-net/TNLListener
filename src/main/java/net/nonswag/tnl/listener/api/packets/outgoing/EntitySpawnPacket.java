@@ -1,12 +1,14 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.entity.Entity;
 
 import javax.annotation.Nonnull;
 
 @Getter
+@Setter
 public abstract class EntitySpawnPacket extends PacketBuilder {
 
     @Nonnull
@@ -17,13 +19,7 @@ public abstract class EntitySpawnPacket extends PacketBuilder {
     }
 
     @Nonnull
-    public EntitySpawnPacket setEntity(@Nonnull Entity entity) {
-        this.entity = entity;
-        return this;
-    }
-
-    @Nonnull
     public static EntitySpawnPacket create(@Nonnull Entity entity) {
-        return Mapping.get().packets().entitySpawnPacket(entity);
+        return Mapping.get().packetManager().outgoing().entitySpawnPacket(entity);
     }
 }

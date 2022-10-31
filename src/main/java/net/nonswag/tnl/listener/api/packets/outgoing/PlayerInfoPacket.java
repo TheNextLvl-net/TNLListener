@@ -1,6 +1,7 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.entity.TNLEntityPlayer;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.entity.Player;
@@ -8,6 +9,7 @@ import org.bukkit.entity.Player;
 import javax.annotation.Nonnull;
 
 @Getter
+@Setter
 public abstract class PlayerInfoPacket extends PacketBuilder {
 
     @Nonnull
@@ -21,20 +23,8 @@ public abstract class PlayerInfoPacket extends PacketBuilder {
     }
 
     @Nonnull
-    public PlayerInfoPacket setPlayer(@Nonnull Player player) {
-        this.player = player;
-        return this;
-    }
-
-    @Nonnull
-    public PlayerInfoPacket setAction(@Nonnull Action action) {
-        this.action = action;
-        return this;
-    }
-
-    @Nonnull
     public static PlayerInfoPacket create(@Nonnull Player player, @Nonnull Action action) {
-        return Mapping.get().packets().playerInfoPacket(player, action);
+        return Mapping.get().packetManager().outgoing().playerInfoPacket(player, action);
     }
 
     @Nonnull

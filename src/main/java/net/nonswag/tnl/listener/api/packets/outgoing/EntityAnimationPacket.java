@@ -1,12 +1,14 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.entity.LivingEntity;
 
 import javax.annotation.Nonnull;
 
 @Getter
+@Setter
 public abstract class EntityAnimationPacket extends PacketBuilder {
 
     private int entityId;
@@ -19,20 +21,8 @@ public abstract class EntityAnimationPacket extends PacketBuilder {
     }
 
     @Nonnull
-    public EntityAnimationPacket setEntityId(int entityId) {
-        this.entityId = entityId;
-        return this;
-    }
-
-    @Nonnull
-    public EntityAnimationPacket setAnimation(@Nonnull Animation animation) {
-        this.animation = animation;
-        return this;
-    }
-
-    @Nonnull
     public static EntityAnimationPacket create(int entityId, @Nonnull Animation animation) {
-        return Mapping.get().packets().entityAnimationPacket(entityId, animation);
+        return Mapping.get().packetManager().outgoing().entityAnimationPacket(entityId, animation);
     }
 
     @Nonnull
@@ -40,6 +30,7 @@ public abstract class EntityAnimationPacket extends PacketBuilder {
         return create(entity.getEntityId(), animation);
     }
 
+    @Getter
     public enum Animation {
         SWING_HAND(0),
         SWING_OFFHAND(3),
@@ -51,10 +42,6 @@ public abstract class EntityAnimationPacket extends PacketBuilder {
 
         Animation(int id) {
             this.id = id;
-        }
-
-        public int getId() {
-            return id;
         }
     }
 }

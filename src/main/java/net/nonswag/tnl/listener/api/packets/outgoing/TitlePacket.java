@@ -1,12 +1,14 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 @Getter
+@Setter
 public abstract class TitlePacket extends PacketBuilder {
 
     @Nonnull
@@ -24,38 +26,8 @@ public abstract class TitlePacket extends PacketBuilder {
     }
 
     @Nonnull
-    public TitlePacket setAction(@Nonnull Action action) {
-        this.action = action;
-        return this;
-    }
-
-    @Nonnull
-    public TitlePacket setText(@Nullable String text) {
-        this.text = text;
-        return this;
-    }
-
-    @Nonnull
-    public TitlePacket setTimeIn(int timeIn) {
-        this.timeIn = timeIn;
-        return this;
-    }
-
-    @Nonnull
-    public TitlePacket setTimeStay(int timeStay) {
-        this.timeStay = timeStay;
-        return this;
-    }
-
-    @Nonnull
-    public TitlePacket setTimeOut(int timeOut) {
-        this.timeOut = timeOut;
-        return this;
-    }
-
-    @Nonnull
     public static TitlePacket create(@Nonnull Action action, @Nullable String text, int timeIn, int timeStay, int timeOut) {
-        return Mapping.get().packets().titlePacket(action, text, timeIn, timeStay, timeOut);
+        return Mapping.get().packetManager().outgoing().titlePacket(action, text, timeIn, timeStay, timeOut);
     }
 
     @Nonnull

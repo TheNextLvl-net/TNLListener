@@ -1,6 +1,7 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.core.api.math.Range;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.event.inventory.InventoryType;
@@ -8,6 +9,7 @@ import org.bukkit.event.inventory.InventoryType;
 import javax.annotation.Nonnull;
 
 @Getter
+@Setter
 public abstract class OpenWindowPacket extends PacketBuilder {
 
     private int windowId;
@@ -23,26 +25,8 @@ public abstract class OpenWindowPacket extends PacketBuilder {
     }
 
     @Nonnull
-    public OpenWindowPacket setWindowId(int windowId) {
-        this.windowId = windowId;
-        return this;
-    }
-
-    @Nonnull
-    public OpenWindowPacket setType(@Nonnull Type type) {
-        this.type = type;
-        return this;
-    }
-
-    @Nonnull
-    public OpenWindowPacket setTitle(@Nonnull String title) {
-        this.title = title;
-        return this;
-    }
-
-    @Nonnull
     public static OpenWindowPacket create(int windowId, @Nonnull Type type, @Nonnull String title) {
-        return Mapping.get().packets().openWindowPacket(windowId, type, title);
+        return Mapping.get().packetManager().outgoing().openWindowPacket(windowId, type, title);
     }
 
     @Nonnull
@@ -60,6 +44,7 @@ public abstract class OpenWindowPacket extends PacketBuilder {
         return create(Type.chest(size), title);
     }
 
+    @Getter
     public enum Type {
         CHEST_9X1(0),
         CHEST_9X2(1),
@@ -84,17 +69,12 @@ public abstract class OpenWindowPacket extends PacketBuilder {
         SMITHING_TABLE(20),
         SMOKER(21),
         CARTOGRAPHY_TABLE(22),
-        STONECUTTER(23),
-        ;
+        STONECUTTER(23);
 
         private final int id;
 
         Type(int id) {
             this.id = id;
-        }
-
-        public int getId() {
-            return id;
         }
 
         @Nonnull
