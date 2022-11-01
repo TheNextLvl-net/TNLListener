@@ -174,7 +174,7 @@ public abstract class WorldManager extends Manager {
 
     public void setImmediateRespawn(boolean immediate) {
         immediateRespawn = immediate;
-        GameStateChangePacket.create(GameStateChangePacket.RESPAWN, respawn -> respawn.immediate(immediate)).send(getPlayer());
+        GameStateChangePacket.create(GameStateChangePacket.IMMEDIATE_RESPAWN, respawn -> respawn.immediate(immediate)).send(getPlayer());
     }
 
     @Nullable

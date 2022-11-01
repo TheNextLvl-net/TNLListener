@@ -7,26 +7,25 @@ import net.nonswag.tnl.listener.api.gamemode.Gamemode;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 @Getter
 @Setter
 public abstract class GameStateChangePacket extends PacketBuilder {
 
-    @Nullable
+    @Nonnull
     public static NoRespawnBlockAvailable NO_RESPAWN_BLOCK_AVAILABLE = new NoRespawnBlockAvailable();
     @Nonnull
-    public static StopRain STOP_RAIN = new StopRain();
+    public static StopRaining START_RAINING = new StopRaining();
     @Nonnull
-    public static StartRain START_RAIN = new StartRain();
+    public static StartRaining STOP_RAINING = new StartRaining();
     @Nonnull
     public static ChangeGamemode CHANGE_GAMEMODE = new ChangeGamemode();
     @Nonnull
     public static WinGame WIN_GAME = new WinGame();
     @Nonnull
-    public static Demo DEMO = new Demo();
+    public static DemoEvent DEMO_EVENT = new DemoEvent();
     @Nonnull
-    public static ArrowHit ARROW_HIT = new ArrowHit();
+    public static ArrowHitPlayer ARROW_HIT_PLAYER = new ArrowHitPlayer();
     @Nonnull
     public static RainLevelChange RAIN_LEVEL_CHANGE = new RainLevelChange();
     @Nonnull
@@ -34,9 +33,9 @@ public abstract class GameStateChangePacket extends PacketBuilder {
     @Nonnull
     public static PufferFishSting PUFFER_FISH_STING = new PufferFishSting();
     @Nonnull
-    public static ElderGuardian ELDER_GUARDIAN = new ElderGuardian();
+    public static GuardianElderEffect GUARDIAN_ELDER_EFFECT = new GuardianElderEffect();
     @Nonnull
-    public static Respawn RESPAWN = new Respawn();
+    public static ImmediateRespawn IMMEDIATE_RESPAWN = new ImmediateRespawn();
 
     @Nonnull
     private Identifier identifier;
@@ -78,14 +77,14 @@ public abstract class GameStateChangePacket extends PacketBuilder {
         }
     }
 
-    public static final class StopRain extends Identifier {
-        private StopRain() {
+    public static final class StopRaining extends Identifier {
+        private StopRaining() {
             super(1);
         }
     }
 
-    public static final class StartRain extends Identifier {
-        private StartRain() {
+    public static final class StartRaining extends Identifier {
+        private StartRaining() {
             super(2);
         }
     }
@@ -108,16 +107,16 @@ public abstract class GameStateChangePacket extends PacketBuilder {
         public final float RESPAWN = 0, ROLL_CREDITS = 1;
     }
 
-    public static final class Demo extends Identifier {
-        public final float WELCOME = 0, MOVEMENTS = 101, JUMPING = 102, INVENTORY = 103, OVER = 104;
+    public static final class DemoEvent extends Identifier {
+        public final int INTRO = 0, MOVEMENTS = 101, JUMPING = 102, INVENTORY = 103, OVER = 104;
 
-        private Demo() {
+        private DemoEvent() {
             super(5);
         }
     }
 
-    public static final class ArrowHit extends Identifier {
-        private ArrowHit() {
+    public static final class ArrowHitPlayer extends Identifier {
+        private ArrowHitPlayer() {
             super(6);
         }
     }
@@ -148,15 +147,15 @@ public abstract class GameStateChangePacket extends PacketBuilder {
         }
     }
 
-    public static final class ElderGuardian extends Identifier {
-        private ElderGuardian() {
+    public static final class GuardianElderEffect extends Identifier {
+        private GuardianElderEffect() {
             super(10);
         }
     }
 
-    public static final class Respawn extends Identifier {
+    public static final class ImmediateRespawn extends Identifier {
 
-        private Respawn() {
+        private ImmediateRespawn() {
             super(11);
         }
 

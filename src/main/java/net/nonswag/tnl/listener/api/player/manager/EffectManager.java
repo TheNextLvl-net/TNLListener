@@ -65,6 +65,6 @@ public abstract class EffectManager extends Manager {
     }
 
     public void playMobAppearance() {
-        GameStateChangePacket.create(GameStateChangePacket.ELDER_GUARDIAN).send(getPlayer());
+        GameStateChangePacket.create(GameStateChangePacket.GUARDIAN_ELDER_EFFECT).send(getPlayer());
     }
 }
