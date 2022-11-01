@@ -24,6 +24,7 @@ import net.nonswag.tnl.listener.api.packets.incoming.PacketBuilder;
 import net.nonswag.tnl.listener.api.packets.incoming.*;
 import net.nonswag.tnl.listener.api.packets.outgoing.ChatPacket;
 import net.nonswag.tnl.listener.api.packets.outgoing.CustomPayloadPacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.MoveVehiclePacket;
 import net.nonswag.tnl.listener.api.packets.outgoing.ResourcePackPacket;
 import net.nonswag.tnl.listener.api.packets.outgoing.*;
 import net.nonswag.tnl.listener.api.player.GameProfile;
@@ -280,7 +281,7 @@ public abstract class Mapping extends PluginBuilder implements Updatable {
             public abstract MovePlayerPacket.Status movePlayerPacket(boolean onGround);
 
             @Nonnull
-            public abstract MoveVehiclePacket moveVehiclePacket(@Nonnull Position position);
+            public abstract net.nonswag.tnl.listener.api.packets.incoming.MoveVehiclePacket moveVehiclePacket(@Nonnull Position position);
 
             @Nonnull
             public abstract PaddleBoatPacket paddleBoatPacket(boolean left, boolean right);
@@ -382,6 +383,9 @@ public abstract class Mapping extends PluginBuilder implements Updatable {
             public abstract SetExperiencePacket setExperiencePacket(float experienceProgress, int totalExperience, int experienceLevel);
 
             @Nonnull
+            public abstract StopSoundPacket stopSoundPacket(@Nullable NamespacedKey sound, @Nullable SoundCategory category);
+
+            @Nonnull
             public abstract BossBarPacket bossBarPacket(@Nonnull BossBarPacket.Action action, @Nonnull BossBar bossBar);
 
             @Nonnull
@@ -454,6 +458,12 @@ public abstract class Mapping extends PluginBuilder implements Updatable {
             public abstract OpenSignPacket openSignPacket(@Nonnull BlockLocation location);
 
             @Nonnull
+            public abstract OpenBookPacket openBookPacket(@Nonnull Hand hand);
+
+            @Nonnull
+            public abstract MoveVehiclePacket moveVehiclePacket(@Nonnull Position position);
+
+            @Nonnull
             public abstract OpenWindowPacket openWindowPacket(int windowId, @Nonnull OpenWindowPacket.Type type, @Nonnull String title);
 
             @Nonnull
@@ -475,7 +485,28 @@ public abstract class Mapping extends PluginBuilder implements Updatable {
             public abstract WindowItemsPacket windowItemsPacket(int windowId, @Nonnull List<ItemStack> items);
 
             @Nonnull
-            public abstract WorldBorderPacket worldBorderPacket(@Nonnull VirtualBorder virtualBorder, @Nonnull WorldBorderPacket.Action action);
+            public abstract InitializeBorderPacket initializeBorderPacket(@Nonnull VirtualBorder virtualBorder);
+
+            @Nonnull
+            public abstract SetBorderSizePacket setBorderSizePacket(double size);
+
+            @Nonnull
+            public abstract SetBorderLerpSizePacket setBorderLerpSizePacket(double oldSize, double newSize, long lerpTime);
+
+            @Nonnull
+            public abstract SetBorderCenterPacket setBorderCenterPacket(@Nonnull VirtualBorder.Center center);
+
+            @Nonnull
+            public abstract SetBorderWarningDelayPacket setBorderWarningDelayPacket(int warningDelay);
+
+            @Nonnull
+            public abstract SetBorderWarningDistancePacket setBorderWarningDistancePacket(int warningDistance);
+
+            @Nonnull
+            public abstract SelectAdvancementsTabPacket selectAdvancementsTabPacket(@Nullable NamespacedKey tab);
+
+            @Nonnull
+            public abstract SetDisplayChatPreviewPacket setDisplayChatPreviewPacket(boolean enabled);
 
             @Nonnull
             public abstract ResourcePackPacket resourcePackPacket(@Nonnull String url, @Nullable String hash, @Nullable String prompt, boolean required);

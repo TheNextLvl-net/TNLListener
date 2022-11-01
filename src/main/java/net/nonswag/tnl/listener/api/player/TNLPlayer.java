@@ -18,7 +18,7 @@ import net.nonswag.tnl.listener.api.mapper.Mapping;
 import net.nonswag.tnl.listener.api.mods.ModPlayer;
 import net.nonswag.tnl.listener.api.mods.labymod.LabyPlayer;
 import net.nonswag.tnl.listener.api.packets.outgoing.GameStateChangePacket;
-import net.nonswag.tnl.listener.api.packets.outgoing.WorldBorderPacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.InitializeBorderPacket;
 import net.nonswag.tnl.listener.api.packets.injection.Injection;
 import net.nonswag.tnl.listener.api.player.manager.*;
 import net.nonswag.tnl.listener.api.registrations.RegistrationManager;
@@ -226,11 +226,7 @@ public abstract class TNLPlayer implements CommandSource, PlatformPlayer, TNLEnt
     }
 
     public void setClientBorder(@Nonnull VirtualBorder border) {
-        Bootstrap.getInstance().sync(() -> {
-            for (WorldBorderPacket.Action action : WorldBorderPacket.Action.values()) {
-                WorldBorderPacket.create(border, action).send(this);
-            }
-        });
+        InitializeBorderPacket.create(border).send(this);
     }
 
     @Nonnull
