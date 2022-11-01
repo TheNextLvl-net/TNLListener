@@ -32,11 +32,12 @@ public abstract class EntityAnimationPacket extends PacketBuilder {
 
     @Getter
     public enum Animation {
-        SWING_HAND(0),
-        SWING_OFFHAND(3),
-        NORMAL_DAMAGE(1),
-        CRITICAL_DAMAGE(4),
-        MAGICAL_DAMAGE(5);
+        SWING_MAIN_HAND(0),
+        HURT(1),
+        WAKE_UP(2),
+        SWING_OFF_HAND(3),
+        CRITICAL_HIT(4),
+        MAGIC_CRITICAL_HIT(5);
 
         private final int id;
 
