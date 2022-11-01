@@ -379,6 +379,9 @@ public abstract class Mapping extends PluginBuilder implements Updatable {
             public abstract BlockBreakAnimationPacket blockBreakAnimationPacket(@Nonnull BlockLocation location, int state);
 
             @Nonnull
+            public abstract SetExperiencePacket setExperiencePacket(float experienceProgress, int totalExperience, int experienceLevel);
+
+            @Nonnull
             public abstract BossBarPacket bossBarPacket(@Nonnull BossBarPacket.Action action, @Nonnull BossBar bossBar);
 
             @Nonnull
@@ -397,7 +400,7 @@ public abstract class Mapping extends PluginBuilder implements Updatable {
             public abstract CustomPayloadPacket customPayloadPacket(@Nonnull String channel, @Nonnull byte[]... bytes);
 
             @Nonnull
-            public abstract EntityAnimationPacket entityAnimationPacket(int entityId, @Nonnull EntityAnimationPacket.Animation animation);
+            public abstract AnimationPacket animationPacket(int entityId, @Nonnull AnimationPacket.Animation animation);
 
             @Nonnull
             public abstract EntityAttachPacket entityAttachPacket(int holderId, int leashedId);

@@ -72,9 +72,9 @@ public abstract class NPCFactory extends Manager {
         EntityHeadRotationPacket.create(fakePlayer.getPlayer().bukkit()).send(getPlayer());
         Bootstrap.getInstance().async(() -> {
             Task.sleep(1000);
-            fakePlayer.playAnimation(getPlayer(), EntityAnimationPacket.Animation.SWING_MAIN_HAND);
+            fakePlayer.playAnimation(getPlayer(), AnimationPacket.Animation.SWING_MAIN_HAND);
             Task.sleep(1000);
-            fakePlayer.playAnimation(getPlayer(), EntityAnimationPacket.Animation.SWING_OFF_HAND);
+            fakePlayer.playAnimation(getPlayer(), AnimationPacket.Animation.SWING_OFF_HAND);
             Task.sleep(5000);
             fakePlayer.hideTabListName(getPlayer());
         });

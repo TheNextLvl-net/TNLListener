@@ -9,24 +9,24 @@ import javax.annotation.Nonnull;
 
 @Getter
 @Setter
-public abstract class EntityAnimationPacket extends PacketBuilder {
+public abstract class AnimationPacket extends PacketBuilder {
 
     private int entityId;
     @Nonnull
     private Animation animation;
 
-    protected EntityAnimationPacket(int entityId, @Nonnull Animation animation) {
+    protected AnimationPacket(int entityId, @Nonnull Animation animation) {
         this.entityId = entityId;
         this.animation = animation;
     }
 
     @Nonnull
-    public static EntityAnimationPacket create(int entityId, @Nonnull Animation animation) {
-        return Mapping.get().packetManager().outgoing().entityAnimationPacket(entityId, animation);
+    public static AnimationPacket create(int entityId, @Nonnull Animation animation) {
+        return Mapping.get().packetManager().outgoing().animationPacket(entityId, animation);
     }
 
     @Nonnull
-    public static EntityAnimationPacket create(@Nonnull LivingEntity entity, @Nonnull Animation animation) {
+    public static AnimationPacket create(@Nonnull LivingEntity entity, @Nonnull Animation animation) {
         return create(entity.getEntityId(), animation);
     }
 

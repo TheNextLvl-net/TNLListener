@@ -6,7 +6,7 @@ import net.nonswag.core.utils.StringUtil;
 import net.nonswag.tnl.listener.Listener;
 import net.nonswag.tnl.listener.api.entity.TNLEntityPlayer;
 import net.nonswag.tnl.listener.api.event.FakePlayerEvent;
-import net.nonswag.tnl.listener.api.packets.outgoing.EntityAnimationPacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.AnimationPacket;
 import net.nonswag.tnl.listener.api.packets.outgoing.EntityStatusPacket;
 import net.nonswag.tnl.listener.api.packets.outgoing.PlayerInfoPacket;
 import net.nonswag.tnl.listener.api.player.GameProfile;
@@ -110,8 +110,8 @@ public class FakePlayer {
     }
 
     @Nonnull
-    public FakePlayer playAnimation(@Nonnull TNLPlayer receiver, @Nonnull EntityAnimationPacket.Animation animation) {
-        EntityAnimationPacket.create(getPlayer().getEntityId(), animation).send(receiver);
+    public FakePlayer playAnimation(@Nonnull TNLPlayer receiver, @Nonnull AnimationPacket.Animation animation) {
+        AnimationPacket.create(getPlayer().getEntityId(), animation).send(receiver);
         return this;
     }
 
