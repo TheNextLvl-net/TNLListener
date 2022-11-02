@@ -201,321 +201,324 @@ public abstract class Mapping extends PluginBuilder implements Updatable {
     @Nonnull
     public abstract PacketManager packetManager();
 
-    public abstract static class PacketManager {
+    public interface PacketManager {
 
         @Nonnull
-        public abstract Outgoing outgoing();
+        Outgoing outgoing();
 
         @Nonnull
-        public abstract Incoming incoming();
+        Incoming incoming();
 
-        public abstract static class Incoming {
-
-            @Nonnull
-            public abstract AcceptTeleportationPacket acceptTeleportationPacket(int id);
+        interface Incoming {
 
             @Nonnull
-            public abstract BlockEntityTagQueryPacket blockEntityTagQueryPacket(int transactionId, @Nonnull BlockPosition position);
+            AcceptTeleportationPacket acceptTeleportationPacket(int id);
 
             @Nonnull
-            public abstract ChangeDifficultyPacket changeDifficultyPacket(@Nonnull Difficulty difficulty);
+            BlockEntityTagQueryPacket blockEntityTagQueryPacket(int transactionId, @Nonnull BlockPosition position);
 
             @Nonnull
-            public abstract ChatAckPacket chatAckPacket(@Nonnull LastSeenMessages.Update lastSeenMessages);
+            ChangeDifficultyPacket changeDifficultyPacket(@Nonnull Difficulty difficulty);
 
             @Nonnull
-            public abstract ChatCommandPacket chatCommandPacket(@Nonnull String command, @Nonnull Instant timeStamp, long salt, @Nonnull ChatCommandPacket.Entry[] argumentSignatures, boolean signedPreview, @Nonnull LastSeenMessages.Update lastSeenMessages);
+            ChatAckPacket chatAckPacket(@Nonnull LastSeenMessages.Update lastSeenMessages);
 
             @Nonnull
-            public abstract net.nonswag.tnl.listener.api.packets.incoming.ChatPacket chatPacket(@Nonnull String message, @Nonnull Instant timeStamp, long salt, @Nonnull byte[] signature, boolean signedPreview, @Nonnull LastSeenMessages.Update lastSeenMessages);
+            ChatCommandPacket chatCommandPacket(@Nonnull String command, @Nonnull Instant timeStamp, long salt, @Nonnull ChatCommandPacket.Entry[] argumentSignatures, boolean signedPreview, @Nonnull LastSeenMessages.Update lastSeenMessages);
 
             @Nonnull
-            public abstract ChatPreviewPacket chatPreviewPacket(int queryId, @Nonnull String query);
+            net.nonswag.tnl.listener.api.packets.incoming.ChatPacket chatPacket(@Nonnull String message, @Nonnull Instant timeStamp, long salt, @Nonnull byte[] signature, boolean signedPreview, @Nonnull LastSeenMessages.Update lastSeenMessages);
 
             @Nonnull
-            public abstract ClientCommandPacket clientCommandPacket(@Nonnull ClientCommandPacket.Action action);
+            ChatPreviewPacket chatPreviewPacket(int queryId, @Nonnull String query);
 
             @Nonnull
-            public abstract ClientInformationPacket clientInformationPacket(@Nonnull String language, int viewDistance, @Nonnull ClientInformationPacket.ChatVisibility chatVisibility, boolean chatColors, int modelCustomisation, @Nonnull ClientInformationPacket.HandSide mainHand, boolean textFiltering, boolean listingAllowed);
+            ClientCommandPacket clientCommandPacket(@Nonnull ClientCommandPacket.Action action);
 
             @Nonnull
-            public abstract CommandSuggestionPacket commandSuggestionPacket(int id, @Nonnull String partialCommand);
+            ClientInformationPacket clientInformationPacket(@Nonnull String language, int viewDistance, @Nonnull ClientInformationPacket.ChatVisibility chatVisibility, boolean chatColors, int modelCustomisation, @Nonnull ClientInformationPacket.HandSide mainHand, boolean textFiltering, boolean listingAllowed);
 
             @Nonnull
-            public abstract net.nonswag.tnl.listener.api.packets.incoming.CustomPayloadPacket customPayloadPacket(@Nonnull NamespacedKey channel, @Nonnull byte[] data);
+            CommandSuggestionPacket commandSuggestionPacket(int id, @Nonnull String partialCommand);
 
             @Nonnull
-            public abstract EditBookPacket editBookPacket(@Nullable String title, @Nonnull List<String> pages, int slot);
+            net.nonswag.tnl.listener.api.packets.incoming.CustomPayloadPacket customPayloadPacket(@Nonnull NamespacedKey channel, @Nonnull byte[] data);
 
             @Nonnull
-            public abstract EntityTagQueryPacket entityTagQueryPacket(int transactionId, int entityId);
+            EditBookPacket editBookPacket(@Nullable String title, @Nonnull List<String> pages, int slot);
 
             @Nonnull
-            public abstract InteractPacket.Attack attack(int entityId, boolean sneaking);
+            EntityTagQueryPacket entityTagQueryPacket(int transactionId, int entityId);
 
             @Nonnull
-            public abstract InteractPacket.Interact interactPacket(int entityId, boolean sneaking, @Nonnull Hand hand);
+            InteractPacket.Attack attack(int entityId, boolean sneaking);
 
             @Nonnull
-            public abstract InteractPacket.InteractAt interactAtPacket(int entityId, boolean sneaking, @Nonnull Hand hand, @Nonnull Vector location);
+            InteractPacket.Interact interactPacket(int entityId, boolean sneaking, @Nonnull Hand hand);
 
             @Nonnull
-            public abstract JigsawGeneratePacket jigsawGeneratePacket(@Nonnull BlockPosition position, int levels, boolean keepJigsaws);
+            InteractPacket.InteractAt interactAtPacket(int entityId, boolean sneaking, @Nonnull Hand hand, @Nonnull Vector location);
 
             @Nonnull
-            public abstract KeepAlivePacket keepAlivePacket(long id);
+            JigsawGeneratePacket jigsawGeneratePacket(@Nonnull BlockPosition position, int levels, boolean keepJigsaws);
 
             @Nonnull
-            public abstract LockDifficultyPacket lockDifficultyPacket(boolean locked);
+            KeepAlivePacket keepAlivePacket(long id);
 
             @Nonnull
-            public abstract MovePlayerPacket.Position movePlayerPacket(double x, double y, double z, boolean onGround);
+            LockDifficultyPacket lockDifficultyPacket(boolean locked);
 
             @Nonnull
-            public abstract MovePlayerPacket.PositionRotation movePlayerPacket(double x, double y, double z, float yaw, float pitch, boolean onGround);
+            MovePlayerPacket.Position movePlayerPacket(double x, double y, double z, boolean onGround);
 
             @Nonnull
-            public abstract MovePlayerPacket.Rotation movePlayerPacket(float yaw, float pitch, boolean onGround);
+            MovePlayerPacket.PositionRotation movePlayerPacket(double x, double y, double z, float yaw, float pitch, boolean onGround);
 
             @Nonnull
-            public abstract MovePlayerPacket.Status movePlayerPacket(boolean onGround);
+            MovePlayerPacket.Rotation movePlayerPacket(float yaw, float pitch, boolean onGround);
 
             @Nonnull
-            public abstract net.nonswag.tnl.listener.api.packets.incoming.MoveVehiclePacket moveVehiclePacket(@Nonnull Position position);
+            MovePlayerPacket.Status movePlayerPacket(boolean onGround);
 
             @Nonnull
-            public abstract PaddleBoatPacket paddleBoatPacket(boolean left, boolean right);
+            net.nonswag.tnl.listener.api.packets.incoming.MoveVehiclePacket moveVehiclePacket(@Nonnull Position position);
 
             @Nonnull
-            public abstract PickItemPacket pickItemPacket(int slot);
+            PaddleBoatPacket paddleBoatPacket(boolean left, boolean right);
 
             @Nonnull
-            public abstract PlaceRecipePacket placeRecipePacket(int containerId, @Nonnull NamespacedKey recipe, boolean shift);
+            PickItemPacket pickItemPacket(int slot);
 
             @Nonnull
-            public abstract PlayerAbilitiesPacket playerAbilitiesPacket(boolean flying);
+            PlaceRecipePacket placeRecipePacket(int containerId, @Nonnull NamespacedKey recipe, boolean shift);
 
             @Nonnull
-            public abstract PlayerActionPacket playerActionPacket(@Nonnull PlayerActionPacket.Action action, @Nonnull BlockPosition position, @Nonnull Direction direction, int sequence);
+            PlayerAbilitiesPacket playerAbilitiesPacket(boolean flying);
 
             @Nonnull
-            public abstract PlayerCommandPacket playerCommandPacket(int entityId, @Nonnull PlayerCommandPacket.Action action, int data);
+            PlayerActionPacket playerActionPacket(@Nonnull PlayerActionPacket.Action action, @Nonnull BlockPosition position, @Nonnull Direction direction, int sequence);
 
             @Nonnull
-            public abstract PlayerInputPacket playerInputPacket(float sideways, float forward, boolean jumping, boolean sneaking);
+            PlayerCommandPacket playerCommandPacket(int entityId, @Nonnull PlayerCommandPacket.Action action, int data);
 
             @Nonnull
-            public abstract PongPacket pongPacket(int id);
+            PlayerInputPacket playerInputPacket(float sideways, float forward, boolean jumping, boolean sneaking);
 
             @Nonnull
-            public abstract RecipeBookChangeSettingsPacket recipeBookChangeSettingsPacket(@Nonnull RecipeBookChangeSettingsPacket.RecipeBookType category, boolean guiOpen, boolean filteringCraftable);
+            PongPacket pongPacket(int id);
 
             @Nonnull
-            public abstract RecipeBookSeenRecipePacket recipeBookSeenRecipePacket(@Nonnull NamespacedKey recipe);
+            RecipeBookChangeSettingsPacket recipeBookChangeSettingsPacket(@Nonnull RecipeBookChangeSettingsPacket.RecipeBookType category, boolean guiOpen, boolean filteringCraftable);
 
             @Nonnull
-            public abstract RenameItemPacket renameItemPacket(@Nonnull String name);
+            RecipeBookSeenRecipePacket recipeBookSeenRecipePacket(@Nonnull NamespacedKey recipe);
 
             @Nonnull
-            public abstract net.nonswag.tnl.listener.api.packets.incoming.ResourcePackPacket resourcePackPacket(@Nonnull net.nonswag.tnl.listener.api.packets.incoming.ResourcePackPacket.Action action);
+            RenameItemPacket renameItemPacket(@Nonnull String name);
 
             @Nonnull
-            public abstract SeenAdvancementsPacket seenAdvancementsPacket(@Nonnull SeenAdvancementsPacket.Action action, @Nullable NamespacedKey tab);
+            net.nonswag.tnl.listener.api.packets.incoming.ResourcePackPacket resourcePackPacket(@Nonnull net.nonswag.tnl.listener.api.packets.incoming.ResourcePackPacket.Action action);
 
             @Nonnull
-            public abstract SelectTradePacket selectTradePacket(int trade);
+            SeenAdvancementsPacket seenAdvancementsPacket(@Nonnull SeenAdvancementsPacket.Action action, @Nullable NamespacedKey tab);
 
             @Nonnull
-            public abstract SetBeaconPacket setBeaconPacket(@Nullable SetBeaconPacket.Effect primary, @Nullable SetBeaconPacket.Effect secondary);
+            SelectTradePacket selectTradePacket(int trade);
 
             @Nonnull
-            public abstract SetCarriedItemPacket setCarriedItemPacket(int slot);
+            SetBeaconPacket setBeaconPacket(@Nullable SetBeaconPacket.Effect primary, @Nullable SetBeaconPacket.Effect secondary);
 
             @Nonnull
-            public abstract SetCommandBlockPacket setCommandBlockPacket(@Nonnull BlockPosition position, @Nonnull String command, @Nonnull SetCommandBlockPacket.Mode mode, boolean trackOutput, boolean conditional, boolean alwaysActive);
+            SetCarriedItemPacket setCarriedItemPacket(int slot);
 
             @Nonnull
-            public abstract SetCommandMinecartPacket setCommandMinecartPacket(int entityId, @Nonnull String command, boolean trackOutput);
+            SetCommandBlockPacket setCommandBlockPacket(@Nonnull BlockPosition position, @Nonnull String command, @Nonnull SetCommandBlockPacket.Mode mode, boolean trackOutput, boolean conditional, boolean alwaysActive);
 
             @Nonnull
-            public abstract SetCreativeModeSlotPacket setCreativeModeSlotPacket(int slot, @Nonnull TNLItem item);
+            SetCommandMinecartPacket setCommandMinecartPacket(int entityId, @Nonnull String command, boolean trackOutput);
 
             @Nonnull
-            public abstract SetJigsawBlockPacket setJigsawBlockPacket(@Nonnull BlockPosition position, @Nonnull NamespacedKey name, @Nonnull NamespacedKey target, @Nonnull NamespacedKey pool, @Nonnull String finalState, @Nonnull SetJigsawBlockPacket.JointType joint);
+            SetCreativeModeSlotPacket setCreativeModeSlotPacket(int slot, @Nonnull TNLItem item);
 
             @Nonnull
-            public abstract SetStructureBlockPacket setStructureBlockPacket(@Nonnull BlockPosition position, @Nonnull SetStructureBlockPacket.Type type, @Nonnull SetStructureBlockPacket.Mode mode, @Nonnull String name, @Nonnull BlockPosition offset, @Nonnull Vector size, @Nonnull Mirror mirror, @Nonnull Rotation rotation, @Nonnull String metadata, boolean ignoreEntities, boolean showAir, boolean showBoundingBox, float integrity, long seed);
+            SetJigsawBlockPacket setJigsawBlockPacket(@Nonnull BlockPosition position, @Nonnull NamespacedKey name, @Nonnull NamespacedKey target, @Nonnull NamespacedKey pool, @Nonnull String finalState, @Nonnull SetJigsawBlockPacket.JointType joint);
 
             @Nonnull
-            public abstract SignUpdatePacket signUpdatePacket(@Nonnull BlockPosition position, @Nonnull String[] lines);
+            SetStructureBlockPacket setStructureBlockPacket(@Nonnull BlockPosition position, @Nonnull SetStructureBlockPacket.Type type, @Nonnull SetStructureBlockPacket.Mode mode, @Nonnull String name, @Nonnull BlockPosition offset, @Nonnull Vector size, @Nonnull Mirror mirror, @Nonnull Rotation rotation, @Nonnull String metadata, boolean ignoreEntities, boolean showAir, boolean showBoundingBox, float integrity, long seed);
 
             @Nonnull
-            public abstract SwingPacket swingPacket(@Nonnull Hand hand);
+            SignUpdatePacket signUpdatePacket(@Nonnull BlockPosition position, @Nonnull String[] lines);
 
             @Nonnull
-            public abstract TeleportToEntityPacket teleportToEntityPacket(@Nonnull UUID target);
+            SwingPacket swingPacket(@Nonnull Hand hand);
 
             @Nonnull
-            public abstract UseItemOnPacket useItemOnPacket(@Nonnull Hand hand, @Nonnull UseItemOnPacket.BlockTargetResult target, int sequence);
+            TeleportToEntityPacket teleportToEntityPacket(@Nonnull UUID target);
 
             @Nonnull
-            public abstract UseItemPacket useItemPacket(@Nonnull Hand hand, int sequence);
+            UseItemOnPacket useItemOnPacket(@Nonnull Hand hand, @Nonnull UseItemOnPacket.BlockTargetResult target, int sequence);
 
             @Nonnull
-            public abstract WindowButtonClickPacket windowButtonClickPacket(int containerId, int buttonId);
+            UseItemPacket useItemPacket(@Nonnull Hand hand, int sequence);
 
             @Nonnull
-            public abstract WindowClickPacket windowClickPacket(int containerId, int stateId, int slot, int buttonId, @Nonnull WindowClickPacket.ClickType clickType, @Nonnull TNLItem item, @Nonnull HashMap<Integer, TNLItem> changedSlots);
+            WindowButtonClickPacket windowButtonClickPacket(int containerId, int buttonId);
 
             @Nonnull
-            public abstract WindowClosePacket windowClosePacket(int containerId);
+            WindowClickPacket windowClickPacket(int containerId, int stateId, int slot, int buttonId, @Nonnull WindowClickPacket.ClickType clickType, @Nonnull TNLItem item, @Nonnull HashMap<Integer, TNLItem> changedSlots);
 
             @Nonnull
-            public abstract <P> PacketBuilder map(@Nonnull P packet);
+            WindowClosePacket windowClosePacket(int containerId);
+
+            @Nonnull
+            <P> PacketBuilder map(@Nonnull P packet);
         }
 
-        public abstract static class Outgoing {
+        interface Outgoing {
 
             @Nonnull
-            public abstract BlockBreakAnimationPacket blockBreakAnimationPacket(@Nonnull BlockLocation location, int state);
+            BlockBreakAnimationPacket blockBreakAnimationPacket(@Nonnull BlockLocation location, int state);
 
             @Nonnull
-            public abstract SetExperiencePacket setExperiencePacket(float experienceProgress, int totalExperience, int experienceLevel);
+            SetExperiencePacket setExperiencePacket(float experienceProgress, int totalExperience, int experienceLevel);
 
             @Nonnull
-            public abstract StopSoundPacket stopSoundPacket(@Nullable NamespacedKey sound, @Nullable SoundCategory category);
+            StopSoundPacket stopSoundPacket(@Nullable NamespacedKey sound, @Nullable SoundCategory category);
 
             @Nonnull
-            public abstract BossBarPacket bossBarPacket(@Nonnull BossBarPacket.Action action, @Nonnull BossBar bossBar);
+            BossBarPacket bossBarPacket(@Nonnull BossBarPacket.Action action, @Nonnull BossBar bossBar);
 
             @Nonnull
-            public abstract CameraPacket cameraPacket(int targetId);
+            CameraPacket cameraPacket(int targetId);
 
             @Nonnull
-            public abstract ChatPacket chatPacket(@Nonnull String message, @Nonnull ChatPacket.Type type, @Nonnull UUID sender);
+            ChatPacket chatPacket(@Nonnull String message, @Nonnull ChatPacket.Type type, @Nonnull UUID sender);
 
             @Nonnull
-            public abstract CloseWindowPacket closeWindowPacket(int windowId);
+            CloseWindowPacket closeWindowPacket(int windowId);
 
             @Nonnull
-            public abstract CooldownPacket cooldownPacket(@Nonnull Material item, int cooldown);
+            CooldownPacket cooldownPacket(@Nonnull Material item, int cooldown);
 
             @Nonnull
-            public abstract CustomPayloadPacket customPayloadPacket(@Nonnull String channel, @Nonnull byte[]... bytes);
+            CustomPayloadPacket customPayloadPacket(@Nonnull String channel, @Nonnull byte[]... bytes);
 
             @Nonnull
-            public abstract AnimationPacket animationPacket(int entityId, @Nonnull AnimationPacket.Animation animation);
+            AnimationPacket animationPacket(int entityId, @Nonnull AnimationPacket.Animation animation);
 
             @Nonnull
-            public abstract EntityAttachPacket entityAttachPacket(int holderId, int leashedId);
+            EntityAttachPacket entityAttachPacket(int holderId, int leashedId);
 
             @Nonnull
-            public abstract EntityDestroyPacket entityDestroyPacket(int... destroyIds);
+            EntityDestroyPacket entityDestroyPacket(int... destroyIds);
 
             @Nonnull
-            public abstract EntityEquipmentPacket entityEquipmentPacket(int entityId, @Nonnull HashMap<SlotType, TNLItem> equipment);
+            EntityEquipmentPacket entityEquipmentPacket(int entityId, @Nonnull HashMap<SlotType, TNLItem> equipment);
 
             @Nonnull
-            public abstract GameStateChangePacket gameStateChangePacket(@Nonnull GameStateChangePacket.Identifier identifier, float state);
+            GameStateChangePacket gameStateChangePacket(@Nonnull GameStateChangePacket.Identifier identifier, float state);
 
             @Nonnull
-            public abstract EntityStatusPacket entityStatusPacket(int entityId, @Nonnull EntityStatusPacket.Status status);
+            EntityStatusPacket entityStatusPacket(int entityId, @Nonnull EntityStatusPacket.Status status);
 
             @Nonnull
-            public abstract EntitySpawnPacket entitySpawnPacket(@Nonnull Entity entity);
+            EntitySpawnPacket entitySpawnPacket(@Nonnull Entity entity);
 
             @Nonnull
-            public abstract <M> EntityMetadataPacket<M> entityMetadataPacket(int entityId, @Nonnull M dataWatcher, boolean updateAll);
+            <M> EntityMetadataPacket<M> entityMetadataPacket(int entityId, @Nonnull M dataWatcher, boolean updateAll);
 
             @Nonnull
-            public abstract <M> EntityMetadataPacket<M> entityMetadataPacket(@Nonnull Entity entity, boolean updateAll);
+            <M> EntityMetadataPacket<M> entityMetadataPacket(@Nonnull Entity entity, boolean updateAll);
 
             @Nonnull
-            public abstract EntityHeadRotationPacket entityHeadRotationPacket(int entityId, float yaw);
+            EntityHeadRotationPacket entityHeadRotationPacket(int entityId, float yaw);
 
             @Nonnull
-            public abstract EntityBodyRotationPacket entityBodyRotationPacket(int entityId, float rotation);
+            EntityBodyRotationPacket entityBodyRotationPacket(int entityId, float rotation);
 
             @Nonnull
-            public abstract EntityTeleportPacket entityTeleportPacket(int entityId, @Nonnull Position position);
+            EntityTeleportPacket entityTeleportPacket(int entityId, @Nonnull Position position);
 
             @Nonnull
-            public abstract EntityVelocityPacket entityVelocityPacket(int entityId, @Nonnull Vector vector);
+            EntityVelocityPacket entityVelocityPacket(int entityId, @Nonnull Vector vector);
 
             @Nonnull
-            public abstract LivingEntitySpawnPacket livingEntitySpawnPacket(@Nonnull LivingEntity entity);
+            LivingEntitySpawnPacket livingEntitySpawnPacket(@Nonnull LivingEntity entity);
 
             @Nonnull
-            public abstract MapChunkPacket mapChunkPacket(@Nonnull Chunk chunk, int section);
+            MapChunkPacket mapChunkPacket(@Nonnull Chunk chunk, int section);
 
             @Nonnull
-            public abstract MountPacket mountPacket(int holderId, int[] mounts);
+            MountPacket mountPacket(int holderId, int[] mounts);
 
             @Nonnull
-            public abstract NamedEntitySpawnPacket namedEntitySpawnPacket(@Nonnull HumanEntity human);
+            NamedEntitySpawnPacket namedEntitySpawnPacket(@Nonnull HumanEntity human);
 
             @Nonnull
-            public abstract OpenSignPacket openSignPacket(@Nonnull BlockLocation location);
+            OpenSignPacket openSignPacket(@Nonnull BlockLocation location);
 
             @Nonnull
-            public abstract OpenBookPacket openBookPacket(@Nonnull Hand hand);
+            OpenBookPacket openBookPacket(@Nonnull Hand hand);
 
             @Nonnull
-            public abstract MoveVehiclePacket moveVehiclePacket(@Nonnull Position position);
+            MoveVehiclePacket moveVehiclePacket(@Nonnull Position position);
 
             @Nonnull
-            public abstract OpenWindowPacket openWindowPacket(int windowId, @Nonnull OpenWindowPacket.Type type, @Nonnull String title);
+            OpenWindowPacket openWindowPacket(int windowId, @Nonnull OpenWindowPacket.Type type, @Nonnull String title);
 
             @Nonnull
-            public abstract PlayerInfoPacket playerInfoPacket(@Nonnull Player player, @Nonnull PlayerInfoPacket.Action action);
+            PlayerInfoPacket playerInfoPacket(@Nonnull Player player, @Nonnull PlayerInfoPacket.Action action);
 
             @Nonnull
-            public abstract SetSlotPacket setSlotPacket(@Nonnull SetSlotPacket.Inventory inventory, int slot, @Nullable ItemStack itemStack);
+            SetSlotPacket setSlotPacket(@Nonnull SetSlotPacket.Inventory inventory, int slot, @Nullable ItemStack itemStack);
 
             @Nonnull
-            public abstract TitlePacket titlePacket(@Nonnull TitlePacket.Action action, @Nullable String text, int timeIn, int timeStay, int timeOut);
+            TitlePacket titlePacket(@Nonnull TitlePacket.Action action, @Nullable String text, int timeIn, int timeStay, int timeOut);
 
             @Nonnull
-            public abstract UpdateTimePacket updateTimePacket(long age, long timestamp, boolean cycle);
+            UpdateTimePacket updateTimePacket(long age, long timestamp, boolean cycle);
 
             @Nonnull
-            public abstract WindowDataPacket windowDataPacket(int windowId, int property, int value);
+            WindowDataPacket windowDataPacket(int windowId, int property, int value);
 
             @Nonnull
-            public abstract WindowItemsPacket windowItemsPacket(int windowId, @Nonnull List<ItemStack> items);
+            WindowItemsPacket windowItemsPacket(int windowId, @Nonnull List<ItemStack> items);
 
             @Nonnull
-            public abstract InitializeBorderPacket initializeBorderPacket(@Nonnull VirtualBorder virtualBorder);
+            InitializeBorderPacket initializeBorderPacket(@Nonnull VirtualBorder virtualBorder);
 
             @Nonnull
-            public abstract SetBorderSizePacket setBorderSizePacket(double size);
+            SetBorderSizePacket setBorderSizePacket(double size);
 
             @Nonnull
-            public abstract SetBorderLerpSizePacket setBorderLerpSizePacket(double oldSize, double newSize, long lerpTime);
+            SetBorderLerpSizePacket setBorderLerpSizePacket(double oldSize, double newSize, long lerpTime);
 
             @Nonnull
-            public abstract SetBorderCenterPacket setBorderCenterPacket(@Nonnull VirtualBorder.Center center);
+            SetBorderCenterPacket setBorderCenterPacket(@Nonnull VirtualBorder.Center center);
 
             @Nonnull
-            public abstract SetBorderWarningDelayPacket setBorderWarningDelayPacket(int warningDelay);
+            SetBorderWarningDelayPacket setBorderWarningDelayPacket(int warningDelay);
 
             @Nonnull
-            public abstract SetBorderWarningDistancePacket setBorderWarningDistancePacket(int warningDistance);
+            SetBorderWarningDistancePacket setBorderWarningDistancePacket(int warningDistance);
 
             @Nonnull
-            public abstract SelectAdvancementsTabPacket selectAdvancementsTabPacket(@Nullable NamespacedKey tab);
+            SelectAdvancementsTabPacket selectAdvancementsTabPacket(@Nullable NamespacedKey tab);
 
             @Nonnull
-            public abstract SetDisplayChatPreviewPacket setDisplayChatPreviewPacket(boolean enabled);
+            HorseScreenOpenPacket horseScreenOpenPacket(int containerId, int size, int entityId);
 
             @Nonnull
-            public abstract ResourcePackPacket resourcePackPacket(@Nonnull String url, @Nullable String hash, @Nullable String prompt, boolean required);
+            SetDisplayChatPreviewPacket setDisplayChatPreviewPacket(boolean enabled);
 
             @Nonnull
-            public abstract ItemTakePacket itemTakePacket(int itemId, int collectorId, int amount);
+            ResourcePackPacket resourcePackPacket(@Nonnull String url, @Nullable String hash, @Nullable String prompt, boolean required);
 
             @Nonnull
-            public abstract <P> net.nonswag.tnl.listener.api.packets.outgoing.PacketBuilder map(@Nonnull P packet);
+            ItemTakePacket itemTakePacket(int itemId, int collectorId, int amount);
+
+            @Nonnull
+            <P> net.nonswag.tnl.listener.api.packets.outgoing.PacketBuilder map(@Nonnull P packet);
         }
     }
 
