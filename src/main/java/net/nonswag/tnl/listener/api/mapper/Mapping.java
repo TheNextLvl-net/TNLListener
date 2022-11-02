@@ -27,6 +27,7 @@ import net.nonswag.tnl.listener.api.packets.outgoing.CustomPayloadPacket;
 import net.nonswag.tnl.listener.api.packets.outgoing.MoveVehiclePacket;
 import net.nonswag.tnl.listener.api.packets.outgoing.ResourcePackPacket;
 import net.nonswag.tnl.listener.api.packets.outgoing.*;
+import net.nonswag.tnl.listener.api.packets.outgoing.SetCarriedItemPacket;
 import net.nonswag.tnl.listener.api.player.GameProfile;
 import net.nonswag.tnl.listener.api.player.Hand;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
@@ -329,7 +330,7 @@ public abstract class Mapping extends PluginBuilder implements Updatable {
             SetBeaconPacket setBeaconPacket(@Nullable SetBeaconPacket.Effect primary, @Nullable SetBeaconPacket.Effect secondary);
 
             @Nonnull
-            SetCarriedItemPacket setCarriedItemPacket(int slot);
+            net.nonswag.tnl.listener.api.packets.incoming.SetCarriedItemPacket setCarriedItemPacket(int slot);
 
             @Nonnull
             SetCommandBlockPacket setCommandBlockPacket(@Nonnull BlockPosition position, @Nonnull String command, @Nonnull SetCommandBlockPacket.Mode mode, boolean trackOutput, boolean conditional, boolean alwaysActive);
@@ -375,6 +376,15 @@ public abstract class Mapping extends PluginBuilder implements Updatable {
         }
 
         interface Outgoing {
+
+            @Nonnull
+            SetSimulationDistancePacket setSimulationDistancePacket(int simulationDistance);
+
+            @Nonnull
+            SetCarriedItemPacket setCarriedItemPacket(int slot);
+
+            @Nonnull
+            SetDisplayObjectivePacket setDisplayObjectivePacket(int slot, @Nullable String objectiveName);
 
             @Nonnull
             BlockBreakAnimationPacket blockBreakAnimationPacket(@Nonnull BlockLocation location, int state);
