@@ -509,6 +509,9 @@ public abstract class Mapping extends PluginBuilder implements Updatable {
             HorseScreenOpenPacket horseScreenOpenPacket(int containerId, int size, int entityId);
 
             @Nonnull
+            CommandSuggestionsPacket commandSuggestionsPacket(int completionId, @Nonnull CommandSuggestionsPacket.Suggestions suggestions);
+
+            @Nonnull
             SetDisplayChatPreviewPacket setDisplayChatPreviewPacket(boolean enabled);
 
             @Nonnull
