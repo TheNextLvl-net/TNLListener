@@ -5,7 +5,6 @@ import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.EncoderException;
 
-import javax.annotation.Nonnull;
 import java.nio.charset.StandardCharsets;
 
 public final class ModPacketSerializer {
@@ -28,7 +27,7 @@ public final class ModPacketSerializer {
         buf.writeByte(input);
     }
 
-    private static void writeString(@Nonnull ByteBuf buf, @Nonnull String string) {
+    private static void writeString(ByteBuf buf, String string) {
         byte[] bytes = string.getBytes(StandardCharsets.UTF_8);
         if (bytes.length > 32767) {
             throw new EncoderException("String too big (was " + string.length() + " bytes encoded, max 32767)");
@@ -38,7 +37,7 @@ public final class ModPacketSerializer {
         }
     }
 
-    public static int readVarIntFromBuffer(@Nonnull ByteBuf buf) {
+    public static int readVarIntFromBuffer(ByteBuf buf) {
         int i = 0;
         int j = 0;
         byte b0;
@@ -50,8 +49,7 @@ public final class ModPacketSerializer {
         return i;
     }
 
-    @Nonnull
-    public static String readString(@Nonnull ByteBuf buf, int maxLength) {
+    public static String readString(ByteBuf buf, int maxLength) {
         int i = readVarIntFromBuffer(buf);
         if (i > maxLength * 4) {
             throw new DecoderException("The received encoded string buffer length is longer than maximum allowed (" + i + " > " + maxLength * 4 + ")");

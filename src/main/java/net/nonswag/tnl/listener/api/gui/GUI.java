@@ -17,7 +17,6 @@ import org.bukkit.Sound;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 
@@ -25,18 +24,12 @@ import java.util.*;
 @Setter
 public class GUI implements Iterable<GUIItem>, Cloneable {
 
-    @Nonnull
     @Getter(AccessLevel.NONE)
     protected final HashMap<Integer, GUIItem> contentHashMap = new HashMap<>();
-    @Nonnull
     private final List<TNLPlayer> viewers = new ArrayList<>();
-    @Nonnull
     private String title;
-    @Nonnull
     private OpenEvent openListener = player -> true;
-    @Nonnull
     private CloseEvent closeListener = (player, server) -> true;
-    @Nonnull
     private ClickEvent clickListener = (player, slot, type) -> {};
     @Nullable
     private Sound openSound = Sound.BLOCK_CHEST_OPEN;
@@ -44,39 +37,37 @@ public class GUI implements Iterable<GUIItem>, Cloneable {
     private Sound closeSound = Sound.BLOCK_CHEST_CLOSE;
     private int size;
     private int maxStackSize;
-    @Nonnull
     private InventoryType type = InventoryType.CHEST;
 
-    public GUI(@Range(from = 1, to = 6) int rows, @Nonnull String title) {
+    public GUI(@Range(from = 1, to = 6) int rows, String title) {
         this(rows, 64, title);
     }
 
-    public GUI(@Range(from = 1, to = 6) int rows, int maxStackSize, @Nonnull String title) {
+    public GUI(@Range(from = 1, to = 6) int rows, int maxStackSize, String title) {
         this.size = Math.min(Math.max(rows, 1), 6) * 9;
         this.maxStackSize = maxStackSize;
         this.title = title;
     }
 
-    public GUI(@Nonnull InventoryType type, @Nonnull String title) throws IllegalArgumentException {
+    public GUI(InventoryType type, String title) throws IllegalArgumentException {
         this(type.getDefaultSize() / 9, title);
         if (!type.isCreatable()) throw new IllegalArgumentException("Invalid inventory type");
         this.type = type;
     }
 
-    @Nonnull
     public ImmutableList<TNLPlayer> getViewers() {
         return ImmutableList.copyOf(viewers);
     }
 
-    public boolean isViewer(@Nonnull TNLPlayer player) {
+    public boolean isViewer(TNLPlayer player) {
         return viewers.contains(player);
     }
 
-    public void addViewer(@Nonnull TNLPlayer player) {
+    public void addViewer(TNLPlayer player) {
         if(!isViewer(player)) viewers.add(player);
     }
 
-    public void removeViewer(@Nonnull TNLPlayer viewer) {
+    public void removeViewer(TNLPlayer viewer) {
         viewers.remove(viewer);
     }
 
@@ -85,12 +76,10 @@ public class GUI implements Iterable<GUIItem>, Cloneable {
         return Math.min(Math.max(size / 9, 1), 6);
     }
 
-    @Nonnull
     public GUI setRows(@Range(from = 1, to = 6) int rows) {
         return setSize(Math.min(Math.max(rows, 1), 6) * 9);
     }
 
-    @Nonnull
     public GUI setSize(@Range(from = 9, to = 54) int size) {
         if (this.size == size) return this;
         if (!MathUtil.isInLine(9, Math.min(Math.max(size, 9), 54))) throw new IllegalArgumentException("size: " + size);
@@ -99,19 +88,16 @@ public class GUI implements Iterable<GUIItem>, Cloneable {
         return this;
     }
 
-    @Nonnull
     public GUI setOpenSound(@Nullable Sound openSound) {
         this.openSound = openSound;
         return this;
     }
 
-    @Nonnull
     public GUI setCloseSound(@Nullable Sound closeSound) {
         this.closeSound = closeSound;
         return this;
     }
 
-    @Nonnull
     public GUI formatDefault() {
         TNLItem placeholder1 = TNLItem.create(Material.GRAY_STAINED_GLASS_PANE).setName("§7-§8/§7-");
         TNLItem placeholder2 = TNLItem.create(Material.WHITE_STAINED_GLASS_PANE).setName("§7-§8/§7-");
@@ -126,7 +112,6 @@ public class GUI implements Iterable<GUIItem>, Cloneable {
         return contentHashMap.get(slot);
     }
 
-    @Nonnull
     public GUI setItem(int slot, @Nullable GUIItem item) throws IllegalArgumentException {
         if (item != null) {
             if (slot >= 0 && slot < getSize()) contentHashMap.put(slot, item);
@@ -139,73 +124,60 @@ public class GUI implements Iterable<GUIItem>, Cloneable {
         return this;
     }
 
-    @Nonnull
     public GUI setItem(int slot, @Nullable TNLItem item) throws IllegalArgumentException {
         return setItem(slot, item == null ? null : item.toGUIItem());
     }
 
-    @Nonnull
     public GUI setItem(int slot, @Nullable ItemStack itemStack) throws IllegalArgumentException {
         return setItem(slot, itemStack == null ? null : TNLItem.create(itemStack));
     }
 
-    @Nonnull
     public GUI setItem(int slot, @Nullable Material material) throws IllegalArgumentException {
         return setItem(slot, material == null ? null : new ItemStack(material));
     }
 
-    @Nonnull
     public GUI setItemIfAbsent(int slot, @Nullable GUIItem item) throws IllegalArgumentException {
         if (getItem(slot) == null) return setItem(slot, item);
         return this;
     }
 
-    @Nonnull
     public GUI setItemIfAbsent(int slot, @Nullable TNLItem item) throws IllegalArgumentException {
         return setItemIfAbsent(slot, item == null ? null : item.toGUIItem());
     }
 
-    @Nonnull
     public GUI setItemIfAbsent(int slot, @Nullable ItemStack itemStack) throws IllegalArgumentException {
         return setItemIfAbsent(slot, itemStack == null ? null : TNLItem.create(itemStack));
     }
 
-    @Nonnull
     public GUI setItemIfAbsent(int slot, @Nullable Material material) throws IllegalArgumentException {
         return setItemIfAbsent(slot, material == null ? null : new ItemStack(material));
     }
 
-    @Nonnull
-    public GUI addItem(@Nonnull ItemStack itemStack) throws IllegalArgumentException, GUIOverflowException {
+    public GUI addItem(ItemStack itemStack) throws IllegalArgumentException, GUIOverflowException {
         return addItems(itemStack);
     }
 
-    @Nonnull
-    public GUI addItems(@Nonnull ItemStack... items) throws IllegalArgumentException, GUIOverflowException {
+    public GUI addItems(ItemStack... items) throws IllegalArgumentException, GUIOverflowException {
         List<TNLItem> guiItems = new ArrayList<>();
         for (ItemStack item : items) guiItems.add(TNLItem.create(item));
         return addItems(guiItems.toArray(new TNLItem[]{}));
     }
 
-    @Nonnull
-    public GUI addItem(@Nonnull TNLItem item) throws IllegalArgumentException, GUIOverflowException {
+    public GUI addItem(TNLItem item) throws IllegalArgumentException, GUIOverflowException {
         return addItems(item);
     }
 
-    @Nonnull
-    public GUI addItems(@Nonnull TNLItem... items) throws IllegalArgumentException, GUIOverflowException {
+    public GUI addItems(TNLItem... items) throws IllegalArgumentException, GUIOverflowException {
         List<GUIItem> guiItems = new ArrayList<>();
         for (TNLItem item : items) guiItems.add(item.toGUIItem());
         return addItems(guiItems.toArray(new GUIItem[]{}));
     }
 
-    @Nonnull
-    public GUI addItem(@Nonnull GUIItem item) throws IllegalArgumentException, GUIOverflowException {
+    public GUI addItem(GUIItem item) throws IllegalArgumentException, GUIOverflowException {
         return addItems(item);
     }
 
-    @Nonnull
-    public GUI addItems(@Nonnull GUIItem... items) throws IllegalArgumentException, GUIOverflowException {
+    public GUI addItems(GUIItem... items) throws IllegalArgumentException, GUIOverflowException {
         int overflow = items.length;
         items:
         for (@Nullable GUIItem item : items) {
@@ -225,37 +197,31 @@ public class GUI implements Iterable<GUIItem>, Cloneable {
         return this;
     }
 
-    @Nonnull
-    public GUI removeItems(@Nonnull TNLItem... items) {
+    public GUI removeItems(TNLItem... items) {
         List<GUIItem> guiItems = new ArrayList<>();
         for (TNLItem item : items) guiItems.add(item.toGUIItem());
         return removeItems(guiItems.toArray(new GUIItem[]{}));
     }
 
-    @Nonnull
-    public GUI removeItem(@Nonnull TNLItem item) {
+    public GUI removeItem(TNLItem item) {
         return removeItems(item);
     }
 
-    @Nonnull
-    public GUI removeItems(@Nonnull GUIItem... items) {
+    public GUI removeItems(GUIItem... items) {
         for (@Nullable GUIItem item : items) if (item != null) remove(item);
         return this;
     }
 
-    @Nonnull
-    public GUI removeItem(@Nonnull GUIItem item) {
+    public GUI removeItem(GUIItem item) {
         return removeItems(item);
     }
 
-    @Nonnull
     public GUIItem[] getContents() {
         GUIItem[] items = new GUIItem[getSize()];
         for (int i = 0; i < getSize(); i++) items[i] = getItem(i);
         return items;
     }
 
-    @Nonnull
     public List<TNLItem> items() {
         List<TNLItem> items = new ArrayList<>();
         TNLItem air = TNLItem.create(Material.AIR);
@@ -267,36 +233,33 @@ public class GUI implements Iterable<GUIItem>, Cloneable {
         return items;
     }
 
-    @Nonnull
-    public GUI setContents(@Nonnull GUIItem[] items) {
+    public GUI setContents(GUIItem[] items) {
         clear();
         for (int i = 0; i < items.length; i++) setItem(i, items[i]);
         return this;
     }
 
-    @Nonnull
-    public GUI setContents(@Nonnull TNLItem[] items) {
+    public GUI setContents(TNLItem[] items) {
         clear();
         for (int i = 0; i < items.length; i++) setItem(i, items[i]);
         return this;
     }
 
-    @Nonnull
-    public GUI setContents(@Nonnull ItemStack[] items) {
+    public GUI setContents(ItemStack[] items) {
         clear();
         for (int i = 0; i < items.length; i++) setItem(i, items[i]);
         return this;
     }
 
-    public boolean contains(@Nonnull GUIItem item) {
+    public boolean contains(GUIItem item) {
         return contains(item.getItem());
     }
 
-    public boolean contains(@Nonnull TNLItem item) {
+    public boolean contains(TNLItem item) {
         return contains(item.getItemStack());
     }
 
-    public boolean contains(@Nonnull Material material) {
+    public boolean contains(Material material) {
         for (@Nullable GUIItem content : getContents()) {
             if (ItemType.AIR.matches(material) && ItemType.AIR.matches(content)
                     || (content != null && material.equals(content.getItem().getType()))) {
@@ -306,11 +269,11 @@ public class GUI implements Iterable<GUIItem>, Cloneable {
         return false;
     }
 
-    public boolean contains(@Nonnull ItemStack itemStack) {
+    public boolean contains(ItemStack itemStack) {
         return contains(itemStack, false);
     }
 
-    public boolean contains(@Nonnull ItemStack itemStack, boolean ignoreAmount) {
+    public boolean contains(ItemStack itemStack, boolean ignoreAmount) {
         for (@Nullable GUIItem content : getContents()) {
             if (ItemType.AIR.matches(itemStack) && ItemType.AIR.matches(content)) return true;
             else {
@@ -326,15 +289,15 @@ public class GUI implements Iterable<GUIItem>, Cloneable {
         return false;
     }
 
-    public boolean containsAtLeast(@Nonnull GUIItem item, int amount) {
+    public boolean containsAtLeast(GUIItem item, int amount) {
         return containsAtLeast(item.getItem(), amount);
     }
 
-    public boolean containsAtLeast(@Nonnull TNLItem item, int amount) {
+    public boolean containsAtLeast(TNLItem item, int amount) {
         return containsAtLeast(item.getItemStack(), amount);
     }
 
-    public boolean containsAtLeast(@Nonnull Material material, int amount) {
+    public boolean containsAtLeast(Material material, int amount) {
         int finalAmount = 0;
         for (@Nullable GUIItem content : getContents()) {
             if (ItemType.AIR.matches(material) && ItemType.AIR.matches(content)) return true;
@@ -350,7 +313,7 @@ public class GUI implements Iterable<GUIItem>, Cloneable {
         return finalAmount >= amount;
     }
 
-    public boolean containsAtLeast(@Nonnull ItemStack itemStack, int amount) {
+    public boolean containsAtLeast(ItemStack itemStack, int amount) {
         int finalAmount = 0;
         for (@Nullable GUIItem content : getContents()) {
             if (ItemType.AIR.matches(itemStack) && ItemType.AIR.matches(content)) return true;
@@ -368,18 +331,15 @@ public class GUI implements Iterable<GUIItem>, Cloneable {
         return finalAmount >= amount;
     }
 
-    @Nonnull
-    public HashMap<Integer, GUIItem> all(@Nonnull GUIItem item) {
+    public HashMap<Integer, GUIItem> all(GUIItem item) {
         return all(item.getItem());
     }
 
-    @Nonnull
-    public HashMap<Integer, GUIItem> all(@Nonnull TNLItem item) {
+    public HashMap<Integer, GUIItem> all(TNLItem item) {
         return all(item.getItemStack());
     }
 
-    @Nonnull
-    public HashMap<Integer, GUIItem> all(@Nonnull Material material) {
+    public HashMap<Integer, GUIItem> all(Material material) {
         HashMap<Integer, GUIItem> items = new HashMap<>();
         GUIItem[] contents = getContents();
         for (int i = 0; i < getSize(); i++) {
@@ -391,13 +351,11 @@ public class GUI implements Iterable<GUIItem>, Cloneable {
         return items;
     }
 
-    @Nonnull
-    public HashMap<Integer, GUIItem> all(@Nonnull ItemStack itemStack) {
+    public HashMap<Integer, GUIItem> all(ItemStack itemStack) {
         return all(itemStack, false);
     }
 
-    @Nonnull
-    public HashMap<Integer, GUIItem> all(@Nonnull ItemStack itemStack, boolean ignoreAmount) {
+    public HashMap<Integer, GUIItem> all(ItemStack itemStack, boolean ignoreAmount) {
         HashMap<Integer, GUIItem> items = new HashMap<>();
         GUIItem[] contents = getContents();
         for (int slot = 0; slot < getSize(); slot++) {
@@ -417,15 +375,15 @@ public class GUI implements Iterable<GUIItem>, Cloneable {
         return items;
     }
 
-    public int first(@Nonnull GUIItem item) {
+    public int first(GUIItem item) {
         return first(item.getItem());
     }
 
-    public int first(@Nonnull TNLItem item) {
+    public int first(TNLItem item) {
         return first(item.getItemStack());
     }
 
-    public int first(@Nonnull Material material) {
+    public int first(Material material) {
         GUIItem[] contents = getContents();
         for (int slot = 0; slot < getSize(); slot++) {
             GUIItem content = contents[slot];
@@ -435,11 +393,11 @@ public class GUI implements Iterable<GUIItem>, Cloneable {
         return -1;
     }
 
-    public int first(@Nonnull ItemStack itemStack) {
+    public int first(ItemStack itemStack) {
         return first(itemStack, false);
     }
 
-    public int first(@Nonnull ItemStack itemStack, boolean ignoreAmount) {
+    public int first(ItemStack itemStack, boolean ignoreAmount) {
         GUIItem[] contents = getContents();
         for (int slot = 0; slot < getSize(); slot++) {
             GUIItem content = contents[slot];
@@ -467,18 +425,15 @@ public class GUI implements Iterable<GUIItem>, Cloneable {
         return -1;
     }
 
-    @Nonnull
-    public Pair<Boolean, Integer> remove(@Nonnull GUIItem item) {
+    public Pair<Boolean, Integer> remove(GUIItem item) {
         return remove(item.getItem().getItemStack());
     }
 
-    @Nonnull
-    public Pair<Boolean, Integer> remove(@Nonnull TNLItem item) {
+    public Pair<Boolean, Integer> remove(TNLItem item) {
         return remove(item.getItemStack());
     }
 
-    @Nonnull
-    public Pair<Boolean, Integer> remove(@Nonnull ItemStack item) {
+    public Pair<Boolean, Integer> remove(ItemStack item) {
         boolean removed = false;
         int amount = 0;
         GUIItem[] contents = getContents();
@@ -494,8 +449,7 @@ public class GUI implements Iterable<GUIItem>, Cloneable {
         return new Pair<>(removed, amount);
     }
 
-    @Nonnull
-    public Pair<Boolean, Integer> remove(@Nonnull Material material) {
+    public Pair<Boolean, Integer> remove(Material material) {
         boolean removed = false;
         int amount = 0;
         GUIItem[] contents = getContents();
@@ -510,38 +464,34 @@ public class GUI implements Iterable<GUIItem>, Cloneable {
         return new Pair<>(removed, amount);
     }
 
-    @Nonnull
     public GUI remove(int i) {
         contentHashMap.remove(i);
         return this;
     }
 
-    @Nonnull
     public GUI clear() {
         contentHashMap.clear();
         return this;
     }
 
-    @Nonnull
     @Override
     public Iterator<GUIItem> iterator() {
         return new GUIIterator(this);
     }
 
-    @Nonnull
     public ListIterator<GUIItem> iterator(int i) {
         return new GUIIterator(this, i);
     }
 
-    private int firstPartial(@Nonnull GUIItem item) {
+    private int firstPartial(GUIItem item) {
         return firstPartial(item.getItem());
     }
 
-    private int firstPartial(@Nonnull TNLItem item) {
+    private int firstPartial(TNLItem item) {
         return firstPartial(item.getItemStack());
     }
 
-    private int firstPartial(@Nonnull ItemStack itemStack) {
+    private int firstPartial(ItemStack itemStack) {
         GUIItem[] contents = getContents();
         for (int slot = 0; slot < contents.length; slot++) {
             GUIItem item = contents[slot];
@@ -552,7 +502,7 @@ public class GUI implements Iterable<GUIItem>, Cloneable {
         return -1;
     }
 
-    public int firstPartial(@Nonnull Material material) {
+    public int firstPartial(Material material) {
         GUIItem[] contents = getContents();
         for (int slot = 0; slot < contents.length; slot++) {
             GUIItem item = contents[slot];
@@ -563,7 +513,6 @@ public class GUI implements Iterable<GUIItem>, Cloneable {
         return -1;
     }
 
-    @Nonnull
     @Override
     public GUI clone() {
         GUI gui = new GUI(getRows(), getMaxStackSize(), getTitle());
@@ -575,15 +524,15 @@ public class GUI implements Iterable<GUIItem>, Cloneable {
     }
 
     public interface OpenEvent {
-        boolean onOpen(@Nonnull TNLPlayer player);
+        boolean onOpen(TNLPlayer player);
     }
 
     public interface CloseEvent {
-        boolean onClose(@Nonnull TNLPlayer player, boolean server);
+        boolean onClose(TNLPlayer player, boolean server);
     }
 
     public interface ClickEvent {
-        void onClick(@Nonnull TNLPlayer player, int slot, @Nonnull Interaction.Type type);
+        void onClick(TNLPlayer player, int slot, Interaction.Type type);
     }
 
     @Override

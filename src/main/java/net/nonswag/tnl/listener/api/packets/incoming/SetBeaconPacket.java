@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 @Getter
@@ -20,14 +19,13 @@ public abstract class SetBeaconPacket extends PacketBuilder {
         this.secondary = secondary;
     }
 
-    public record Effect(@Nonnull Category category, int color, int id) {
+    public record Effect(Category category, int color, int id) {
 
         public enum Category {
             BENEFICIAL, HARMFUL, NEUTRAL
         }
     }
 
-    @Nonnull
     public static SetBeaconPacket create(@Nullable Effect primary, @Nullable Effect secondary) {
         return Mapping.get().packetManager().incoming().setBeaconPacket(primary, secondary);
     }

@@ -1,25 +1,20 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import net.nonswag.tnl.listener.api.player.Hand;
 
-import javax.annotation.Nonnull;
-
 @Getter
 @Setter
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class OpenBookPacket extends PacketBuilder {
 
-    @Nonnull
     private Hand hand;
 
-    protected OpenBookPacket(@Nonnull Hand hand) {
-        this.hand = hand;
-    }
-
-    @Nonnull
-    public static OpenBookPacket create(@Nonnull Hand hand) {
+    public static OpenBookPacket create(Hand hand) {
         return Mapping.get().packetManager().outgoing().openBookPacket(hand);
     }
 }

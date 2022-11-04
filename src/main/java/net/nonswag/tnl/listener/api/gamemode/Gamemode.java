@@ -1,10 +1,14 @@
 package net.nonswag.tnl.listener.api.gamemode;
 
+import lombok.Getter;
+import lombok.ToString;
 import org.bukkit.GameMode;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+@Getter
+@ToString
 public enum Gamemode {
     UNKNOWN("Unknown", -1),
     SURVIVAL("Survival", 0),
@@ -12,22 +16,12 @@ public enum Gamemode {
     ADVENTURE("Adventure", 2),
     SPECTATOR("Spectator", 3);
 
-    @Nonnull
     private final String name;
     private final int id;
 
-    Gamemode(@Nonnull String name, int id) {
+    Gamemode(String name, int id) {
         this.name = name;
         this.id = id;
-    }
-
-    @Nonnull
-    public String getName() {
-        return name;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public boolean isUnknown() {
@@ -66,16 +60,8 @@ public enum Gamemode {
         return GameMode.SURVIVAL;
     }
 
-    @Override
-    public String toString() {
-        return "Gamemode{" +
-                "name='" + name + '\'' +
-                ", id=" + id +
-                '}';
-    }
-
     @Nonnull
-    public static Gamemode cast(@Nonnull GameMode bukkit) {
+    public static Gamemode cast(GameMode bukkit) {
         if (bukkit.equals(GameMode.CREATIVE)) return CREATIVE;
         else if (bukkit.equals(GameMode.ADVENTURE)) return ADVENTURE;
         else if (bukkit.equals(GameMode.SPECTATOR)) return SPECTATOR;
@@ -83,7 +69,7 @@ public enum Gamemode {
     }
 
     @Nullable
-    public static Gamemode cast(@Nonnull String string) {
+    public static Gamemode cast(String string) {
         for (Gamemode gm : values()) {
             if (gm.name().toLowerCase().startsWith(string.toLowerCase()) || string.equals(gm.getId() + "")) return gm;
         }

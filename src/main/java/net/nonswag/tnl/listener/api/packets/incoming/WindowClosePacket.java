@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
-import javax.annotation.Nonnull;
-
 @Getter
 @Setter
 public abstract class WindowClosePacket extends PacketBuilder {
@@ -15,7 +13,6 @@ public abstract class WindowClosePacket extends PacketBuilder {
         this.containerId = containerId;
     }
 
-    @Nonnull
     public static WindowClosePacket create(int containerId) {
         return Mapping.get().packetManager().incoming().windowClosePacket(containerId);
     }

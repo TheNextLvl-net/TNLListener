@@ -1,31 +1,24 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
-import javax.annotation.Nonnull;
-
 @Getter
 @Setter
-public abstract class WindowDataPacket extends PacketBuilder {
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+public abstract class ContainerSetDataPacket extends PacketBuilder {
 
-    private int windowId, property, value;
+    private int containerId, propertyId, value;
 
-    protected WindowDataPacket(int windowId, int property, int value) {
-        this.windowId = windowId;
-        this.property = property;
-        this.value = value;
+    public static ContainerSetDataPacket create(int containerId, int propertyId, int value) {
+        return Mapping.get().packetManager().outgoing().containerSetDataPacket(containerId, propertyId, value);
     }
 
-    @Nonnull
-    public static WindowDataPacket create(int windowId, int property, int value) {
-        return Mapping.get().packetManager().outgoing().windowDataPacket(windowId, property, value);
-    }
-
-    @Nonnull
-    public static WindowDataPacket create(int property, int value) {
-        return create(1, property, value);
+    public static ContainerSetDataPacket create(int propertyId, int value) {
+        return create(1, propertyId, value);
     }
 
     public static class Furnace {

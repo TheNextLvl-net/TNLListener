@@ -2,8 +2,6 @@ package net.nonswag.tnl.listener.api.player.manager;
 
 import org.bukkit.WeatherType;
 
-import javax.annotation.Nonnull;
-
 public abstract class EnvironmentManager extends Manager {
 
     public long getTime() {
@@ -22,13 +20,12 @@ public abstract class EnvironmentManager extends Manager {
         getPlayer().bukkit().resetPlayerTime();
     }
 
-    @Nonnull
     public WeatherType getWeather() {
         WeatherType weather = getPlayer().bukkit().getPlayerWeather();
         return weather == null ? getPlayer().worldManager().getWeather() : weather;
     }
 
-    public void setWeather(@Nonnull WeatherType weather) {
+    public void setWeather(WeatherType weather) {
         getPlayer().bukkit().setPlayerWeather(weather);
     }
 

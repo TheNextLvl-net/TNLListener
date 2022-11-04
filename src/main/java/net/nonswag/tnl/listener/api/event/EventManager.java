@@ -14,60 +14,55 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 
-import javax.annotation.Nonnull;
 import java.util.HashMap;
 
 @lombok.Getter
-public class EventManager {
+public final class EventManager {
 
-    @Nonnull
     private final Plugin plugin;
-    @Nonnull
     private final HashMap<PacketReader<?>, Class<? extends IncomingPacket>> readers = new HashMap<>();
-    @Nonnull
     private final HashMap<PacketWriter<?>, Class<? extends OutgoingPacket>> writers = new HashMap<>();
 
-    public EventManager(@Nonnull Plugin plugin) {
+    public EventManager(Plugin plugin) {
         this.plugin = plugin;
     }
 
-    public <P extends IncomingPacket> void registerPacketReader(@Nonnull PacketReader<P> reader, @Nonnull Class<P> clazz) throws IllegalStateException {
+    public <P extends IncomingPacket> void registerPacketReader(PacketReader<P> reader, Class<P> clazz) throws IllegalStateException {
         if (!readers.containsKey(reader)) readers.put(reader, clazz);
         else throw new IllegalStateException("reader already registered");
     }
 
-    public void registerPacketReader(@Nonnull PacketReader<IncomingPacket> reader) {
+    public void registerPacketReader(PacketReader<IncomingPacket> reader) {
         registerPacketReader(reader, IncomingPacket.class);
     }
 
-    public <P extends OutgoingPacket> void registerPacketWriter(@Nonnull PacketWriter<P> writer, @Nonnull Class<P> clazz) throws IllegalStateException {
+    public <P extends OutgoingPacket> void registerPacketWriter(PacketWriter<P> writer, Class<P> clazz) throws IllegalStateException {
         if (!writers.containsKey(writer)) writers.put(writer, clazz);
         else throw new IllegalStateException("writer already registered");
     }
 
-    public void registerPacketWriter(@Nonnull PacketWriter<OutgoingPacket> writer) {
+    public void registerPacketWriter(PacketWriter<OutgoingPacket> writer) {
         registerPacketWriter(writer, OutgoingPacket.class);
     }
 
-    public void registerListener(@Nonnull org.bukkit.event.Listener listener) {
+    public void registerListener(org.bukkit.event.Listener listener) {
         Bukkit.getPluginManager().registerEvents(listener, getPlugin());
     }
 
-    public void unregisterListener(@Nonnull org.bukkit.event.Listener listener) {
+    public void unregisterListener(org.bukkit.event.Listener listener) {
         HandlerList.unregisterAll(listener);
     }
 
-    public void unregisterEvents(@Nonnull Event... events) {
+    public void unregisterEvents(Event... events) {
         for (Event event : events) event.getHandlers().unregister(getPlugin());
     }
 
-    public boolean registerListener(@Nonnull Version version, @Nonnull Getter<org.bukkit.event.Listener> listener) {
+    public boolean registerListener(Version version, Getter<org.bukkit.event.Listener> listener) {
         if (!Listener.getVersion().equals(version)) return false;
         registerListener(listener.get());
         return true;
     }
 
-    @Nonnull
     public static HashMap<PacketReader<?>, Class<? extends IncomingPacket>> getAllReaders() {
         HashMap<PacketReader<?>, Class<? extends IncomingPacket>> readers = new HashMap<>();
         PluginHelper.getInstance().getPlugins().forEach(plugin -> {
@@ -76,7 +71,6 @@ public class EventManager {
         return readers;
     }
 
-    @Nonnull
     public static HashMap<PacketWriter<?>, Class<? extends OutgoingPacket>> getAllWriters() {
         HashMap<PacketWriter<?>, Class<? extends OutgoingPacket>> readers = new HashMap<>();
         PluginHelper.getInstance().getPlugins().forEach(plugin -> {

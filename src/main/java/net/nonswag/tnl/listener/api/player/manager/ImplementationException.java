@@ -2,22 +2,20 @@ package net.nonswag.tnl.listener.api.player.manager;
 
 import net.nonswag.core.api.errors.TNLRuntimeException;
 
-import javax.annotation.Nonnull;
-
 public class ImplementationException extends TNLRuntimeException {
 
     public ImplementationException() {
     }
 
-    public ImplementationException(@Nonnull String message) {
+    public ImplementationException(String message) {
         super(message);
     }
 
-    public ImplementationException(@Nonnull String message, @Nonnull Throwable cause) {
+    public ImplementationException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public ImplementationException(@Nonnull Throwable cause) {
+    public ImplementationException(Throwable cause) {
         super(cause);
     }
 }

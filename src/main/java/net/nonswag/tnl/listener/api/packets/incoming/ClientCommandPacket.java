@@ -4,15 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
-import javax.annotation.Nonnull;
-
 @Getter
 @Setter
 public abstract class ClientCommandPacket extends PacketBuilder {
-    @Nonnull
     private Action action;
 
-    protected ClientCommandPacket(@Nonnull Action action) {
+    protected ClientCommandPacket(Action action) {
         this.action = action;
     }
 
@@ -20,8 +17,7 @@ public abstract class ClientCommandPacket extends PacketBuilder {
         PERFORM_RESPAWN, REQUEST_STATS
     }
 
-    @Nonnull
-    public static ClientCommandPacket create(@Nonnull Action action) {
+    public static ClientCommandPacket create(Action action) {
         return Mapping.get().packetManager().incoming().clientCommandPacket(action);
     }
 }

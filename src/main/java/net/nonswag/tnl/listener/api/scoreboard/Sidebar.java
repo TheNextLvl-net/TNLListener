@@ -18,12 +18,10 @@ import java.util.List;
 @Getter
 public final class Sidebar {
 
-    @Nonnull
     private final Objective objective;
-    @Nonnull
     private final ScoreboardManager scoreboardManager;
 
-    public Sidebar(@Nonnull ScoreboardManager scoreboardManager) {
+    public Sidebar(ScoreboardManager scoreboardManager) {
         this.scoreboardManager = scoreboardManager;
         Scoreboard scoreboard = scoreboardManager.getScoreboard();
         Objective display = scoreboard.getObjective("TNLSidebar");
@@ -32,27 +30,23 @@ public final class Sidebar {
         getObjective().setDisplaySlot(DisplaySlot.SIDEBAR);
     }
 
-    @Nonnull
-    public Sidebar setTitle(@Nonnull String title) {
+    public Sidebar setTitle(String title) {
         getObjective().displayName(Component.text(Message.format(title, getScoreboardManager().getPlayer())));
         return this;
     }
 
-    @Nonnull
     @SuppressWarnings("deprecation")
     public String getTitle() {
         return getObjective().getDisplayName();
     }
 
-    @Nonnull
-    public Sidebar setScores(@Nonnull String content) {
+    public Sidebar setScores(String content) {
         String[] scores = content.split("\n");
         for (int i = 0; i < scores.length; i++) setScore(i, scores[scores.length - 1 - i]);
         return this;
     }
 
-    @Nonnull
-    public Sidebar setScore(int score, @Nonnull String content) {
+    public Sidebar setScore(int score, String content) {
         content = Message.format(content, getScoreboardManager().getPlayer());
         Team team = getTeamByScore(score);
         if (team == null) return this;
@@ -69,11 +63,10 @@ public final class Sidebar {
     }
 
     public void remove() {
+        for (int score : getScores()) hideScore(score);
         setTitle("");
-        for (Integer score : getScores()) hideScore(score);
     }
 
-    @Nonnull
     public List<String> getScoreEntries() {
         List<String> scores = new ArrayList<>();
         for (int i = 0; i < 15; i++) {
@@ -83,7 +76,6 @@ public final class Sidebar {
         return scores;
     }
 
-    @Nonnull
     public List<Integer> getScores() {
         List<Integer> scores = new ArrayList<>();
         for (int i = 0; i < 15; i++) if (getScore(i) != null) scores.add(i);
@@ -103,7 +95,6 @@ public final class Sidebar {
         return null;
     }
 
-    @Nonnull
     private Sidebar showScore(int score) {
         Entry name = Entry.getById(score);
         if (name != null && !objective.getScore(name.getName()).isScoreSet()) {
@@ -112,7 +103,6 @@ public final class Sidebar {
         return this;
     }
 
-    @Nonnull
     private Sidebar hideScore(int score) {
         Entry name = Entry.getById(score);
         if (name != null && objective.getScore(name.getName()).isScoreSet()) {
@@ -142,7 +132,7 @@ public final class Sidebar {
         private final String name;
         private final int entry;
 
-        Entry(@Nonnull ChatColor color, int entry) {
+        Entry(ChatColor color, int entry) {
             this.name = color.toString();
             this.entry = entry;
         }

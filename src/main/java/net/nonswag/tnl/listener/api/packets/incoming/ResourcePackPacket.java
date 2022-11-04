@@ -4,15 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
-import javax.annotation.Nonnull;
-
 @Getter
 @Setter
 public abstract class ResourcePackPacket extends PacketBuilder {
-    @Nonnull
     private Action action;
 
-    protected ResourcePackPacket(@Nonnull Action action) {
+    protected ResourcePackPacket(Action action) {
         this.action = action;
     }
 
@@ -23,8 +20,7 @@ public abstract class ResourcePackPacket extends PacketBuilder {
         ACCEPTED
     }
 
-    @Nonnull
-    public static ResourcePackPacket create(@Nonnull Action action) {
+    public static ResourcePackPacket create(Action action) {
         return Mapping.get().packetManager().incoming().resourcePackPacket(action);
     }
 }

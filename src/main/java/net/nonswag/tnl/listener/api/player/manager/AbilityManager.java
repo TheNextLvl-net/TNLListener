@@ -6,13 +6,11 @@ import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbilityManager extends Manager {
 
-    @Nonnull
     protected final List<Integer> glowingEntities = new ArrayList<>();
 
     public void setAllowFlight(boolean flight) {
@@ -55,25 +53,25 @@ public abstract class AbilityManager extends Manager {
         return getPlayer().bukkit().isInvulnerable();
     }
 
-    public void show(@Nonnull Plugin plugin, @Nonnull TNLPlayer player) {
+    public void show(Plugin plugin, TNLPlayer player) {
         Bootstrap.getInstance().sync(() -> getPlayer().bukkit().showPlayer(plugin, player.bukkit()));
     }
 
-    public void hide(@Nonnull Plugin plugin, @Nonnull TNLPlayer player) {
+    public void hide(Plugin plugin, TNLPlayer player) {
         Bootstrap.getInstance().sync(() -> getPlayer().bukkit().hidePlayer(plugin, player.bukkit()));
     }
 
-    public boolean canSee(@Nonnull TNLPlayer player) {
+    public boolean canSee(TNLPlayer player) {
         return getPlayer().bukkit().canSee(player.bukkit());
     }
 
-    public void setGlowing(@Nonnull Entity entity, boolean glowing) {
+    public void setGlowing(Entity entity, boolean glowing) {
         EntityMetadataPacket.create(entity).send(getPlayer());
         glowingEntities.remove((Object) entity.getEntityId());
         if (glowing) glowingEntities.add(entity.getEntityId());
     }
 
-    public boolean isGlowing(@Nonnull Entity entity) {
+    public boolean isGlowing(Entity entity) {
         return glowingEntities.contains(entity.getEntityId());
     }
 

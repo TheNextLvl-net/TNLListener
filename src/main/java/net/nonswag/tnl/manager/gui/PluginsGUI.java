@@ -1,6 +1,8 @@
-package net.nonswag.tnl.listener.api.gui.builtin;
+package net.nonswag.tnl.manager.gui;
 
 import lombok.Getter;
+import net.nonswag.core.api.annotation.FieldsAreNonnullByDefault;
+import net.nonswag.core.api.annotation.MethodsReturnNonnullByDefault;
 import net.nonswag.tnl.listener.api.gui.GUI;
 import net.nonswag.tnl.listener.api.gui.GUIItem;
 import net.nonswag.tnl.listener.api.gui.GUIOverflowException;
@@ -14,18 +16,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
 
-import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+@FieldsAreNonnullByDefault
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class PluginsGUI extends GUI {
 
     @Getter
-    @Nonnull
     protected static final PluginsGUI instance = new PluginsGUI();
 
-    @Nonnull
     private final GUIItem close = TNLItem.create(Material.BARRIER).setName("§8* §cClose Inventory").
             toGUIItem().addInteractions(new Interaction(player -> player.interfaceManager().closeGUI()));
     private long lastUpdate = 0;
@@ -76,8 +79,7 @@ public class PluginsGUI extends GUI {
         }
     }
 
-    @Nonnull
-    private Consumer<TNLPlayer> consume(@Nonnull Plugin plugin) {
+    private Consumer<TNLPlayer> consume(Plugin plugin) {
         return player -> {
             if (!player.delay("plugin-url", 2000)) return;
             player.cooldownManager().setCooldown(Material.BOOK, 40, true);
@@ -87,7 +89,6 @@ public class PluginsGUI extends GUI {
         };
     }
 
-    @Nonnull
     @Override
     public GUI formatDefault() {
         super.formatDefault();

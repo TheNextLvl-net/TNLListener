@@ -12,8 +12,8 @@ import net.nonswag.core.api.platform.PlatformPlayer;
 import net.nonswag.core.utils.StringUtil;
 import net.nonswag.tnl.listener.Listener;
 import net.nonswag.tnl.listener.api.chat.Conversation;
-import net.nonswag.tnl.listener.api.packets.outgoing.ChatPacket;
 import net.nonswag.tnl.listener.api.packets.outgoing.CustomPayloadPacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.SystemChatPacket;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import net.nonswag.tnl.listener.events.ChatMentionEvent;
 import net.nonswag.tnl.listener.events.PlayerChatEvent;
@@ -21,13 +21,11 @@ import net.nonswag.tnl.listener.utils.Messages;
 import org.bukkit.plugin.messaging.ChannelNameTooLongException;
 import org.spigotmc.SpigotConfig;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Locale;
-import java.util.UUID;
 
 public abstract class Messenger extends Manager {
 
@@ -35,97 +33,41 @@ public abstract class Messenger extends Manager {
     @Nullable
     private Conversation conversation = null;
 
-    public void sendMessage(@Nonnull String message) {
+    public void sendMessage(String message) {
         sendMessage(message, true);
     }
 
-    public void sendMessage(@Nonnull String message, boolean validate) {
-        sendMessage((UUID) null, message, validate);
+    public void sendMessage(String message, boolean validate) {
+        SystemChatPacket.create(validate ? Message.format(message, getPlayer()) : message, false).send(getPlayer());
     }
 
-    public void sendMessage(@Nullable UUID sender, @Nonnull String message) {
-        sendMessage(sender, message, true);
-    }
-
-    public void sendMessage(@Nonnull TNLPlayer sender, @Nonnull String message) {
-        sendMessage(sender.getUniqueId(), message);
-    }
-
-    public void sendMessage(@Nullable UUID sender, @Nonnull String message, boolean validate) {
-        sendMessage(ChatPacket.Type.SYSTEM, sender, message, validate);
-    }
-
-    public void sendMessage(@Nonnull TNLPlayer sender, @Nonnull String message, boolean validate) {
-        sendMessage(sender.getUniqueId(), message, validate);
-    }
-
-    public void sendMessage(@Nonnull ChatPacket.Type type, @Nonnull String message) {
-        sendMessage(type, message, true);
-    }
-
-    public void sendMessage(@Nonnull ChatPacket.Type type, @Nonnull String message, boolean validate) {
-        sendMessage(type, (UUID) null, message, validate);
-    }
-
-    public void sendMessage(@Nonnull ChatPacket.Type type, @Nonnull TNLPlayer sender, @Nonnull String message, boolean validate) {
-        sendMessage(type, sender.getUniqueId(), message, validate);
-    }
-
-    public void sendMessage(@Nonnull ChatPacket.Type type, @Nonnull String message, @Nonnull Placeholder... placeholders) {
-        sendMessage(type, message, getPlayer(), placeholders);
-    }
-
-    public void sendMessage(@Nonnull String message, @Nonnull Placeholder... placeholders) {
+    public void sendMessage(String message, Placeholder... placeholders) {
         sendMessage(message, getPlayer(), placeholders);
     }
 
-    public void sendMessage(@Nonnull ChatPacket.Type type, @Nonnull String message, @Nonnull TNLPlayer player, @Nonnull Placeholder... placeholders) {
-        sendMessage(type, player, Message.format(message, player, placeholders), false);
+    public void sendMessage(String message, PlatformPlayer player, Placeholder... placeholders) {
+        sendMessage(Message.format(message, player, placeholders), false);
     }
 
-    public void sendMessage(@Nonnull String message, @Nonnull TNLPlayer player, @Nonnull Placeholder... placeholders) {
-        sendMessage(player, Message.format(message, player, placeholders), false);
-    }
-
-    public void sendMessage(@Nonnull ChatPacket.Type type, @Nonnull Key key, @Nonnull PlatformPlayer platformPlayer, @Nonnull Placeholder... placeholders) {
-        if (platformPlayer instanceof TNLPlayer player) sendMessage(key, player, placeholders);
-        else sendMessage(key, placeholders);
-    }
-
-    public void sendMessage(@Nonnull Key key, @Nonnull PlatformPlayer platformPlayer, @Nonnull Placeholder... placeholders) {
-        sendMessage(ChatPacket.Type.SYSTEM, key, platformPlayer, placeholders);
-    }
-
-    public void sendMessage(@Nonnull ChatPacket.Type type, @Nonnull Key key, @Nonnull Placeholder... placeholders) {
+    public void sendMessage(Key key, Placeholder... placeholders) {
         sendMessage(key, getPlayer(), placeholders);
     }
 
-    public void sendMessage(@Nonnull Key key, @Nonnull Placeholder... placeholders) {
-        sendMessage(ChatPacket.Type.SYSTEM, key, placeholders);
-    }
-
-    public void sendMessage(@Nonnull ChatPacket.Type type, @Nullable UUID sender, @Nonnull String message, boolean validate) {
-        if (validate) message = Message.format(message, getPlayer());
-        ChatPacket chatPacket = ChatPacket.create(message, type);
-        if (sender != null) chatPacket.setSender(sender);
-        chatPacket.send(getPlayer());
-    }
-
-    public void sendMessage(@Nonnull Key key, @Nonnull TNLPlayer player, @Nonnull Placeholder... placeholders) {
+    public void sendMessage(Key key, PlatformPlayer player, Placeholder... placeholders) {
         String message;
         if (key instanceof SystemMessageKey systemKey) message = systemKey.message();
         else if (key instanceof MessageKey messageKey) {
             message = Message.get(messageKey, getPlayer().data().getLanguage());
         }
         else message = key.message();
-        sendMessage(player, Message.format(message, player, placeholders), false);
+        sendMessage(Message.format(message, player, placeholders), false);
     }
 
-    public void chat(@Nonnull String message) {
+    public void chat(String message) {
         chat(new PlayerChatEvent(getPlayer(), message));
     }
 
-    public void chat(@Nonnull PlayerChatEvent event) {
+    public void chat(PlayerChatEvent event) {
         String message = Color.Minecraft.unColorize(event.getMessage(), '§');
         if (Color.unColorize(message.replace(" ", "")).isEmpty()) return;
         if (Conversation.test(event, event.getPlayer(), event.getMessage())) return;
@@ -153,16 +95,16 @@ public abstract class Messenger extends Manager {
         Placeholder coloredMessage = new Placeholder("colored_message", Color.colorize(message, '&'));
         Placeholder text = new Placeholder("message", Color.unColorize(message, '&'));
         for (TNLPlayer all : Listener.getOnlinePlayers()) {
-            all.messenger().sendMessage(ChatPacket.Type.CHAT, event.getFormat(), event.getPlayer(), color, text, coloredMessage);
+            all.messenger().sendMessage(event.getFormat(), event.getPlayer(), color, text, coloredMessage);
         }
     }
 
-    public void sendPluginMessage(@Nonnull String channel, @Nonnull String... message) {
+    public void sendPluginMessage(String channel, String... message) {
         if (SpigotConfig.bungee) sendLegacyPluginMessage(channel, message);
         sendModernPluginMessage(channel, message);
     }
 
-    public void sendLegacyPluginMessage(@Nonnull String channel, @Nonnull String... message) {
+    public void sendLegacyPluginMessage(String channel, String... message) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
         try {
@@ -173,15 +115,15 @@ public abstract class Messenger extends Manager {
         sendPluginMessage(channel, byteArrayOutputStream.toByteArray());
     }
 
-    public void sendModernPluginMessage(@Nonnull String channel, @Nonnull String... message) {
+    public void sendModernPluginMessage(String channel, String... message) {
         sendPluginMessage(channel, StringUtil.toByteArray(message));
     }
 
-    public void sendPluginMessage(@Nonnull String channel, @Nonnull byte[]... bytes) {
+    public void sendPluginMessage(String channel, byte[]... bytes) {
         CustomPayloadPacket.create(Messenger.validateChannel(channel), bytes).send(getPlayer());
     }
 
-    public void startConversation(@Nonnull Conversation conversation) {
+    public void startConversation(Conversation conversation) {
         this.conversation = conversation;
     }
 
@@ -193,8 +135,7 @@ public abstract class Messenger extends Manager {
         return conversation != null;
     }
 
-    @Nonnull
-    public static String validateChannel(@Nonnull String channel) {
+    public static String validateChannel(String channel) {
         if (channel.equals("BungeeCord")) return "bungeecord:main";
         else if (channel.equals("bungeecord:main")) return "BungeeCord";
         else if (channel.length() > 64) throw new ChannelNameTooLongException(channel);

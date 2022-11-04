@@ -10,7 +10,6 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
@@ -22,56 +21,47 @@ public class PluginHelper {
     protected PluginHelper() {
     }
 
-    @Nonnull
     public SimpleCommandMap getCommandMap() {
         return Objects.requireNonNull(Reflection.Field.get(Bukkit.getServer(), "commandMap"));
     }
 
-    @Nonnull
     public List<Plugin> getPlugins() {
         return Objects.requireNonNull(Reflection.Field.get(Bukkit.getPluginManager(), SimplePluginManager.class, "plugins"));
     }
 
-    @Nonnull
     public Map<String, Plugin> getLookupNames() {
         return Objects.requireNonNull(Reflection.Field.get(Bukkit.getPluginManager(), SimplePluginManager.class, "lookupNames"));
     }
 
-    @Nonnull
     public Map<String, Permission> getPermissions() {
         return Objects.requireNonNull(Reflection.Field.get(Bukkit.getPluginManager(), SimplePluginManager.class, "permissions"));
     }
 
-    @Nonnull
     public Map<Boolean, Set<Permission>> getDefaultPerms() {
         return Objects.requireNonNull(Reflection.Field.get(Bukkit.getPluginManager(), SimplePluginManager.class, "defaultPerms"));
     }
 
-    @Nonnull
     public Map<String, Map<Permissible, Boolean>> getPermSubs() {
         return Objects.requireNonNull(Reflection.Field.get(Bukkit.getPluginManager(), SimplePluginManager.class, "permSubs"));
     }
 
-    @Nonnull
     public Map<Boolean, Map<Permissible, Boolean>> getDefSubs() {
         return Objects.requireNonNull(Reflection.Field.get(Bukkit.getPluginManager(), SimplePluginManager.class, "defSubs"));
     }
 
-    @Nonnull
     public Map<String, Command> getCommands() {
         return Objects.requireNonNull(Reflection.Field.get(getCommandMap(), SimpleCommandMap.class, "knownCommands"));
     }
 
     @Nullable
-    public Command getCommand(@Nonnull String command) {
+    public Command getCommand(String command) {
         return getCommands().get(command);
     }
 
-    public void setCommand(@Nonnull String name, @Nonnull Command command) {
+    public void setCommand(String name, Command command) {
         getCommands().put(name, command);
     }
 
-    @Nonnull
     public static PluginHelper getInstance() {
         return Mapping.get().pluginHelper();
     }

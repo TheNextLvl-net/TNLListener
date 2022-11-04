@@ -7,7 +7,6 @@ import net.nonswag.tnl.listener.api.command.exceptions.InsufficientPermissionExc
 import net.nonswag.tnl.listener.api.command.exceptions.InvalidUseException;
 import net.nonswag.tnl.listener.api.command.exceptions.SourceMismatchException;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,27 +14,26 @@ import java.util.List;
 
 public abstract class SimpleCommand extends TNLCommand {
 
-    @Nonnull
     private final HashMap<String, SubCommand> subCommands = new HashMap<>();
 
-    protected SimpleCommand(@Nonnull String command) {
+    protected SimpleCommand(String command) {
         super(command);
     }
 
-    protected SimpleCommand(@Nonnull String command, @Nullable String permission) {
+    protected SimpleCommand(String command, @Nullable String permission) {
         super(command, permission);
     }
 
-    protected SimpleCommand(@Nonnull String command, @Nullable String permission, @Nonnull String... aliases) {
+    protected SimpleCommand(String command, @Nullable String permission, String... aliases) {
         super(command, permission, aliases);
     }
 
-    protected SimpleCommand(@Nonnull String command, @Nullable String permission, @Nonnull List<String> aliases) {
+    protected SimpleCommand(String command, @Nullable String permission, List<String> aliases) {
         super(command, permission, aliases);
     }
 
     @Override
-    protected final void execute(@Nonnull Invocation invocation) {
+    protected final void execute(Invocation invocation) {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
         if (!canUse(source)) throw new SourceMismatchException();
@@ -48,9 +46,8 @@ public abstract class SimpleCommand extends TNLCommand {
         else throw new InsufficientPermissionException(permission);
     }
 
-    @Nonnull
     @Override
-    protected final List<String> suggest(@Nonnull Invocation invocation) {
+    protected final List<String> suggest(Invocation invocation) {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
         List<String> suggestions = new ArrayList<>();
@@ -73,7 +70,7 @@ public abstract class SimpleCommand extends TNLCommand {
     }
 
     @Override
-    public void usage(@Nonnull Invocation invocation) {
+    public void usage(Invocation invocation) {
         CommandSource source = invocation.source();
         for (SubCommand command : subCommands.values()) {
             if (!command.canUse(source)) continue;
@@ -82,27 +79,27 @@ public abstract class SimpleCommand extends TNLCommand {
         }
     }
 
-    public void addSubCommand(@Nonnull SubCommand subCommand) {
+    public void addSubCommand(SubCommand subCommand) {
         subCommands.put(subCommand.getName(), subCommand);
     }
 
-    public void removeSubCommand(@Nonnull String name) {
+    public void removeSubCommand(String name) {
         subCommands.remove(name);
     }
 
     @Nullable
-    protected SubCommand getByNameOrAlias(@Nonnull String string) {
+    protected SubCommand getByNameOrAlias(String string) {
         SubCommand command = getByName(string);
         return command == null ? getByAliases(string) : command;
     }
 
     @Nullable
-    protected SubCommand getByName(@Nonnull String name) {
+    protected SubCommand getByName(String name) {
         return subCommands.get(name.toLowerCase());
     }
 
     @Nullable
-    protected SubCommand getByAliases(@Nonnull String alias) {
+    protected SubCommand getByAliases(String alias) {
         for (SubCommand command : subCommands.values()) {
             if (command.getAliases().contains(alias.toLowerCase())) return command;
         }

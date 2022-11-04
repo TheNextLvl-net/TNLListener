@@ -1,50 +1,40 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.core.api.math.Range;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.event.inventory.InventoryType;
 
-import javax.annotation.Nonnull;
-
 @Getter
 @Setter
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class OpenWindowPacket extends PacketBuilder {
 
     private int windowId;
-    @Nonnull
     private Type type;
-    @Nonnull
     private String title;
 
-    protected OpenWindowPacket(int windowId, @Nonnull Type type, @Nonnull String title) {
-        this.windowId = windowId;
-        this.type = type;
-        this.title = title;
-    }
-
-    @Nonnull
-    public static OpenWindowPacket create(int windowId, @Nonnull Type type, @Nonnull String title) {
+    public static OpenWindowPacket create(int windowId, Type type, String title) {
         return Mapping.get().packetManager().outgoing().openWindowPacket(windowId, type, title);
     }
 
-    @Nonnull
-    public static OpenWindowPacket create(int windowId, int size, @Nonnull String title) {
+    public static OpenWindowPacket create(int windowId, int size, String title) {
         return create(windowId, Type.chest(size), title);
     }
 
-    @Nonnull
-    public static OpenWindowPacket create(@Nonnull Type type, @Nonnull String title) {
+    public static OpenWindowPacket create(Type type, String title) {
         return create(1, type, title);
     }
 
-    @Nonnull
-    public static OpenWindowPacket create(int size, @Nonnull String title) {
+    public static OpenWindowPacket create(int size, String title) {
         return create(Type.chest(size), title);
     }
 
     @Getter
+    @AllArgsConstructor
     public enum Type {
         CHEST_9X1(0),
         CHEST_9X2(1),
@@ -73,11 +63,6 @@ public abstract class OpenWindowPacket extends PacketBuilder {
 
         private final int id;
 
-        Type(int id) {
-            this.id = id;
-        }
-
-        @Nonnull
         public static Type chest(@Range(from = 1, to = 6) int size) {
             int validate = Math.min(Math.max(size, 1), 6);
             if (validate == 1) return CHEST_9X1;
@@ -88,8 +73,7 @@ public abstract class OpenWindowPacket extends PacketBuilder {
             else return CHEST_9X6;
         }
 
-        @Nonnull
-        public static Type valueOf(@Nonnull InventoryType type) {
+        public static Type valueOf(InventoryType type) {
             return switch (type) {
                 case CHEST, ENDER_CHEST, BARREL -> CHEST_9X3;
                 case DISPENSER, DROPPER -> DISPENSER;

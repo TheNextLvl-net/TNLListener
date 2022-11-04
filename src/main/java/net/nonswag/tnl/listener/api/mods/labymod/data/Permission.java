@@ -1,7 +1,8 @@
 package net.nonswag.tnl.listener.api.mods.labymod.data;
 
-import javax.annotation.Nonnull;
+import lombok.Getter;
 
+@Getter
 public enum Permission {
     IMPROVED_LAVA("Improved Lava"),
     CROSSHAIR_SYNC("Crosshair sync"),
@@ -20,15 +21,9 @@ public enum Permission {
     ANIMATIONS("Animations"),
     SATURATION_BAR("Saturation bar");
 
-    @Nonnull
     private final String name;
 
-    Permission(@Nonnull String name) {
+    Permission(String name) {
         this.name = name;
-    }
-
-    @Nonnull
-    public String getName() {
-        return name;
     }
 }

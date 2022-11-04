@@ -1,49 +1,29 @@
 package net.nonswag.tnl.listener.api.gui.iterators;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.gui.GUIItem;
 import net.nonswag.tnl.listener.api.gui.Interaction;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ListIterator;
 
+@Getter
+@Setter
 public class InteractionIterator implements ListIterator<Interaction> {
 
-    @Nonnull
-    private final GUIItem guiItem;
     @Nullable
     private Boolean lastDirection;
+    private final GUIItem guiItem;
     private int nextIndex;
 
-    public InteractionIterator(@Nonnull GUIItem guiItem) {
+    public InteractionIterator(GUIItem guiItem) {
         this(guiItem, 0);
     }
 
-    public InteractionIterator(@Nonnull GUIItem guiItem, int index) {
+    public InteractionIterator(GUIItem guiItem, int index) {
         this.guiItem = guiItem;
         this.nextIndex = index;
-    }
-
-    @Nonnull
-    public GUIItem getGuiItem() {
-        return guiItem;
-    }
-
-    @Nullable
-    public Boolean getLastDirection() {
-        return lastDirection;
-    }
-
-    private int getNextIndex() {
-        return nextIndex;
-    }
-
-    private void setLastDirection(boolean lastDirection) {
-        this.lastDirection = lastDirection;
-    }
-
-    private void setNextIndex(int nextIndex) {
-        this.nextIndex = nextIndex;
     }
 
     @Override
@@ -78,22 +58,19 @@ public class InteractionIterator implements ListIterator<Interaction> {
     }
 
     @Override
-    public void set(@Nonnull Interaction interaction) {
-        if (getLastDirection() == null) {
-            throw new IllegalStateException("No current interaction!");
-        } else {
-            int i = getLastDirection() ? getNextIndex() - 1 : getNextIndex();
-            getGuiItem().interactions().set(i, interaction);
-        }
+    public void set(Interaction interaction) {
+        if (getLastDirection() == null) throw new IllegalStateException();
+        getGuiItem().interactions().set(getLastDirection() ? previousIndex() : getNextIndex(), interaction);
     }
 
     @Override
-    public void add(@Nonnull Interaction interaction) {
-        throw new UnsupportedOperationException("Can't change the size of an interaction!");
+    public void add(Interaction interaction) {
+        getGuiItem().addInteractions(interaction);
     }
 
     @Override
     public void remove() {
-        throw new UnsupportedOperationException("Can't change the size of an interaction!");
+        if (getLastDirection() == null) throw new IllegalStateException();
+        getGuiItem().interactions().remove(getLastDirection() ? previousIndex() : getNextIndex());
     }
 }

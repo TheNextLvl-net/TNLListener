@@ -10,15 +10,15 @@ import javax.annotation.Nullable;
 
 public class BlockLocation extends Location {
 
-    public BlockLocation(@Nonnull Location location) {
+    public BlockLocation(Location location) {
         this(location.getWorld(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
     }
 
-    public BlockLocation(@Nonnull Block block) {
+    public BlockLocation(Block block) {
         this(block.getLocation());
     }
 
-    public BlockLocation(@Nonnull String world, int x, int y, int z) {
+    public BlockLocation(String world, int x, int y, int z) {
         this(Bukkit.getWorld(world), x, y, z);
     }
 
@@ -106,7 +106,6 @@ public class BlockLocation extends Location {
         return new BlockLocation(getWorld(), getX(), getY(), getZ());
     }
 
-    @Nonnull
     public Location toLocation() {
         return new Location(getWorld(), getX(), getY(), getZ());
     }
@@ -130,7 +129,6 @@ public class BlockLocation extends Location {
         return hash;
     }
 
-    @Nonnull
     @Override
     public String toString() {
         return "BlockLocation{world=" + getWorld() + ",x=" + getX() + ",y=" + getY() + ",z=" + getZ() + '}';

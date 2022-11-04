@@ -33,23 +33,19 @@ import java.util.regex.Pattern;
 
 public abstract class PluginBuilder extends PluginBase implements CombinedPlugin {
 
-    @Nonnull
     private final PluginDescriptionFile description;
-    @Nonnull
     private final PluginLogger logger;
+    private final Loader loader;
+    private final Plugin owner;
     @Nullable
     private EventManager eventManager = null;
     @Nullable
     private CommandManager commandManager = null;
-    @Nonnull
-    private final Loader loader;
-    @Nonnull
-    private final Plugin owner;
     protected boolean enabled = false;
     @Getter
     private boolean manageable = false;
 
-    protected PluginBuilder(@Nonnull PluginDescriptionFile description, @Nonnull Plugin owner) {
+    protected PluginBuilder(PluginDescriptionFile description, Plugin owner) {
         this.description = description;
         this.owner = owner;
         setAuthors("NonSwag");
@@ -59,43 +55,43 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
         this.loader = new Loader();
     }
 
-    protected PluginBuilder(@Nonnull String name, @Nonnull String version, @Nonnull String main, @Nonnull Plugin owner) {
+    protected PluginBuilder(String name, String version, String main, Plugin owner) {
         this(new PluginDescriptionFile(name, version, main), owner);
     }
 
-    protected PluginBuilder(@Nonnull String name, @Nonnull String version, @Nonnull Plugin owner) {
+    protected PluginBuilder(String name, String version, Plugin owner) {
         this(new DescriptionBuilder(name, version).build(), owner);
     }
 
-    protected PluginBuilder(@Nonnull String name, @Nonnull Plugin owner) {
+    protected PluginBuilder(String name, Plugin owner) {
         this(new DescriptionBuilder(name).build(), owner);
     }
 
-    protected PluginBuilder(@Nonnull Class<?> clazz, @Nonnull Plugin owner) {
+    protected PluginBuilder(Class<?> clazz, Plugin owner) {
         this(new DescriptionBuilder(clazz).build(), owner);
     }
 
-    protected final void setName(@Nonnull String name) {
+    protected final void setName(String name) {
         Reflection.Field.set(getDescription(), "name", name);
     }
 
-    protected final void setAuthors(@Nonnull String... authors) {
+    protected final void setAuthors(String... authors) {
         Reflection.Field.set(getDescription(), "authors", Arrays.asList(authors));
     }
 
-    protected final void setAPIVersion(@Nonnull String apiVersion) {
+    protected final void setAPIVersion(String apiVersion) {
         Reflection.Field.set(getDescription(), "apiVersion", apiVersion);
     }
 
-    protected final void setDescription(@Nonnull String description) {
+    protected final void setDescription(String description) {
         Reflection.Field.set(getDescription(), "description", description);
     }
 
-    protected final void setWebsite(@Nonnull String website) {
+    protected final void setWebsite(String website) {
         Reflection.Field.set(getDescription(), "website", website);
     }
 
-    protected final void setPrefix(@Nonnull String prefix) {
+    protected final void setPrefix(String prefix) {
         Reflection.Field.set(getDescription(), "prefix", prefix);
     }
 
@@ -150,14 +146,12 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
         }
     }
 
-    @Nonnull
     public PluginBuilder register() {
         unregister();
         PluginHelper.getInstance().getPlugins().add(this);
         return this;
     }
 
-    @Nonnull
     public PluginBuilder unregister() {
         PluginHelper.getInstance().getPlugins().removeIf(plugin -> plugin.getName().equals(getName()));
         return this;
@@ -167,19 +161,16 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
         return PluginHelper.getInstance().getPlugins().contains(this);
     }
 
-    @Nonnull
     public final EventManager getEventManager() {
         return eventManager == null ? eventManager = new EventManager(this) : eventManager;
     }
 
-    @Nonnull
     public final CommandManager getCommandManager() {
         return commandManager == null ? commandManager = new CommandManager(this) : commandManager;
     }
 
-    @Nonnull
     @Override
-    public Thread async(@Nonnull Condition condition, @Nonnull Runnable runnable) {
+    public Thread async(Condition condition, Runnable runnable) {
         Thread thread = new Thread(() -> {
             if (condition.check()) runnable.run();
         });
@@ -187,9 +178,8 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
         return thread;
     }
 
-    @Nonnull
     @Override
-    public Thread async(@Nonnull Condition condition, @Nonnull Runnable runnable, long millis) {
+    public Thread async(Condition condition, Runnable runnable, long millis) {
         Thread thread = new Thread(() -> {
             if (Task.sleep(millis)) if (condition.check()) runnable.run();
         });
@@ -198,7 +188,7 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
     }
 
     @Override
-    public void sync(@Nonnull Condition condition, @Nonnull Runnable runnable) {
+    public void sync(Condition condition, Runnable runnable) {
         if (Bukkit.isPrimaryThread()) {
             if (condition.check()) runnable.run();
         } else Bukkit.getScheduler().runTask(this, () -> {
@@ -206,33 +196,30 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
         });
     }
 
-    @Nonnull
     @Override
-    public BukkitTask sync(@Nonnull Condition condition, @Nonnull Runnable runnable, long ticks) {
+    public BukkitTask sync(Condition condition, Runnable runnable, long ticks) {
         return Bukkit.getScheduler().runTaskLater(this, () -> {
             if (condition.check()) runnable.run();
         }, ticks);
     }
 
-    @Nonnull
     @Override
-    public BukkitTask repeatSynced(@Nonnull Runnable runnable, long period, long delay) {
+    public BukkitTask repeatSynced(Runnable runnable, long period, long delay) {
         return Bukkit.getScheduler().runTaskTimer(this, runnable, delay, period);
     }
 
     @Override
-    public void repeatSynced(@Nonnull Consumer<BukkitTask> runnable, long period, long delay) {
+    public void repeatSynced(Consumer<BukkitTask> runnable, long period, long delay) {
         Bukkit.getScheduler().runTaskTimer(this, runnable, delay, period);
     }
 
     @Override
-    public void repeatAsync(@Nonnull Consumer<BukkitTask> runnable, long period, long delay) {
+    public void repeatAsync(Consumer<BukkitTask> runnable, long period, long delay) {
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, runnable, delay, period);
     }
 
-    @Nonnull
     @Override
-    public BukkitTask repeatAsync(@Nonnull Runnable runnable, long period, long delay) {
+    public BukkitTask repeatAsync(Runnable runnable, long period, long delay) {
         return Bukkit.getScheduler().runTaskTimerAsynchronously(this, runnable, delay, period);
     }
 
@@ -249,7 +236,7 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
     }
 
     @Override
-    public InputStream getResource(@Nonnull String s) {
+    public InputStream getResource(String s) {
         throw new UnsupportedOperationException();
     }
 
@@ -264,7 +251,7 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
     }
 
     @Override
-    public void saveResource(@Nonnull String s, boolean b) {
+    public void saveResource(String s, boolean b) {
         throw new UnsupportedOperationException();
     }
 
@@ -273,7 +260,6 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
         throw new UnsupportedOperationException();
     }
 
-    @Nonnull
     public final Plugin getOwner() {
         return owner;
     }
@@ -305,7 +291,6 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
         throw new UnsupportedOperationException();
     }
 
-    @Nonnull
     public PluginBuilder setManageable(boolean manageable) {
         this.manageable = manageable;
         return this;
@@ -319,19 +304,19 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
 
     @Override
     @Deprecated
-    public final boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command command, @Nonnull String label, @Nonnull String[] args) {
+    public final boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Deprecated
-    public final List<String> onTabComplete(@Nonnull CommandSender sender, @Nonnull Command command, @Nonnull String label, @Nonnull String[] args) {
+    public final List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         throw new UnsupportedOperationException();
     }
 
     @Nullable
     @Override
-    public ChunkGenerator getDefaultWorldGenerator(@Nonnull String name, @Nullable String id) {
+    public ChunkGenerator getDefaultWorldGenerator(String name, @Nullable String id) {
         return null;
     }
 
@@ -343,69 +328,60 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
     @Getter
     public static class DescriptionBuilder {
 
-        @Nonnull
         private String name = getClass().getSimpleName();
-        @Nonnull
         private String main = getClass().getName();
-        @Nonnull
         private String version = "1.0";
-        @Nonnull
         private String api = "1.13";
 
-        public DescriptionBuilder(@Nonnull String name, @Nonnull String version, @Nonnull String api, @Nonnull String main) {
+        public DescriptionBuilder(String name, String version, String api, String main) {
             this.name = name;
             this.version = version;
             this.api = api;
             this.main = main;
         }
 
-        public DescriptionBuilder(@Nonnull String name, @Nonnull String version, @Nonnull String api) {
+        public DescriptionBuilder(String name, String version, String api) {
             this.name = name;
             this.version = version;
             this.api = api;
         }
 
-        public DescriptionBuilder(@Nonnull String name, @Nonnull String version) {
+        public DescriptionBuilder(String name, String version) {
             this.name = name;
             this.version = version;
         }
 
-        public DescriptionBuilder(@Nonnull String name) {
+        public DescriptionBuilder(String name) {
             this.name = name;
         }
 
-        public DescriptionBuilder(@Nonnull Class<?> clazz) {
+        public DescriptionBuilder(Class<?> clazz) {
             this(clazz.getSimpleName(), "1.0", "1.13", clazz.getName());
         }
 
         public DescriptionBuilder() {
         }
 
-        @Nonnull
-        public DescriptionBuilder setName(@Nonnull String name) {
+        public DescriptionBuilder setName(String name) {
             this.name = name;
             return this;
         }
 
-        @Nonnull
-        public DescriptionBuilder setMain(@Nonnull String main) {
+        public DescriptionBuilder setMain(String main) {
             this.main = main;
             return this;
         }
 
-        @Nonnull
-        public DescriptionBuilder setVersion(@Nonnull String version) {
+        public DescriptionBuilder setVersion(String version) {
             this.version = version;
             return this;
         }
 
-        @Nonnull
-        public DescriptionBuilder setApi(@Nonnull String api) {
+        public DescriptionBuilder setApi(String api) {
             this.api = api;
             return this;
         }
 
-        @Nonnull
         public PluginDescriptionFile build() {
             PluginDescriptionFile description = new PluginDescriptionFile(getName(), getVersion(), getMain());
             Reflection.Field.set(description, "apiVersion", getApi());
@@ -417,17 +393,16 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
 
         @Nonnull
         @Override
-        public PluginBuilder loadPlugin(@Nonnull File file) {
+        public PluginBuilder loadPlugin(File file) {
             return PluginBuilder.this;
         }
 
         @Nonnull
         @Override
-        public PluginDescriptionFile getPluginDescription(@Nonnull File file) {
+        public PluginDescriptionFile getPluginDescription(File file) {
             return PluginBuilder.this.getDescription();
         }
 
-        @Nonnull
         @Override
         public Pattern[] getPluginFileFilters() {
             return Bootstrap.getInstance().getPluginLoader().getPluginFileFilters();
@@ -435,17 +410,17 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
 
         @Nonnull
         @Override
-        public Map<Class<? extends Event>, Set<RegisteredListener>> createRegisteredListeners(@Nonnull Listener listener, @Nonnull Plugin plugin) {
+        public Map<Class<? extends Event>, Set<RegisteredListener>> createRegisteredListeners(Listener listener, Plugin plugin) {
             return Bootstrap.getInstance().getPluginLoader().createRegisteredListeners(listener, plugin);
         }
 
         @Override
-        public void enablePlugin(@Nonnull Plugin plugin) {
+        public void enablePlugin(Plugin plugin) {
             PluginBuilder.this.setEnabled(true);
         }
 
         @Override
-        public void disablePlugin(@Nonnull Plugin plugin) {
+        public void disablePlugin(Plugin plugin) {
             PluginBuilder.this.setEnabled(false);
         }
     }

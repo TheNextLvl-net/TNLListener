@@ -22,115 +22,95 @@ import java.util.function.Predicate;
 public class Enchant extends Enchantment {
 
     @Getter
-    @Nonnull
     private static final List<Enchant> enchants = new ArrayList<>();
 
-    @Nonnull
     private final String id;
-    @Nonnull
     private final String name;
-    @Nonnull
     private final EnchantmentTarget itemTarget;
     @Nullable
     private Predicate<Enchantment> conflicting;
     @Nullable
     private Predicate<ItemStack> enchanting;
-    @Nonnull
     private EnchantmentRarity rarity = EnchantmentRarity.COMMON;
     private int maxLevel = 1;
     private int startLevel = 1;
     private boolean treasure = false, cursed = false, tradeable = false, discoverable = false;
 
-    @Nonnull
     @SuppressWarnings("deprecation")
-    public static Enchant create(@Nonnull String name) {
+    public static Enchant create(String name) {
         return create(name, EnchantmentTarget.ALL);
     }
 
-    @Nonnull
     @SuppressWarnings("deprecation")
-    public static Enchant create(@Nonnull String id, @Nonnull String name) {
+    public static Enchant create(String id, String name) {
         return create(id, name, EnchantmentTarget.ALL);
     }
 
-    @Nonnull
-    public static Enchant create(@Nonnull String name, @Nonnull EnchantmentTarget target) {
+    public static Enchant create(String name, EnchantmentTarget target) {
         return create(name.toLowerCase().replace(" ", "_").replaceAll("[^a-z_]", ""), name, target);
     }
 
-    @Nonnull
-    public static Enchant create(@Nonnull String id, @Nonnull String name, @Nonnull EnchantmentTarget target) {
+    public static Enchant create(String id, String name, EnchantmentTarget target) {
         return create(new NamespacedKey(Bootstrap.getInstance(), id.toLowerCase()), name, target);
     }
 
-    @Nonnull
     @SuppressWarnings("deprecation")
-    public static Enchant create(@Nonnull NamespacedKey key, @Nonnull String name) {
+    public static Enchant create(NamespacedKey key, String name) {
         return create(key, name, EnchantmentTarget.ALL);
     }
 
-    @Nonnull
-    public static Enchant create(@Nonnull NamespacedKey key, @Nonnull String name, @Nonnull EnchantmentTarget target) {
+    public static Enchant create(NamespacedKey key, String name, EnchantmentTarget target) {
         return Mapping.get().createEnchant(key, name, target);
     }
 
-    protected Enchant(@Nonnull NamespacedKey key, @Nonnull String name, @Nonnull EnchantmentTarget target) {
+    protected Enchant(NamespacedKey key, String name, EnchantmentTarget target) {
         super(key);
         this.id = key.getKey();
         this.name = name;
         this.itemTarget = target;
     }
 
-    @Nonnull
     public Enchant setEnchanting(@Nullable Predicate<ItemStack> enchanting) {
         this.enchanting = enchanting;
         return this;
     }
 
-    @Nonnull
     public Enchant setConflicting(@Nullable Predicate<Enchantment> conflicting) {
         this.conflicting = conflicting;
         return this;
     }
 
-    @Nonnull
     public Enchant setCursed(boolean cursed) {
         this.cursed = cursed;
         return this;
     }
 
-    @Nonnull
     public Enchant setMaxLevel(int maxLevel) {
         this.maxLevel = maxLevel;
         return this;
     }
 
-    @Nonnull
     public Enchant setStartLevel(int startLevel) {
         this.startLevel = startLevel;
         return this;
     }
 
-    @Nonnull
     public Enchant setTreasure(boolean treasure) {
         this.treasure = treasure;
         return this;
     }
 
-    @Nonnull
     public Enchant setDiscoverable(boolean discoverable) {
         this.discoverable = discoverable;
         return this;
     }
 
-    @Nonnull
     public Enchant setTradeable(boolean tradeable) {
         this.tradeable = tradeable;
         return this;
     }
 
-    @Nonnull
-    public Enchant setRarity(@Nonnull EnchantmentRarity rarity) {
+    public Enchant setRarity(EnchantmentRarity rarity) {
         this.rarity = rarity;
         return this;
     }
@@ -162,7 +142,6 @@ public class Enchant extends Enchantment {
         return Set.of(EquipmentSlot.values());
     }
 
-    @Nonnull
     protected Enchant register() {
         Objects.requireNonNull(Reflection.Field.Static.<Map<NamespacedKey, Enchantment>>get(Enchantment.class, "byKey")).put(getKey(), this);
         Objects.requireNonNull(Reflection.Field.Static.<Map<String, Enchantment>>get(Enchantment.class, "byName")).put(getName(), this);
@@ -181,7 +160,6 @@ public class Enchant extends Enchantment {
     }
 
     public static final class Defaults {
-        @Nonnull
         public static final Enchant SHINY = create("Shiny");
     }
 }

@@ -1,8 +1,11 @@
 package net.nonswag.tnl.listener.api.mods;
 
 import com.google.gson.JsonElement;
+import net.nonswag.core.api.annotation.MethodsReturnNonnullByDefault;
 
-import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
-public record ModMessage(@Nonnull String channel, @Nonnull String key, @Nonnull JsonElement message) {
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
+public record ModMessage(String channel, String key, JsonElement message) {
 }

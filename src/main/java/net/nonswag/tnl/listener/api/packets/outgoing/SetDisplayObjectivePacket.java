@@ -1,27 +1,22 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNullableByDefault;
 
 @Getter
 @Setter
+@ParametersAreNullableByDefault
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class SetDisplayObjectivePacket extends PacketBuilder {
-
-    @Nullable
-    private String objectiveName;
     private int slot;
+    private String objectiveName;
 
-    protected SetDisplayObjectivePacket(int slot, @Nullable String objectiveName) {
-        this.slot = slot;
-        this.objectiveName = objectiveName;
-    }
-
-    @Nonnull
-    public static SetDisplayObjectivePacket create(int slot, @Nullable String objectiveName) {
+    public static SetDisplayObjectivePacket create(int slot, String objectiveName) {
         return Mapping.get().packetManager().outgoing().setDisplayObjectivePacket(slot, objectiveName);
     }
 }

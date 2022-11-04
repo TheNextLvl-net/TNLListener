@@ -6,12 +6,10 @@ import net.nonswag.core.api.logger.Console;
 import net.nonswag.core.api.platform.PlatformPlayer;
 import net.nonswag.tnl.listener.utils.Messages;
 
-import javax.annotation.Nonnull;
-
 public class SourceMismatchException extends CommandException {
 
     @Override
-    public void handle(@Nonnull Invocation invocation) {
+    public void handle(Invocation invocation) {
         CommandSource source = invocation.source();
         if (source instanceof Console) source.sendMessage(Messages.PLAYER_COMMAND);
         else if (source instanceof PlatformPlayer) source.sendMessage(Messages.CONSOLE_COMMAND);

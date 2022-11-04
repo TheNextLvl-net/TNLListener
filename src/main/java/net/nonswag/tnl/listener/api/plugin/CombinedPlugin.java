@@ -5,14 +5,10 @@ import net.nonswag.tnl.listener.api.event.EventManager;
 import net.nonswag.tnl.listener.api.scheduler.RepeatingTask;
 import net.nonswag.tnl.listener.api.scheduler.Scheduler;
 
-import javax.annotation.Nonnull;
-
 public interface CombinedPlugin extends Scheduler, RepeatingTask {
 
-    @Nonnull
     EventManager getEventManager();
 
-    @Nonnull
     CommandManager getCommandManager();
 
     default void load() {

@@ -5,22 +5,17 @@ import lombok.Setter;
 import net.nonswag.tnl.listener.api.location.BlockPosition;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
-import javax.annotation.Nonnull;
-
 @Getter
 @Setter
 public abstract class SetCommandBlockPacket extends PacketBuilder {
-    @Nonnull
     private BlockPosition position;
-    @Nonnull
     private String command;
-    @Nonnull
     private Mode mode;
     private boolean trackOutput;
     private boolean conditional;
     private boolean alwaysActive;
 
-    protected SetCommandBlockPacket(@Nonnull BlockPosition position, @Nonnull String command, @Nonnull Mode mode,
+    protected SetCommandBlockPacket(BlockPosition position, String command, Mode mode,
                                     boolean trackOutput, boolean conditional, boolean alwaysActive) {
         this.position = position;
         this.command = command;
@@ -34,8 +29,7 @@ public abstract class SetCommandBlockPacket extends PacketBuilder {
         SEQUENCE, AUTO, REDSTONE
     }
 
-    @Nonnull
-    public static SetCommandBlockPacket create(@Nonnull BlockPosition position, @Nonnull String command, @Nonnull Mode mode,
+    public static SetCommandBlockPacket create(BlockPosition position, String command, Mode mode,
                                                boolean trackOutput, boolean conditional, boolean alwaysActive) {
         return Mapping.get().packetManager().incoming().setCommandBlockPacket(position, command, mode, trackOutput, conditional, alwaysActive);
     }

@@ -1,37 +1,36 @@
 package net.nonswag.tnl.listener.api.scheduler;
 
+import net.nonswag.core.api.annotation.MethodsReturnNonnullByDefault;
 import org.bukkit.scheduler.BukkitTask;
 
-import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.Consumer;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public interface RepeatingTask {
 
-    void repeatSynced(@Nonnull Consumer<BukkitTask> runnable, long period, long delay);
+    void repeatSynced(Consumer<BukkitTask> runnable, long period, long delay);
 
-    default void repeatSynced(@Nonnull Consumer<BukkitTask> runnable, long period) {
+    default void repeatSynced(Consumer<BukkitTask> runnable, long period) {
         repeatSynced(runnable, period, 0);
     }
 
-    @Nonnull
-    BukkitTask repeatSynced(@Nonnull Runnable runnable, long period, long delay);
+    BukkitTask repeatSynced(Runnable runnable, long period, long delay);
 
-    @Nonnull
-    default BukkitTask repeatSynced(@Nonnull Runnable runnable, long period) {
+    default BukkitTask repeatSynced(Runnable runnable, long period) {
         return repeatSynced(runnable, period, 0);
     }
 
-    void repeatAsync(@Nonnull Consumer<BukkitTask> runnable, long period, long delay);
+    void repeatAsync(Consumer<BukkitTask> runnable, long period, long delay);
 
-    default void repeatAsync(@Nonnull Consumer<BukkitTask> runnable, long period) {
+    default void repeatAsync(Consumer<BukkitTask> runnable, long period) {
         repeatAsync(runnable, period, 0);
     }
 
-    @Nonnull
-    BukkitTask repeatAsync(@Nonnull Runnable runnable, long period, long delay);
+    BukkitTask repeatAsync(Runnable runnable, long period, long delay);
 
-    @Nonnull
-    default BukkitTask repeatAsync(@Nonnull Runnable runnable, long period) {
+    default BukkitTask repeatAsync(Runnable runnable, long period) {
         return repeatAsync(runnable, period, 0);
     }
 }

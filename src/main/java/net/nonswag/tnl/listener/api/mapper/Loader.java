@@ -6,7 +6,6 @@ import net.nonswag.tnl.listener.Listener;
 import net.nonswag.tnl.listener.api.mapper.errors.MappingError;
 import org.bukkit.Bukkit;
 
-import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,9 +20,7 @@ import java.util.jar.JarFile;
 
 public final class Loader {
 
-    @Nonnull
     static final File MAPPINGS_FOLDER = new File("plugins/Listener/Mappings");
-    @Nonnull
     static final File MAPPINGS_UPDATE_FOLDER = new File("plugins/Listener/Mappings/", Bukkit.getUpdateFolder());
 
     private Loader() {
@@ -56,7 +53,7 @@ public final class Loader {
         return false;
     }
 
-    private static void load(@Nonnull File file) throws MappingError {
+    private static void load(File file) throws MappingError {
         try (JarFile jarFile = new JarFile(file)) {
             MappingFile mappingFile = getMappingFile(jarFile);
             try {
@@ -85,8 +82,7 @@ public final class Loader {
         }
     }
 
-    @Nonnull
-    private static MappingFile getMappingFile(@Nonnull JarFile jarFile) throws MappingError {
+    private static MappingFile getMappingFile(JarFile jarFile) throws MappingError {
         try {
             InputStream stream = jarFile.getInputStream(jarFile.getEntry("mapping.json"));
             if (stream != null) return new MappingFile(new String(stream.readAllBytes()));

@@ -1,10 +1,10 @@
 package net.nonswag.tnl.listener.api.player.manager;
 
 import net.nonswag.core.api.object.Pair;
+import net.nonswag.tnl.listener.api.packets.outgoing.SetActionBarTextPacket;
 import net.nonswag.tnl.listener.api.packets.outgoing.TitlePacket;
 import net.nonswag.tnl.listener.api.title.Title;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public abstract class TitleManager extends Manager {
@@ -16,7 +16,7 @@ public abstract class TitleManager extends Manager {
         TitlePacket.create().send(getPlayer());
     }
 
-    public void sendTitle(@Nonnull Title title) {
+    public void sendTitle(Title title) {
         TitlePacket.create(title.getTimeIn(), title.getTimeStay(), title.getTimeOut()).send(getPlayer());
         if (title.hasTitle()) TitlePacket.create(TitlePacket.Action.TITLE, title.getTitle()).send(getPlayer());
         if (title.hasSubtitle()) TitlePacket.create(TitlePacket.Action.SUBTITLE, title.getSubtitle()).send(getPlayer());
@@ -33,12 +33,12 @@ public abstract class TitleManager extends Manager {
         return true;
     }
 
-    public void sendTitle(@Nonnull Title.Animation animation) {
+    public void sendTitle(Title.Animation animation) {
         sendTitle(animation, success -> {
         });
     }
 
-    public void sendTitle(@Nonnull Title.Animation animation, @Nonnull Title.Animation.Finished finished) {
+    public void sendTitle(Title.Animation animation, Title.Animation.Finished finished) {
         if (animation.getTitle() == null) throw new NullPointerException("You have to define a title");
         stopTitleAnimation();
         Thread thread = new Thread(() -> {
@@ -66,8 +66,8 @@ public abstract class TitleManager extends Manager {
         thread.start();
     }
 
-    public void sendActionbar(@Nonnull String actionbar) {
-        TitlePacket.create(TitlePacket.Action.ACTIONBAR, actionbar).send(getPlayer());
+    public void sendActionbar(String actionbar) {
+        SetActionBarTextPacket.create(actionbar).send(getPlayer());
     }
 
     public void resetActionbar() {

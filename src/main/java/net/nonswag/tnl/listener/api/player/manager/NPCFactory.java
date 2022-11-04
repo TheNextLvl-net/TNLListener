@@ -7,34 +7,30 @@ import net.nonswag.tnl.listener.api.player.npc.FakePlayer;
 import net.nonswag.tnl.listener.api.scheduler.Task;
 import org.bukkit.Location;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 
 public abstract class NPCFactory extends Manager {
 
-    @Nonnull
     private final HashMap<Integer, FakePlayer> fakePlayers = new HashMap<>();
-    @Nonnull
     private final HashMap<FakePlayer, Hologram> nameTags = new HashMap<>();
-    @Nonnull
     private final List<Integer> loadedFakePlayers = new ArrayList<>();
     public static int LOADING_RANGE = 48;
 
-    public boolean isLoaded(@Nonnull FakePlayer fakePlayer) {
+    public boolean isLoaded(FakePlayer fakePlayer) {
         return loadedFakePlayers.contains(fakePlayer.getPlayer().getEntityId());
     }
 
-    public void setLoaded(@Nonnull FakePlayer fakePlayer, boolean loaded) {
+    public void setLoaded(FakePlayer fakePlayer, boolean loaded) {
         loadedFakePlayers.remove((Object) fakePlayer.getPlayer().getEntityId());
         if (loaded) loadedFakePlayers.add(fakePlayer.getPlayer().getEntityId());
     }
 
-    public void registerFakePlayer(@Nonnull FakePlayer fakePlayer) {
+    public void registerFakePlayer(FakePlayer fakePlayer) {
         fakePlayers.put(fakePlayer.getPlayer().getEntityId(), fakePlayer);
     }
 
-    public void unregisterFakePlayer(@Nonnull FakePlayer fakePlayer) {
+    public void unregisterFakePlayer(FakePlayer fakePlayer) {
         fakePlayers.remove(fakePlayer.getPlayer().getEntityId());
         loadedFakePlayers.remove((Object) fakePlayer.getPlayer().getEntityId());
     }
@@ -44,12 +40,11 @@ public abstract class NPCFactory extends Manager {
         return fakePlayers.get(id);
     }
 
-    @Nonnull
     public Collection<FakePlayer> getFakePlayers() {
         return fakePlayers.values();
     }
 
-    public void spawn(@Nonnull FakePlayer fakePlayer) {
+    public void spawn(FakePlayer fakePlayer) {
         if (show(fakePlayer, true)) registerFakePlayer(fakePlayer);
     }
 
@@ -60,7 +55,7 @@ public abstract class NPCFactory extends Manager {
         });
     }
 
-    public boolean show(@Nonnull FakePlayer fakePlayer, boolean checkDistance) {
+    public boolean show(FakePlayer fakePlayer, boolean checkDistance) {
         if (isLoaded(fakePlayer) || !fakePlayer.canSee().test(getPlayer())) return false;
         WorldManager manager = getPlayer().worldManager();
         if (!manager.getWorld().equals(fakePlayer.getLocation().getWorld())) return false;
@@ -84,12 +79,12 @@ public abstract class NPCFactory extends Manager {
         return true;
     }
 
-    public void reSpawn(@Nonnull FakePlayer fakePlayer) {
+    public void reSpawn(FakePlayer fakePlayer) {
         deSpawn(fakePlayer);
         spawn(fakePlayer);
     }
 
-    public void deSpawn(@Nonnull FakePlayer fakePlayer) {
+    public void deSpawn(FakePlayer fakePlayer) {
         hide(fakePlayer);
         unregisterFakePlayer(fakePlayer);
     }
@@ -98,27 +93,27 @@ public abstract class NPCFactory extends Manager {
         new ArrayList<>(getFakePlayers()).forEach(this::deSpawn);
     }
 
-    public void hide(@Nonnull FakePlayer fakePlayer) {
+    public void hide(FakePlayer fakePlayer) {
         if (!isLoaded(fakePlayer)) return;
         PlayerInfoPacket.create(fakePlayer.getPlayer(), PlayerInfoPacket.Action.REMOVE_PLAYER).send(getPlayer());
-        EntityDestroyPacket.create(fakePlayer.getPlayer().getEntityId()).send(getPlayer());
+        RemoveEntitiesPacket.create(fakePlayer.getPlayer().getEntityId()).send(getPlayer());
         if (nameTags.containsKey(fakePlayer)) getPlayer().hologramManager().unload(nameTags.get(fakePlayer));
         nameTags.remove(fakePlayer);
         setLoaded(fakePlayer, false);
     }
 
-    public void update(@Nonnull FakePlayer fakePlayer, @Nonnull Location location) {
+    public void update(FakePlayer fakePlayer, Location location) {
         if (isLoaded(fakePlayer)) {
             if (!Objects.equals(location.getWorld(), fakePlayer.getLocation().getWorld())) hide(fakePlayer);
             else if (fakePlayer.getLocation().distance(location) > LOADING_RANGE) hide(fakePlayer);
         } else show(fakePlayer, true);
     }
 
-    public void updateAll(@Nonnull Location location) {
+    public void updateAll(Location location) {
         getFakePlayers().forEach(fakePlayer -> update(fakePlayer, location));
     }
 
-    public void update(@Nonnull FakePlayer fakePlayer, @Nonnull String name) {
+    public void update(FakePlayer fakePlayer, String name) {
         if (name.isEmpty() || !isLoaded(fakePlayer) || !fakePlayer.canSee().test(getPlayer())) return;
         String id = fakePlayer.getPlayer().getGameProfile().getUniqueId().toString();
         Hologram hologram = new Hologram(id).canSee(player -> player.equals(getPlayer()));

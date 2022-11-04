@@ -1,77 +1,52 @@
 package net.nonswag.tnl.listener.api.sign;
 
+import lombok.Getter;
+import lombok.Setter;
+import net.nonswag.core.api.annotation.FieldsAreNonnullByDefault;
+import net.nonswag.core.api.annotation.MethodsReturnNonnullByDefault;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.Location;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
+@Getter
+@Setter
+@FieldsAreNonnullByDefault
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class SignMenu {
 
-    @Nonnull
-    private final String[] lines;
     @Nullable
     private Response response = null;
-    @Nonnull
-    private Type type = Type.DARK_OAK_WALL_SIGN;
     @Nullable
     private Location location = null;
+    private final String[] lines;
+    private Type type = Type.DARK_OAK_WALL_SIGN;
     private boolean reopenOnFail = false;
 
-    public SignMenu(@Nonnull String... lines) {
+    public SignMenu(String... lines) {
         for (int i = 0; i < lines.length; i++) if (lines[i] == null) lines[i] = "";
         this.lines = lines;
     }
 
-    @Nonnull
-    public String[] getLines() {
-        return lines;
-    }
-
-    @Nullable
-    public Response getResponse() {
-        return response;
-    }
-
-    @Nonnull
-    public Type getType() {
-        return type;
-    }
-
-    @Nonnull
-    public SignMenu setType(@Nonnull Type type) {
+    public SignMenu setType(Type type) {
         this.type = type;
         return this;
     }
 
-    @Nullable
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(@Nonnull Location location) {
-        this.location = location;
-    }
-
-    @Nonnull
-    public SignMenu response(@Nonnull Response response) {
+    public SignMenu response(Response response) {
         this.response = response;
         return this;
     }
 
-    @Nonnull
     public SignMenu setReopenOnFail(boolean reopenOnFail) {
         this.reopenOnFail = reopenOnFail;
         return this;
     }
 
-    @Nonnull
     public SignMenu reopenOnFail() {
         return setReopenOnFail(true);
-    }
-
-    public boolean isReopenOnFail() {
-        return reopenOnFail;
     }
 
     public enum Type {
@@ -94,6 +69,6 @@ public class SignMenu {
     }
 
     public interface Response {
-        boolean test(@Nonnull TNLPlayer player, @Nonnull String[] lines);
+        boolean test(TNLPlayer player, String[] lines);
     }
 }

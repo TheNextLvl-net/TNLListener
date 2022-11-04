@@ -3,12 +3,9 @@ package net.nonswag.tnl.listener.api.player.manager;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 
-import javax.annotation.Nonnull;
-
 public abstract class AttributeManager extends Manager {
 
-    @Nonnull
-    public abstract AttributeInstance getAttribute(@Nonnull Attribute attribute);
+    public abstract AttributeInstance getAttribute(Attribute attribute);
 
     public double getMaxHealth() {
         return getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();

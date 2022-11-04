@@ -8,35 +8,34 @@ import net.nonswag.core.api.message.key.MessageKey;
 import net.nonswag.tnl.listener.Bootstrap;
 import net.nonswag.tnl.listener.api.packets.PacketSendListener;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public abstract class Pipeline extends Manager {
 
-    public <P> void sendPacket(@Nonnull P packet) {
+    public <P> void sendPacket(P packet) {
         sendPacket(packet, null);
     }
 
-    public abstract <P> void sendPacket(@Nonnull P packet, @Nullable PacketSendListener listener);
+    public abstract <P> void sendPacket(P packet, @Nullable PacketSendListener listener);
 
     public void disconnect() {
         disconnect("%prefix%\n§cDisconnected");
     }
 
-    public void disconnect(@Nonnull String reason, @Nonnull Placeholder... placeholders) {
+    public void disconnect(String reason, Placeholder... placeholders) {
         disconnect(reason, true, placeholders);
     }
 
-    public void disconnect(@Nonnull String reason, boolean validate, @Nonnull Placeholder... placeholders) {
+    public void disconnect(String reason, boolean validate, Placeholder... placeholders) {
         String message = (validate ? Message.format(reason, getPlayer(), placeholders) : reason);
         Bootstrap.getInstance().sync(() -> getPlayer().bukkit().kick(Component.text(message)));
     }
 
-    public void disconnect(@Nonnull MessageKey messageKey, @Nonnull Placeholder... placeholders) {
+    public void disconnect(MessageKey messageKey, Placeholder... placeholders) {
         disconnect(messageKey, "", placeholders);
     }
 
-    public void disconnect(@Nonnull Key key, @Nonnull String append, @Nonnull Placeholder... placeholders) {
+    public void disconnect(Key key, String append, Placeholder... placeholders) {
         disconnect(key instanceof MessageKey m ? m.message(getPlayer().data().getLanguage()) : key.message() + append, placeholders);
     }
 

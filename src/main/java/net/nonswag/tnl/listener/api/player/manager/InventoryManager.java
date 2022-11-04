@@ -11,7 +11,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.*;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
@@ -21,27 +20,24 @@ import java.util.function.Consumer;
 
 public abstract class InventoryManager extends Manager {
 
-    @Nonnull
     public PlayerInventory getInventory() {
         return getPlayer().bukkit().getInventory();
     }
 
-    @Nonnull
     public InventoryView getOpenInventory() {
         return getPlayer().bukkit().getOpenInventory();
     }
 
-    @Nonnull
     public Inventory getEnderChest() {
         return getPlayer().bukkit().getEnderChest();
     }
 
     @Nullable
-    public InventoryView openInventory(@Nonnull Inventory inventory) {
+    public InventoryView openInventory(Inventory inventory) {
         return getPlayer().bukkit().openInventory(inventory);
     }
 
-    public void openInventory(@Nonnull InventoryView view) {
+    public void openInventory(InventoryView view) {
         getPlayer().bukkit().openInventory(view);
     }
 
@@ -56,12 +52,12 @@ public abstract class InventoryManager extends Manager {
     }
 
     @Nullable
-    public InventoryView openMerchant(@Nonnull Villager villager, boolean force) {
+    public InventoryView openMerchant(Villager villager, boolean force) {
         return getPlayer().bukkit().openMerchant(villager, force);
     }
 
     @Nullable
-    public InventoryView openMerchant(@Nonnull Merchant merchant, boolean force) {
+    public InventoryView openMerchant(Merchant merchant, boolean force) {
         return getPlayer().bukkit().openMerchant(merchant, force);
     }
 
@@ -72,7 +68,6 @@ public abstract class InventoryManager extends Manager {
         });
     }
 
-    @Nonnull
     public MainHand getMainHand() {
         return getPlayer().bukkit().getMainHand();
     }
@@ -81,17 +76,17 @@ public abstract class InventoryManager extends Manager {
         Bootstrap.getInstance().sync(() -> getPlayer().bukkit().dropItem(false));
     }
 
-    public abstract void dropItem(@Nonnull ItemStack item, @Nonnull Consumer<Item> after);
+    public abstract void dropItem(ItemStack item, Consumer<Item> after);
 
-    public boolean setWindowProperty(@Nonnull InventoryView.Property property, int value) {
+    public boolean setWindowProperty(InventoryView.Property property, int value) {
         return getPlayer().bukkit().setWindowProperty(property, value);
     }
 
-    public void saveInventoryContents(@Nonnull String id) {
+    public void saveInventoryContents(String id) {
         saveInventoryContents(id, getInventory().getContents());
     }
 
-    public void saveInventoryContents(@Nonnull String id, @Nonnull ItemStack[] contents) {
+    public void saveInventoryContents(String id, ItemStack[] contents) {
         try {
             if (!new InventorySaveEvent(getPlayer(), id).call()) return;
             File file = new File(new File("plugins/Listener/Inventories/"), getPlayer().getUniqueId() + ".yml");
@@ -104,15 +99,14 @@ public abstract class InventoryManager extends Manager {
         }
     }
 
-    public void loadInventoryContents(@Nonnull String id) {
+    public void loadInventoryContents(String id) {
         ItemStack[] contents = getInventoryContents(id);
-        if (contents.length <= 0 || !new InventoryLoadEvent(getPlayer(), id).call()) return;
+        if (contents.length == 0 || !new InventoryLoadEvent(getPlayer(), id).call()) return;
         getInventory().clear();
         getInventory().setContents(contents);
     }
 
-    @Nonnull
-    public ItemStack[] getInventoryContents(@Nonnull String id) {
+    public ItemStack[] getInventoryContents(String id) {
         ItemStack[] items = new ItemStack[]{};
         File file = new File(new File("plugins/Listener/Inventories/"), getPlayer().getUniqueId() + ".yml");
         if (!file.exists()) return items;
@@ -129,12 +123,10 @@ public abstract class InventoryManager extends Manager {
         return items;
     }
 
-    @Nonnull
     public ItemStack getItemInMainHand() {
         return getPlayer().bukkit().getInventory().getItemInMainHand();
     }
 
-    @Nonnull
     public ItemStack getItemInOffHand() {
         return getPlayer().bukkit().getInventory().getItemInOffHand();
     }

@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
-import javax.annotation.Nonnull;
-
 @Getter
 @Setter
 public abstract class AcceptTeleportationPacket extends PacketBuilder {
@@ -16,7 +14,6 @@ public abstract class AcceptTeleportationPacket extends PacketBuilder {
         this.id = id;
     }
 
-    @Nonnull
     public static AcceptTeleportationPacket create(int id) {
         return Mapping.get().packetManager().incoming().acceptTeleportationPacket(id);
     }

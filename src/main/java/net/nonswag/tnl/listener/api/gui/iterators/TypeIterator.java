@@ -1,48 +1,28 @@
 package net.nonswag.tnl.listener.api.gui.iterators;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.gui.Interaction;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ListIterator;
 
+@Getter
+@Setter
 public class TypeIterator implements ListIterator<Interaction.Type> {
 
-    @Nonnull
-    private final Interaction interaction;
     @Nullable
     private Boolean lastDirection;
+    private final Interaction interaction;
     private int nextIndex;
 
-    public TypeIterator(@Nonnull Interaction interaction) {
+    public TypeIterator(Interaction interaction) {
         this(interaction, 0);
     }
 
-    public TypeIterator(@Nonnull Interaction interaction, int index) {
+    public TypeIterator(Interaction interaction, int index) {
         this.interaction = interaction;
         this.nextIndex = index;
-    }
-
-    @Nonnull
-    public Interaction getInteraction() {
-        return interaction;
-    }
-
-    @Nullable
-    public Boolean getLastDirection() {
-        return lastDirection;
-    }
-
-    private int getNextIndex() {
-        return nextIndex;
-    }
-
-    private void setLastDirection(boolean lastDirection) {
-        this.lastDirection = lastDirection;
-    }
-
-    private void setNextIndex(int nextIndex) {
-        this.nextIndex = nextIndex;
     }
 
     @Override
@@ -77,22 +57,19 @@ public class TypeIterator implements ListIterator<Interaction.Type> {
     }
 
     @Override
-    public void set(@Nonnull Interaction.Type type) {
-        if (getLastDirection() == null) {
-            throw new IllegalStateException("No current type!");
-        } else {
-            int i = getLastDirection() ? getNextIndex() - 1 : getNextIndex();
-            getInteraction().getTypes().set(i, type);
-        }
+    public void set(Interaction.Type type) {
+        if (getLastDirection() == null) throw new IllegalStateException();
+        getInteraction().getTypes().set(getLastDirection() ? previousIndex() : getNextIndex(), type);
     }
 
     @Override
     public void add(Interaction.Type type) {
-        throw new UnsupportedOperationException("Can't change the size of an type array!");
+        getInteraction().getTypes().add(type);
     }
 
     @Override
     public void remove() {
-        throw new UnsupportedOperationException("Can't change the size of an type array!");
+        if (getLastDirection() == null) throw new IllegalStateException();
+        getInteraction().getTypes().remove(getLastDirection() ? previousIndex() : getNextIndex());
     }
 }

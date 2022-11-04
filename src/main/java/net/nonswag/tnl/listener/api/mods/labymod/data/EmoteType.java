@@ -1,5 +1,8 @@
 package net.nonswag.tnl.listener.api.mods.labymod.data;
 
+import lombok.Getter;
+
+@Getter
 public enum EmoteType {
     STOP_EMOTE(-1),
     BACKFLIP(2),
@@ -133,9 +136,5 @@ public enum EmoteType {
 
     EmoteType(int id) {
         this.id = id;
-    }
-
-    public int getId() {
-        return id;
     }
 }

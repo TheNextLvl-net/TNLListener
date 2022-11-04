@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
-import javax.annotation.Nonnull;
-
 @Getter
 @Setter
 public abstract class EntityTagQueryPacket extends PacketBuilder {
@@ -17,7 +15,6 @@ public abstract class EntityTagQueryPacket extends PacketBuilder {
         this.entityId = entityId;
     }
 
-    @Nonnull
     public static EntityTagQueryPacket create(int transactionId, int entityId) {
         return Mapping.get().packetManager().incoming().entityTagQueryPacket(transactionId, entityId);
     }

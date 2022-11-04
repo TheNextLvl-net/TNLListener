@@ -1,32 +1,25 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.entity.Entity;
 
-import javax.annotation.Nonnull;
-
 @Getter
 @Setter
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class EntityStatusPacket extends PacketBuilder {
 
     private int entityId;
-    @Nonnull
     private Status status;
 
-    protected EntityStatusPacket(int entityId, @Nonnull Status status) {
-        this.entityId = entityId;
-        this.status = status;
-    }
-
-    @Nonnull
-    public static EntityStatusPacket create(int entityId, @Nonnull Status status) {
+    public static EntityStatusPacket create(int entityId, Status status) {
         return Mapping.get().packetManager().outgoing().entityStatusPacket(entityId, status);
     }
 
-    @Nonnull
-    public static EntityStatusPacket create(@Nonnull Entity entity, @Nonnull Status status) {
+    public static EntityStatusPacket create(Entity entity, Status status) {
         return create(entity.getEntityId(), status);
     }
 
@@ -54,7 +47,6 @@ public abstract class EntityStatusPacket extends PacketBuilder {
             this.id = id;
         }
 
-        @Nonnull
         public static Status reducedDebugInformation(boolean reduced) {
             return reduced ? REDUCED_DEBUG_INFO_ON : REDUCED_DEBUG_INFO_OFF;
         }

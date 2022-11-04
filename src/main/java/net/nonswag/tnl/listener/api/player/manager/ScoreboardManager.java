@@ -13,13 +13,11 @@ import net.nonswag.tnl.listener.api.scoreboard.Team;
 import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.Scoreboard;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public abstract class ScoreboardManager extends Manager {
 
     @Getter
-    @Nonnull
     protected Team team = Team.NONE;
     @Setter
     @Nullable
@@ -31,16 +29,15 @@ public abstract class ScoreboardManager extends Manager {
         setScoreboard(manager.getNewScoreboard());
     }
 
-    @Nonnull
     public Scoreboard getScoreboard() {
         return getPlayer().bukkit().getScoreboard();
     }
 
-    public void setScoreboard(@Nonnull Scoreboard scoreboard) {
+    public void setScoreboard(Scoreboard scoreboard) {
         getPlayer().bukkit().setScoreboard(scoreboard);
     }
 
-    public void setTeam(@Nonnull Team team) {
+    public void setTeam(Team team) {
         this.team = team;
         updateTeam();
     }
@@ -84,7 +81,6 @@ public abstract class ScoreboardManager extends Manager {
         }
     }
 
-    @Nonnull
     public Sidebar getSidebar() {
         if (sidebar == null) sidebar = new Sidebar(this);
         return sidebar;

@@ -4,17 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
-import javax.annotation.Nonnull;
-
 @Getter
 @Setter
 public abstract class PlayerCommandPacket extends PacketBuilder {
     private int entityId;
-    @Nonnull
     private Action action;
     private int data;
 
-    protected PlayerCommandPacket(int entityId, @Nonnull Action action, int data) {
+    protected PlayerCommandPacket(int entityId, Action action, int data) {
         this.entityId = entityId;
         this.action = action;
         this.data = data;
@@ -32,8 +29,7 @@ public abstract class PlayerCommandPacket extends PacketBuilder {
         START_FALL_FLYING
     }
 
-    @Nonnull
-    public static PlayerCommandPacket create(int entityId, @Nonnull Action action, int data) {
+    public static PlayerCommandPacket create(int entityId, Action action, int data) {
         return Mapping.get().packetManager().incoming().playerCommandPacket(entityId, action, data);
     }
 }

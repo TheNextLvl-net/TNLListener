@@ -2,11 +2,8 @@ package net.nonswag.tnl.listener.api.server;
 
 import net.nonswag.tnl.listener.api.settings.Settings;
 
-import javax.annotation.Nonnull;
-
 public class UpdateRunnable {
 
-    @Nonnull
     private static final Thread thread;
 
     static {

@@ -1,49 +1,30 @@
 package net.nonswag.tnl.listener.api.gui.iterators;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.gui.GUI;
 import net.nonswag.tnl.listener.api.gui.GUIItem;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ListIterator;
+import java.util.Objects;
 
+@Getter
+@Setter
 public class GUIIterator implements ListIterator<GUIItem> {
 
-    @Nonnull
-    private final GUI gui;
     @Nullable
     private Boolean lastDirection;
+    private final GUI gui;
     private int nextIndex;
 
-    public GUIIterator(@Nonnull GUI gui) {
+    public GUIIterator(GUI gui) {
         this(gui, 0);
     }
 
-    public GUIIterator(@Nonnull GUI gui, int index) {
+    public GUIIterator(GUI gui, int index) {
         this.gui = gui;
         this.nextIndex = index;
-    }
-
-    @Nonnull
-    private GUI getGui() {
-        return gui;
-    }
-
-    @Nullable
-    public Boolean getLastDirection() {
-        return lastDirection;
-    }
-
-    private int getNextIndex() {
-        return nextIndex;
-    }
-
-    private void setLastDirection(boolean lastDirection) {
-        this.lastDirection = lastDirection;
-    }
-
-    private void setNextIndex(int nextIndex) {
-        this.nextIndex = nextIndex;
     }
 
     @Override
@@ -54,7 +35,7 @@ public class GUIIterator implements ListIterator<GUIItem> {
     @Override
     public GUIItem next() {
         setLastDirection(true);
-        return getGui().getItem(this.nextIndex++);
+        return Objects.requireNonNull(getGui().getItem(this.nextIndex++));
     }
 
     @Override
@@ -70,7 +51,7 @@ public class GUIIterator implements ListIterator<GUIItem> {
     @Override
     public GUIItem previous() {
         setLastDirection(false);
-        return getGui().getItem(this.nextIndex--);
+        return Objects.requireNonNull(getGui().getItem(this.nextIndex--));
     }
 
     public int previousIndex() {
@@ -78,22 +59,19 @@ public class GUIIterator implements ListIterator<GUIItem> {
     }
 
     @Override
-    public void set(@Nonnull GUIItem item) {
-        if (getLastDirection() == null) {
-            throw new IllegalStateException("No current item!");
-        } else {
-            int i = getLastDirection() ? getNextIndex() - 1 : getNextIndex();
-            getGui().setItem(i, item);
-        }
+    public void set(GUIItem item) {
+        if (getLastDirection() == null) throw new IllegalStateException();
+        getGui().setItem(getLastDirection() ? previousIndex() : getNextIndex(), item);
     }
 
     @Override
-    public void add(@Nonnull GUIItem item) {
-        throw new UnsupportedOperationException("Can't change the size of an gui!");
+    public void add(GUIItem item) {
+        getGui().addItem(item);
     }
 
     @Override
     public void remove() {
-        throw new UnsupportedOperationException("Can't change the size of an gui!");
+        if (getLastDirection() == null) throw new IllegalStateException();
+        getGui().remove(getLastDirection() ? previousIndex() : getNextIndex());
     }
 }

@@ -14,7 +14,6 @@ import net.nonswag.tnl.listener.api.plugin.PluginManager;
 import net.nonswag.tnl.listener.api.plugin.PluginUpdate;
 import org.bukkit.Bukkit;
 
-import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,7 +22,6 @@ import java.util.Map;
 
 public class PluginInstall extends SubCommand {
 
-    @Nonnull
     private static final List<String> tnlProducts = new ArrayList<>();
     private static long lastUpdate = 0;
 
@@ -32,7 +30,7 @@ public class PluginInstall extends SubCommand {
     }
 
     @Override
-    protected void execute(@Nonnull Invocation invocation) {
+    protected void execute(Invocation invocation) {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
         if (args.length < 2) throw new InvalidUseException(this);
@@ -60,19 +58,17 @@ public class PluginInstall extends SubCommand {
         } else source.sendMessage("%prefix% §4" + product + "§c is not a §8(§7public§8)§c tnl product");
     }
 
-    @Nonnull
     @Override
-    protected List<String> suggest(@Nonnull Invocation invocation) {
+    protected List<String> suggest(Invocation invocation) {
         if (invocation.arguments().length > 2) return new ArrayList<>();
         return getMissingTNLProducts();
     }
 
     @Override
-    public void usage(@Nonnull Invocation invocation) {
+    public void usage(Invocation invocation) {
         invocation.source().sendMessage("%prefix% §c/plugin install §8[§6Product§8]");
     }
 
-    @Nonnull
     static List<String> getMissingTNLProducts() {
         List<String> missingProducts = new ArrayList<>();
         for (String product : getTnlProducts()) {
@@ -83,7 +79,6 @@ public class PluginInstall extends SubCommand {
         return missingProducts;
     }
 
-    @Nonnull
     static List<String> getTnlProducts() {
         if (System.currentTimeMillis() - lastUpdate > 60000) {
             try {
@@ -101,7 +96,6 @@ public class PluginInstall extends SubCommand {
         return tnlProducts;
     }
 
-    @Nonnull
     static List<String> getInstalledTNLProducts() {
         List<String> products = new ArrayList<>(PluginInstall.getTnlProducts());
         products.removeIf(product -> !Bukkit.getPluginManager().isPluginEnabled(product));

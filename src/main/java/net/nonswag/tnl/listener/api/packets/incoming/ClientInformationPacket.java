@@ -4,16 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
-import javax.annotation.Nonnull;
-
 @Getter
 @Setter
 public abstract class ClientInformationPacket extends PacketBuilder {
-    @Nonnull
     private String language;
-    @Nonnull
     private ChatVisibility chatVisibility;
-    @Nonnull
     private HandSide mainHand;
     private int modelCustomisation;
     private int viewDistance;
@@ -21,8 +16,8 @@ public abstract class ClientInformationPacket extends PacketBuilder {
     private boolean textFiltering;
     private boolean listingAllowed;
 
-    protected ClientInformationPacket(@Nonnull String language, int viewDistance, @Nonnull ChatVisibility chatVisibility,
-                                      boolean chatColors, int modelCustomisation, @Nonnull HandSide mainHand,
+    protected ClientInformationPacket(String language, int viewDistance, ChatVisibility chatVisibility,
+                                      boolean chatColors, int modelCustomisation, HandSide mainHand,
                                       boolean textFiltering, boolean listingAllowed) {
         this.language = language;
         this.viewDistance = viewDistance;
@@ -42,9 +37,8 @@ public abstract class ClientInformationPacket extends PacketBuilder {
         LEFT, RIGHT
     }
 
-    @Nonnull
-    public static ClientInformationPacket create(@Nonnull String language, int viewDistance, @Nonnull ChatVisibility chatVisibility,
-                                                 boolean chatColors, int modelCustomisation, @Nonnull HandSide mainHand,
+    public static ClientInformationPacket create(String language, int viewDistance, ChatVisibility chatVisibility,
+                                                 boolean chatColors, int modelCustomisation, HandSide mainHand,
                                                  boolean textFiltering, boolean listingAllowed) {
         return Mapping.get().packetManager().incoming().clientInformationPacket(language, viewDistance, chatVisibility, chatColors, modelCustomisation, mainHand, textFiltering, listingAllowed);
     }

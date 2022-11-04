@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
-import javax.annotation.Nonnull;
-
 @Getter
 @Setter
 public abstract class PlayerInputPacket extends PacketBuilder {
@@ -21,7 +19,6 @@ public abstract class PlayerInputPacket extends PacketBuilder {
         this.sneaking = sneaking;
     }
 
-    @Nonnull
     public static PlayerInputPacket create(float sideways, float forward, boolean jumping, boolean sneaking) {
         return Mapping.get().packetManager().incoming().playerInputPacket(sideways, forward, jumping, sneaking);
     }

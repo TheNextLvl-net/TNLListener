@@ -10,33 +10,27 @@ import net.nonswag.tnl.listener.api.packets.outgoing.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
-import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.function.Consumer;
 
 public abstract class HologramManager extends Manager {
 
-    @Nonnull
     private final HashMap<Hologram, TNLArmorStand[][]> holograms = new HashMap<>();
-    @Nonnull
     private final List<Hologram> registeredHolograms = new ArrayList<>();
 
-    @Nonnull
     private synchronized Placeholder[] worldPlaceholders() {
         List<Placeholder> placeholders = new ArrayList<>();
         Bukkit.getWorlds().forEach(world -> placeholders.add(new Placeholder("players_" + world.getName(), world.getPlayers().size())));
         return placeholders.toArray(new Placeholder[]{});
     }
 
-    @Nonnull
-    public synchronized List<Integer> getIds(@Nonnull Hologram hologram) {
+    public synchronized List<Integer> getIds(Hologram hologram) {
         List<Integer> ids = new ArrayList<>();
         getArmorStands(hologram).forEach(armorStand -> ids.add(armorStand.getEntityId()));
         return ids;
     }
 
-    @Nonnull
-    public synchronized List<TNLArmorStand> getArmorStands(@Nonnull Hologram hologram) {
+    public synchronized List<TNLArmorStand> getArmorStands(Hologram hologram) {
         List<TNLArmorStand> armorStands = new ArrayList<>();
         if (!holograms.containsKey(hologram)) return armorStands;
         if (!hologram.canSee().test(getPlayer())) return armorStands;
@@ -46,7 +40,7 @@ public abstract class HologramManager extends Manager {
         return armorStands;
     }
 
-    public synchronized boolean load(@Nonnull Hologram hologram) {
+    public synchronized boolean load(Hologram hologram) {
         if (!hologram.canSee().test(getPlayer())) return false;
         if (hologram.getLocation() == null || hologram.getWorld() == null) return false;
         if (!getPlayer().worldManager().getWorld().equals(hologram.getWorld())) return false;
@@ -76,7 +70,7 @@ public abstract class HologramManager extends Manager {
         for (TNLArmorStand[] armorStands : event.getArmorStands()) {
             if (armorStands != null) for (TNLArmorStand armorStand : armorStands) {
                 if (armorStand == null) continue;
-                EntitySpawnPacket.create(armorStand.bukkit()).send(getPlayer());
+                AddEntityPacket.create(armorStand.bukkit()).send(getPlayer());
                 EntityMetadataPacket.create(armorStand.bukkit()).send(getPlayer());
                 EntityEquipmentPacket.create(armorStand.bukkit()).send(getPlayer());
             }
@@ -89,10 +83,10 @@ public abstract class HologramManager extends Manager {
         iterateHolograms(this::load);
     }
 
-    public synchronized boolean unload(@Nonnull Hologram hologram) {
+    public synchronized boolean unload(Hologram hologram) {
         if (!holograms.containsKey(hologram)) return false;
         List<PacketBuilder> packets = new ArrayList<>();
-        getArmorStands(hologram).forEach(armorStand -> packets.add(EntityDestroyPacket.create(armorStand.bukkit())));
+        getArmorStands(hologram).forEach(armorStand -> packets.add(RemoveEntitiesPacket.create(armorStand.bukkit())));
         packets.forEach(packet -> packet.send(getPlayer()));
         holograms.remove(hologram);
         return !packets.isEmpty();
@@ -102,18 +96,18 @@ public abstract class HologramManager extends Manager {
         iterateHolograms(this::unload);
     }
 
-    public synchronized boolean unregister(@Nonnull Hologram hologram) {
+    public synchronized boolean unregister(Hologram hologram) {
         registeredHolograms.remove(hologram);
         return unload(hologram);
     }
 
-    public synchronized boolean register(@Nonnull Hologram hologram) {
+    public synchronized boolean register(Hologram hologram) {
         if (registeredHolograms.contains(hologram)) return false;
         registeredHolograms.add(hologram);
         return load(hologram);
     }
 
-    public synchronized boolean reload(@Nonnull Hologram hologram) {
+    public synchronized boolean reload(Hologram hologram) {
         boolean unload = unload(hologram);
         boolean load = load(hologram);
         return unload && load;
@@ -124,7 +118,7 @@ public abstract class HologramManager extends Manager {
         loadAll();
     }
 
-    private synchronized void iterateHolograms(@Nonnull Consumer<Hologram> consumer) {
+    private synchronized void iterateHolograms(Consumer<Hologram> consumer) {
         List<Hologram> holograms = Hologram.getHolograms();
         this.holograms.keySet().forEach(hologram -> {
             if (!holograms.contains(hologram)) holograms.add(hologram);
@@ -135,13 +129,13 @@ public abstract class HologramManager extends Manager {
         iterateHolograms(holograms, consumer);
     }
 
-    private synchronized void iterateHolograms(@Nonnull List<Hologram> holograms, @Nonnull Consumer<Hologram> consumer) {
+    private synchronized void iterateHolograms(List<Hologram> holograms, Consumer<Hologram> consumer) {
         holograms.forEach(hologram -> {
             if (hologram != null) consumer.accept(hologram);
         });
     }
 
-    public synchronized boolean update(@Nonnull Hologram hologram) {
+    public synchronized boolean update(Hologram hologram) {
         if (!holograms.containsKey(hologram)) return false;
         if (!hologram.canSee().test(getPlayer())) return false;
         List<String> lines = new ArrayList<>();
@@ -167,7 +161,7 @@ public abstract class HologramManager extends Manager {
         new ArrayList<>(this.holograms.keySet()).forEach(this::update);
     }
 
-    public synchronized boolean teleport(@Nonnull Hologram hologram, @Nonnull Location location) {
+    public synchronized boolean teleport(Hologram hologram, Location location) {
         if (!holograms.containsKey(hologram)) return false;
         if (!hologram.canSee().test(getPlayer())) return false;
         if (hologram.getLines().isEmpty()) return unload(hologram);
@@ -180,14 +174,14 @@ public abstract class HologramManager extends Manager {
             for (int darkness = 0; darkness < hologram.getDarkness(); darkness++) {
                 if (armorStands.length <= darkness || armorStands[darkness] == null) continue;
                 Position position = new Position(location.getX(), location.getY() + (line * hologram.getLineDistance()), location.getZ(), location.getYaw(), location.getPitch());
-                packets.add(EntityTeleportPacket.create(armorStands[darkness].bukkit(), position));
+                packets.add(TeleportEntityPacket.create(armorStands[darkness].bukkit(), position));
             }
         }
         packets.forEach(packet -> packet.send(getPlayer()));
         return !packets.isEmpty();
     }
 
-    public synchronized boolean teleport(@Nonnull Hologram hologram, double offsetX, double offsetY, double offsetZ) {
+    public synchronized boolean teleport(Hologram hologram, double offsetX, double offsetY, double offsetZ) {
         if (hologram.getLocation() == null) return false;
         return teleport(hologram, hologram.getLocation().clone().add(offsetX, offsetY, offsetZ));
     }

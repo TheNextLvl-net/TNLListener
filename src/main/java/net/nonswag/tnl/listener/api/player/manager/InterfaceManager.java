@@ -12,7 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 @Getter
@@ -23,7 +22,7 @@ public abstract class InterfaceManager extends Manager {
     @Nullable
     protected SignMenu signMenu = null;
 
-    public void openGUI(@Nonnull GUI gui) {
+    public void openGUI(GUI gui) {
         GUI current = getGUI();
         if (gui.equals(current)) {
             openPackets(gui);
@@ -41,7 +40,7 @@ public abstract class InterfaceManager extends Manager {
         openPackets(gui);
     }
 
-    private void openPackets(@Nonnull GUI gui) {
+    private void openPackets(GUI gui) {
         String title = Message.format(gui.getTitle(), getPlayer());
         if (!gui.getType().equals(InventoryType.CHEST)) {
             OpenWindowPacket.create(OpenWindowPacket.Type.valueOf(gui.getType()), title).send(getPlayer());
@@ -55,37 +54,37 @@ public abstract class InterfaceManager extends Manager {
         if (gui != null) updateGUI(gui);
     }
 
-    public void updateGUI(@Nonnull GUI gui) {
+    public void updateGUI(GUI gui) {
         ContainerSetContentPacket.create(gui.items(), TNLItem.create(Material.AIR)).send(getPlayer());
     }
 
     public void closeGUI(boolean update) {
         if (getGUI() != null) getGUI().removeViewer(getPlayer());
         GUI = null;
-        if (getSignMenu() == null && update) CloseWindowPacket.create().send(getPlayer());
+        if (getSignMenu() == null && update) ContainerClosePacket.create().send(getPlayer());
     }
 
     public void closeGUI() {
         closeGUI(true);
     }
 
-    public void openBook(@Nonnull ItemStack item) {
+    public void openBook(ItemStack item) {
         closeGUI(false);
         getPlayer().bukkit().openBook(item);
     }
 
-    public abstract void openVirtualSignEditor(@Nonnull SignMenu signMenu);
+    public abstract void openVirtualSignEditor(SignMenu signMenu);
 
-    public void openSignEditor(@Nonnull BlockLocation location) {
+    public void openSignEditor(BlockLocation location) {
         OpenSignPacket.create(location).send(getPlayer());
     }
 
     public void closeSignMenu() {
         signMenu = null;
-        if (GUI == null) CloseWindowPacket.create().send(getPlayer());
+        if (GUI == null) ContainerClosePacket.create().send(getPlayer());
     }
 
-    public void demo(@Nonnull MutualGetter<GameStateChangePacket.DemoEvent, Float> demo) {
+    public void demo(MutualGetter<GameStateChangePacket.DemoEvent, Float> demo) {
         GameStateChangePacket.create(GameStateChangePacket.DEMO_EVENT, demo).send(getPlayer());
     }
 }

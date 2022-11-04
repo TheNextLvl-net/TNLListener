@@ -37,7 +37,7 @@ public final class Listener extends PluginBuilder {
 
     @Getter
     @Nonnull
-    public static Listener instance = new Listener();
+    public static final Listener instance = new Listener();
 
     @Setter
     @Nonnull

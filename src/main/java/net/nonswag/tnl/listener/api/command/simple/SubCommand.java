@@ -6,7 +6,6 @@ import net.nonswag.core.api.command.CommandSource;
 import net.nonswag.core.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.Usable;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,16 +13,14 @@ import java.util.List;
 public abstract class SubCommand implements Usable {
 
     @Getter
-    @Nonnull
     private final String name;
     @Getter
-    @Nonnull
     private final List<String> aliases;
     @Getter
     @Nullable
     private final String permission;
 
-    protected SubCommand(@Nonnull String name, @Nullable String permission, @Nonnull String... aliases) {
+    protected SubCommand(String name, @Nullable String permission, String... aliases) {
         this.name = name.toLowerCase();
         this.permission = permission;
         List<String> strings = new ArrayList<>();
@@ -32,27 +29,26 @@ public abstract class SubCommand implements Usable {
         initialize();
     }
 
-    protected SubCommand(@Nonnull String name) {
+    protected SubCommand(String name) {
         this(name, null);
     }
 
     protected void initialize() {
     }
 
-    protected abstract void execute(@Nonnull Invocation invocation);
+    protected abstract void execute(Invocation invocation);
 
-    @Nonnull
-    protected List<String> suggest(@Nonnull Invocation invocation) {
+    protected List<String> suggest(Invocation invocation) {
         return new ArrayList<>();
     }
 
     @Override
-    public boolean canUse(@Nonnull CommandSource source) {
+    public boolean canUse(CommandSource source) {
         return true;
     }
 
     @Override
-    public void usage(@Nonnull Invocation invocation) {
+    public void usage(Invocation invocation) {
         invocation.source().sendMessage("%prefix% §c/" + invocation.label() + " " + getName());
     }
 }

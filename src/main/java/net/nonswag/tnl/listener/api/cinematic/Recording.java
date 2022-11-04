@@ -9,7 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
@@ -18,37 +17,30 @@ import java.util.Map;
 
 public class Recording implements Cloneable {
 
-    @Nonnull
     private final List<Pair<Location, Long>> steps = new ArrayList<>();
-    @Nonnull
     private final String name;
-    @Nonnull
     private final JsonFile saves;
 
-    public Recording(@Nonnull String name) {
+    public Recording(String name) {
         this.name = name;
         this.saves = new JsonFile("plugins/Listener/Cinematics", name + ".json");
     }
 
-    @Nonnull
     public JsonFile getSaves() {
         return saves;
     }
 
-    @Nonnull
     public List<Pair<Location, Long>> getSteps() {
         return steps;
     }
 
-    @Nonnull
     public String getName() {
         return name;
     }
 
     private long CAPTURE = 0;
 
-    @Nonnull
-    public Recording addStep(@Nonnull Location location) {
+    public Recording addStep(Location location) {
         if (location.getWorld() == null) throw new NullPointerException("World cannot be null");
         if (CAPTURE == 0) CAPTURE = System.currentTimeMillis();
         long capture = System.currentTimeMillis() - CAPTURE;
@@ -57,7 +49,7 @@ public class Recording implements Cloneable {
         return this;
     }
 
-    public boolean removeStep(@Nonnull Location location) {
+    public boolean removeStep(Location location) {
         return getSteps().removeIf(step -> step.getKey().equals(location));
     }
 
@@ -73,7 +65,6 @@ public class Recording implements Cloneable {
         getSaves().save();
     }
 
-    @Nonnull
     public File getFile() {
         return getSaves().getFile();
     }
@@ -83,7 +74,7 @@ public class Recording implements Cloneable {
     }
 
     @Nullable
-    public static Recording load(@Nonnull String name) {
+    public static Recording load(String name) {
         if (!exists(name)) return null;
         Recording recording = new Recording(name);
         JsonFile config = new JsonFile("plugins/Listener/Cinematics/", name + ".json");
@@ -122,17 +113,15 @@ public class Recording implements Cloneable {
         return recording;
     }
 
-    public static boolean exists(@Nonnull String name) {
+    public static boolean exists(String name) {
         return new File("plugins/Listener/Cinematics/" + name + ".json").exists();
     }
 
-    @Nonnull
     public static File[] getRecordings() {
         File[] files = new File("plugins/Listener/Cinematics").listFiles((file, name) -> name.endsWith(".json"));
         return files == null ? new File[0] : files;
     }
 
-    @Nonnull
     @Override
     public Recording clone() {
         Recording recording = new Recording(getName());

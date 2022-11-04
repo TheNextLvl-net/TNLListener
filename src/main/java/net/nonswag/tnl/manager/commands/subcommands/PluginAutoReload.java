@@ -5,8 +5,6 @@ import net.nonswag.core.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.simple.SubCommand;
 import net.nonswag.tnl.manager.Manager;
 
-import javax.annotation.Nonnull;
-
 public class PluginAutoReload extends SubCommand {
 
     public PluginAutoReload() {
@@ -14,7 +12,7 @@ public class PluginAutoReload extends SubCommand {
     }
 
     @Override
-    protected void execute(@Nonnull Invocation invocation) {
+    protected void execute(Invocation invocation) {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
         Manager.getInstance().setAutoReload(!Manager.getInstance().isAutoReload());

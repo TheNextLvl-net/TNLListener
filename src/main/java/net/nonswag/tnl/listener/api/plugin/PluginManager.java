@@ -13,7 +13,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.FileUtil;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
@@ -23,17 +22,15 @@ import java.util.List;
 
 public class PluginManager {
 
-    @Nonnull
     public static Plugin[] getPlugins() {
         return Bukkit.getPluginManager().getPlugins();
     }
 
     @Nullable
-    public static Plugin getPlugin(@Nonnull String name) {
+    public static Plugin getPlugin(String name) {
         return Bukkit.getPluginManager().getPlugin(name);
     }
 
-    @Nonnull
     public static List<String> getPlugins(boolean includeVersion) {
         List<String> plugins = new ArrayList<>();
         for (Plugin plugin : getPlugins()) {
@@ -44,21 +41,19 @@ public class PluginManager {
         return plugins;
     }
 
-    @Nonnull
-    public static String getName(@Nonnull Plugin plugin, boolean includeVersion) {
+    public static String getName(Plugin plugin, boolean includeVersion) {
         if (includeVersion) {
             return (plugin.isEnabled() ? "§a" : "§c") + plugin.getName() + " §8(§7" + getVersion(plugin) +
                     (plugin.getDescription().getAPIVersion() == null || plugin.getDescription().getAPIVersion().isEmpty() ? "*" : "") + "§8)";
         } else return (plugin.isEnabled() ? "§a" : "§c") + plugin.getName();
     }
 
-    @Nonnull
-    public static String getVersion(@Nonnull Plugin plugin) {
+    public static String getVersion(Plugin plugin) {
         return plugin.getDescription().getVersion();
     }
 
     @Nullable
-    public static File getJarFile(@Nonnull Plugin plugin) {
+    public static File getJarFile(Plugin plugin) {
         if (plugin instanceof TNLPlugin pl) return pl.getFile();
         else if (plugin instanceof JavaPlugin pl) return Reflection.Field.get(pl, JavaPlugin.class, "file");
         else if (!(plugin instanceof PluginBuilder)) return new File("plugins", plugin.getName() + ".jar");
@@ -66,7 +61,7 @@ public class PluginManager {
     }
 
     @Nullable
-    private static Throwable loadSecure(@Nonnull File file) {
+    private static Throwable loadSecure(File file) {
         try {
             load(file);
             return null;
@@ -75,8 +70,7 @@ public class PluginManager {
         }
     }
 
-    @Nonnull
-    public static List<Plugin> getDependencies(@Nonnull Plugin plugin) {
+    public static List<Plugin> getDependencies(Plugin plugin) {
         List<Plugin> dependencies = new ArrayList<>();
         for (Plugin all : getPlugins()) {
             if ((!all.equals(plugin)) && (all.getDescription().getDepend().contains(plugin.getName()) ||
@@ -85,15 +79,15 @@ public class PluginManager {
         return dependencies;
     }
 
-    public static void enable(@Nonnull Plugin plugin) {
+    public static void enable(Plugin plugin) {
         if (!plugin.isEnabled()) Bukkit.getPluginManager().enablePlugin(plugin);
     }
 
-    public static void disable(@Nonnull Plugin plugin) {
+    public static void disable(Plugin plugin) {
         Bukkit.getPluginManager().disablePlugin(plugin);
     }
 
-    public static void unload(@Nonnull Plugin plugin) throws Exception {
+    public static void unload(Plugin plugin) throws Exception {
         HandlerList.unregisterAll(plugin);
         disable(plugin);
         CommandManager.unregisterAllCommands(plugin);
@@ -116,15 +110,14 @@ public class PluginManager {
         if (exception != null) throw exception;
     }
 
-    public static void unloadSecure(@Nonnull Plugin plugin) {
+    public static void unloadSecure(Plugin plugin) {
         try {
             unload(plugin);
         } catch (Exception ignored) {
         }
     }
 
-    @Nonnull
-    public static Plugin load(@Nonnull File file) throws InvalidPluginException, InvalidDescriptionException {
+    public static Plugin load(File file) throws InvalidPluginException, InvalidDescriptionException {
         Plugin plugin = Bukkit.getPluginManager().loadPlugin(file);
         if (plugin != null) plugin.onLoad();
         if (plugin != null && !plugin.isEnabled()) Bukkit.getPluginManager().enablePlugin(plugin);
@@ -132,7 +125,7 @@ public class PluginManager {
         return plugin;
     }
 
-    public static void reload(@Nonnull Plugin plugin) throws Throwable {
+    public static void reload(Plugin plugin) throws Throwable {
         if (!plugin.isEnabled()) return;
         List<Plugin> dependencies = getDependencies(plugin);
         for (Plugin all : dependencies) unload(all);
@@ -168,15 +161,14 @@ public class PluginManager {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static void checkUpdate(@Nonnull File file) {
+    public static void checkUpdate(File file) {
         File updateDirectory = Bukkit.getUpdateFolderFile();
         if (!updateDirectory.isDirectory()) return;
         File updateFile = new File(updateDirectory, file.getName());
         if (updateFile.isFile() && FileUtil.copy(updateFile, file)) updateFile.delete();
     }
 
-    @Nonnull
-    public static List<PluginBuilder> getCustomPlugins(@Nonnull Plugin plugin) {
+    public static List<PluginBuilder> getCustomPlugins(Plugin plugin) {
         List<PluginBuilder> plugins = new ArrayList<>();
         if (plugin.equals(Bootstrap.getInstance())) plugins.add(Mapping.get());
         for (Plugin all : getPlugins()) {

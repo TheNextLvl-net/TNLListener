@@ -4,7 +4,6 @@ import net.nonswag.core.api.math.Range;
 import net.nonswag.tnl.listener.api.item.TNLItem;
 import org.bukkit.Material;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,35 +11,30 @@ import java.util.stream.IntStream;
 
 public class FormattedGUI extends GUI {
 
-    @Nonnull
     private final Formatter formatter;
-    @Nonnull
     protected GUIItem close = TNLItem.create(Material.BARRIER).setName("§8* §cClose window").toGUIItem().
             addInteractions(new Interaction(player -> player.interfaceManager().closeGUI()));
 
-    @Nonnull
     protected TNLItem previousPage = TNLItem.create(Material.ARROW).setName("§8» §3Previous page");
-    @Nonnull
     protected TNLItem nextPage = TNLItem.create(Material.ARROW).setName("§8» §3Next page");
     @Nullable
     protected TNLItem emptySlot = TNLItem.create(Material.RED_STAINED_GLASS_PANE).setName("§7-§8/§7-");
 
-    public FormattedGUI(@Range(from = 1, to = 6) int rows, @Nonnull String title) {
+    public FormattedGUI(@Range(from = 1, to = 6) int rows, String title) {
         this(rows, title, null);
     }
 
-    public FormattedGUI(@Range(from = 1, to = 6) int rows, @Nonnull String title, @Nullable Formatter formatter) {
+    public FormattedGUI(@Range(from = 1, to = 6) int rows, String title, @Nullable Formatter formatter) {
         this(rows, 64, title, formatter);
     }
 
-    public FormattedGUI(@Range(from = 1, to = 6) int rows, int maxStackSize, @Nonnull String title) {
+    public FormattedGUI(@Range(from = 1, to = 6) int rows, int maxStackSize, String title) {
         this(rows, maxStackSize, title, null);
     }
 
-    public FormattedGUI(@Range(from = 1, to = 6) int rows, int maxStackSize, @Nonnull String title, @Nullable Formatter formatter) {
+    public FormattedGUI(@Range(from = 1, to = 6) int rows, int maxStackSize, String title, @Nullable Formatter formatter) {
         super(rows, maxStackSize, title);
         this.formatter = formatter != null ? formatter : new Formatter() {
-            @Nonnull
             @Override
             public List<GUIItem> getItems() {
                 return new ArrayList<>();
@@ -49,7 +43,6 @@ public class FormattedGUI extends GUI {
         update();
     }
 
-    @Nonnull
     @Override
     public FormattedGUI formatDefault() {
         TNLItem placeholder1 = TNLItem.create(Material.WHITE_STAINED_GLASS_PANE).setName("§7-§8/§7-");
@@ -67,13 +60,11 @@ public class FormattedGUI extends GUI {
         return this;
     }
 
-    @Nonnull
     private FormattedGUI update() {
         return update(formatter.getItems());
     }
 
-    @Nonnull
-    private FormattedGUI update(@Nonnull List<GUIItem> items) {
+    private FormattedGUI update(List<GUIItem> items) {
         formatter.format(this);
         try {
             addItems(items.toArray(new GUIItem[]{}));
@@ -91,14 +82,13 @@ public class FormattedGUI extends GUI {
 
     public static abstract class Formatter {
 
-        public void format(@Nonnull FormattedGUI gui) {
+        public void format(FormattedGUI gui) {
             gui.clear().formatDefault();
             if (gui.previousPage.toGUIItem().hasInteractions()) gui.setItem(gui.getSize() - 6, gui.previousPage);
             gui.setItem(gui.getSize() - 5, gui.close);
             if (gui.nextPage.toGUIItem().hasInteractions()) gui.setItem(gui.getSize() - 4, gui.nextPage);
         }
 
-        @Nonnull
         public abstract List<GUIItem> getItems();
     }
 }

@@ -5,22 +5,20 @@ import net.nonswag.core.api.message.Placeholder;
 import net.nonswag.tnl.listener.api.server.Server;
 import net.nonswag.tnl.listener.utils.Messages;
 
-import javax.annotation.Nonnull;
-
 public abstract class ServerManager extends Manager {
 
-    public void connectUnchecked(@Nonnull String server) {
+    public void connectUnchecked(String server) {
         getPlayer().messenger().sendMessage(Messages.CONNECTING_TO_SERVER, new Placeholder("server", server));
         getPlayer().messenger().sendLegacyPluginMessage("BungeeCord", "Connect", server);
     }
 
-    public void connect(@Nonnull String server) {
+    public void connect(String server) {
         Server wrap = Server.wrap(server);
         if (wrap != null) connect(wrap);
         else getPlayer().messenger().sendMessage(Messages.UNKNOWN_SERVER, new Placeholder("server", server));
     }
 
-    public void connect(@Nonnull Server server) {
+    public void connect(Server server) {
         try {
             if (!server.getStatus().isOffline()) connectUnchecked(server.getName());
             else {

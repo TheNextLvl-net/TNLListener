@@ -5,24 +5,19 @@ import lombok.Setter;
 import net.nonswag.tnl.listener.api.chat.LastSeenMessages;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
-import javax.annotation.Nonnull;
 import java.time.Instant;
 
 @Getter
 @Setter
 public abstract class ChatPacket extends PacketBuilder {
-    @Nonnull
     private String message;
-    @Nonnull
     private Instant timeStamp;
-    @Nonnull
     private LastSeenMessages.Update lastSeenMessages;
-    @Nonnull
     private byte[] signature;
     private boolean signedPreview;
     private long salt;
 
-    protected ChatPacket(@Nonnull String message, @Nonnull Instant timeStamp, long salt, @Nonnull byte[] signature, boolean signedPreview, @Nonnull LastSeenMessages.Update lastSeenMessages) {
+    protected ChatPacket(String message, Instant timeStamp, long salt, byte[] signature, boolean signedPreview, LastSeenMessages.Update lastSeenMessages) {
         this.message = message;
         this.timeStamp = timeStamp;
         this.salt = salt;
@@ -31,8 +26,7 @@ public abstract class ChatPacket extends PacketBuilder {
         this.lastSeenMessages = lastSeenMessages;
     }
 
-    @Nonnull
-    public static ChatPacket create(@Nonnull String message, @Nonnull Instant timeStamp, long salt, @Nonnull byte[] signature, boolean signedPreview, @Nonnull LastSeenMessages.Update lastSeenMessages) {
+    public static ChatPacket create(String message, Instant timeStamp, long salt, byte[] signature, boolean signedPreview, LastSeenMessages.Update lastSeenMessages) {
         return Mapping.get().packetManager().incoming().chatPacket(message, timeStamp, salt, signature, signedPreview, lastSeenMessages);
     }
 }

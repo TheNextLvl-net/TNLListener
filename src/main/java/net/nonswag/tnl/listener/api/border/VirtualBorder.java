@@ -4,6 +4,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import net.nonswag.core.api.annotation.FieldsAreNonnullByDefault;
+import net.nonswag.core.api.annotation.MethodsReturnNonnullByDefault;
 
 import javax.annotation.Nonnull;
 
@@ -11,17 +13,18 @@ import javax.annotation.Nonnull;
 @Setter
 @ToString
 @EqualsAndHashCode
+@FieldsAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class VirtualBorder {
 
     public static final int MAX_SIZE = 29999984;
 
-    @Nonnull
     private Center center;
     private long lerpTime;
     private int warningDistance, warningDelay;
     private double damageBuffer, damageAmount, oldSize, newSize;
 
-    public VirtualBorder(@Nonnull Center center) {
+    public VirtualBorder(Center center) {
         this.center = center;
     }
 

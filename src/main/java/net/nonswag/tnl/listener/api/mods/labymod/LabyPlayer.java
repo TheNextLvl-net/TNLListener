@@ -6,6 +6,8 @@ import com.google.gson.JsonObject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import net.nonswag.core.api.annotation.FieldsAreNonnullByDefault;
+import net.nonswag.core.api.annotation.MethodsReturnNonnullByDefault;
 import net.nonswag.core.api.logger.Logger;
 import net.nonswag.core.api.math.Range;
 import net.nonswag.tnl.listener.api.mods.ModMessage;
@@ -18,6 +20,7 @@ import net.nonswag.tnl.listener.events.mods.labymod.LabyPlayerJoinEvent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -25,42 +28,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+@FieldsAreNonnullByDefault
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public abstract class LabyPlayer extends ModPlayer {
 
-    @Nonnull
     public final Discord discord = new Discord();
-    @Nonnull
     public final Cinematic cinematic = new Cinematic();
-    @Nonnull
     public final Subtitle subtitle = new Subtitle();
-    @Nonnull
     public final Client client = new Client();
-    @Nonnull
     public final Data data = new Data();
-    @Nonnull
     public final Tablist tablist = new Tablist();
-    @Nonnull
     public final VoiceChat voicechat = new VoiceChat();
-    @Nonnull
     public final Server server = new Server();
-    @Nonnull
     public final Balance balance = new Balance();
-    @Nonnull
     public final Emote emote = new Emote();
-    @Nonnull
     public final Sticker sticker = new Sticker();
-    @Nonnull
     public final Addons addons = new Addons();
-    @Nonnull
     public final Watermark watermark = new Watermark();
-    @Nonnull
     public final ActionMenu actionmenu = new ActionMenu();
-    @Nonnull
     public final Permissions permissions = new Permissions();
 
     public static class Data {
 
-        @Nonnull
         private final HashMap<String, Answer.ServerConnectRequest> serverConnectRequests = new HashMap<>();
         @Nullable
         private Answer.AddonRecommendation addonRecommendation = null;
@@ -70,7 +60,6 @@ public abstract class LabyPlayer extends ModPlayer {
         private Data() {
         }
 
-        @Nonnull
         public HashMap<String, Answer.ServerConnectRequest> getServerConnectRequests() {
             return serverConnectRequests;
         }
@@ -94,11 +83,10 @@ public abstract class LabyPlayer extends ModPlayer {
         }
     }
 
+    @Getter
+    @Setter
     public class Client {
-
-        @Nonnull
         private String version = "unknown";
-        @Nonnull
         private final List<Addon> addons = new ArrayList<>();
         private boolean shadow = false;
         private int shadowVersion = -1;
@@ -106,41 +94,11 @@ public abstract class LabyPlayer extends ModPlayer {
         private Client() {
         }
 
-        @Nonnull
-        public String getVersion() {
-            return version;
-        }
-
-        public void setVersion(@Nonnull String version) {
-            this.version = version;
-        }
-
-        @Nonnull
-        public List<Addon> getAddons() {
-            return addons;
-        }
-
-        public boolean isShadow() {
-            return shadow;
-        }
-
-        public void setShadow(boolean shadow) {
-            this.shadow = shadow;
-        }
-
-        public int getShadowVersion() {
-            return shadowVersion;
-        }
-
-        public void setShadowVersion(int shadowVersion) {
-            this.shadowVersion = shadowVersion;
-        }
-
-        public void setPermissions(@Nonnull Permissions permissions) {
+        public void setPermissions(Permissions permissions) {
             sendMessage("PERMISSIONS", permissions.getMessage());
         }
 
-        public void sendGamemodeToast(@Nonnull String message) {
+        public void sendGamemodeToast(String message) {
             JsonObject object = new JsonObject();
             object.addProperty("show_gamemode", true);
             object.addProperty("gamemode_name", message);
@@ -175,15 +133,7 @@ public abstract class LabyPlayer extends ModPlayer {
             sendMessage("voicechat", voicechatObject);
         }
 
-        public void mute(@Nonnull UUID player) {
-            setMute(player, true);
-        }
-
-        public void unmute(@Nonnull UUID player) {
-            setMute(player, false);
-        }
-
-        public void setMute(@Nonnull UUID player, boolean muted) {
+        public void setMuted(UUID player, boolean muted) {
             JsonObject voicechatObject = new JsonObject();
             JsonObject mutePlayerObject = new JsonObject();
             mutePlayerObject.addProperty("mute", muted);
@@ -205,11 +155,11 @@ public abstract class LabyPlayer extends ModPlayer {
             sendMessage("cinescopes", object);
         }
 
-        public void play(@Nonnull List<Point> points, long millis) {
+        public void play(List<Point> points, long millis) {
             play(points, millis, null);
         }
 
-        public void play(@Nonnull List<Point> points, long millis, @Nullable Answer.Cinematic answer) {
+        public void play(List<Point> points, long millis, @Nullable Answer.Cinematic answer) {
             if (answer != null) data.setCinematic(answer);
             JsonObject cinematic = new JsonObject();
             JsonArray array = new JsonArray();
@@ -239,19 +189,19 @@ public abstract class LabyPlayer extends ModPlayer {
         private Subtitle() {
         }
 
-        public void set(@Nonnull TNLPlayer viewer, @Nullable String value) {
+        public void set(TNLPlayer viewer, @Nullable String value) {
             set(viewer.getUniqueId(), value, 0.8);
         }
 
-        public void set(@Nonnull TNLPlayer viewer, @Nullable String value, double size) {
+        public void set(TNLPlayer viewer, @Nullable String value, double size) {
             set(viewer.getUniqueId(), value, size);
         }
 
-        public void set(@Nonnull UUID viewer, @Nullable String value) {
+        public void set(UUID viewer, @Nullable String value) {
             set(viewer, value, 0.8);
         }
 
-        public void set(@Nonnull UUID viewer, @Nullable String value, double size) {
+        public void set(UUID viewer, @Nullable String value, double size) {
             JsonArray array = new JsonArray();
             JsonObject subtitle = new JsonObject();
             subtitle.addProperty("uuid", viewer.toString());
@@ -273,7 +223,7 @@ public abstract class LabyPlayer extends ModPlayer {
             sendMessage("discord_rpc", partyObject);
         }
 
-        public void setParty(@Nonnull String id, int members, int maximalMembers) {
+        public void setParty(String id, int members, int maximalMembers) {
             JsonObject partyObject = new JsonObject();
             partyObject.addProperty("hasParty", true);
             partyObject.addProperty("partyId", id);
@@ -288,15 +238,15 @@ public abstract class LabyPlayer extends ModPlayer {
             sendMessage("discord_rpc", richPresenceObject);
         }
 
-        public void setRichPresenceTimer(@Nonnull String gamemode, long startTime) {
+        public void setRichPresenceTimer(String gamemode, long startTime) {
             setRichPresence(gamemode, startTime, 0);
         }
 
-        public void setRichPresenceCountdown(@Nonnull String gamemode, long endTime) {
+        public void setRichPresenceCountdown(String gamemode, long endTime) {
             setRichPresence(gamemode, 0, System.currentTimeMillis());
         }
 
-        public void setRichPresence(@Nonnull String gamemode, long startTime, long endTime) {
+        public void setRichPresence(String gamemode, long startTime, long endTime) {
             JsonObject richPresenceObject = new JsonObject();
             richPresenceObject.addProperty("hasGame", true);
             richPresenceObject.addProperty("game_mode", gamemode);
@@ -311,19 +261,19 @@ public abstract class LabyPlayer extends ModPlayer {
         private Server() {
         }
 
-        public void requestConnect(@Nonnull String title, @Nonnull String address, @Nonnull Answer.ServerConnectRequest answer) {
+        public void requestConnect(String title, String address, Answer.ServerConnectRequest answer) {
             requestConnect(title, address, true, answer);
         }
 
-        public void requestConnect(@Nonnull String title, @Nonnull String address) {
+        public void requestConnect(String title, String address) {
             requestConnect(title, address, true);
         }
 
-        public void requestConnect(@Nonnull String title, @Nonnull String address, boolean preview) {
+        public void requestConnect(String title, String address, boolean preview) {
             requestConnect(title, address, preview, null);
         }
 
-        public void requestConnect(@Nonnull String title, @Nonnull String address, boolean preview, @Nullable Answer.ServerConnectRequest answer) {
+        public void requestConnect(String title, String address, boolean preview, @Nullable Answer.ServerConnectRequest answer) {
             getPlayer().interfaceManager().closeGUI(false);
             if (answer != null) data.getServerConnectRequests().put(address, answer);
             JsonObject object = new JsonObject();
@@ -336,9 +286,7 @@ public abstract class LabyPlayer extends ModPlayer {
 
     public class Balance {
 
-        @Nonnull
         public final Cash cash = new Cash();
-        @Nonnull
         public final Bank bank = new Bank();
 
         @Getter
@@ -355,7 +303,7 @@ public abstract class LabyPlayer extends ModPlayer {
             @Range(from = 0, to = 5)
             private int divisor = 2;
 
-            private Manager(@Nonnull String type) {
+            private Manager(String type) {
                 this.type = type;
             }
 
@@ -417,7 +365,7 @@ public abstract class LabyPlayer extends ModPlayer {
         private Tablist() {
         }
 
-        public void setServerBanner(@Nonnull File file) {
+        public void setServerBanner(File file) {
             try {
                 setBanner(file.toURI().toURL().toString());
             } catch (MalformedURLException e) {
@@ -425,7 +373,7 @@ public abstract class LabyPlayer extends ModPlayer {
             }
         }
 
-        public void setBanner(@Nonnull String imageUrl) {
+        public void setBanner(String imageUrl) {
             JsonObject object = new JsonObject();
             object.addProperty("url", imageUrl);
             sendMessage("server_banner", object);
@@ -437,11 +385,11 @@ public abstract class LabyPlayer extends ModPlayer {
             sendMessage("tablist_cache", object);
         }
 
-        public void setFlag(@Nonnull TNLPlayer player, @Nonnull Flag flag) {
+        public void setFlag(TNLPlayer player, Flag flag) {
             setFlag(player.getUniqueId(), flag);
         }
 
-        public void setFlag(@Nonnull UUID player, @Nonnull Flag flag) {
+        public void setFlag(UUID player, Flag flag) {
             JsonObject flagPacket = new JsonObject();
             JsonArray users = new JsonArray();
             JsonObject userObject = new JsonObject();
@@ -458,15 +406,15 @@ public abstract class LabyPlayer extends ModPlayer {
         private Sticker() {
         }
 
-        public void showSticker(@Nonnull TNLPlayer player, @Nonnull StickerType type) {
+        public void showSticker(TNLPlayer player, StickerType type) {
             showSticker(player.getUniqueId(), type);
         }
 
-        public void showSticker(@Nonnull FakePlayer npc, @Nonnull StickerType type) {
+        public void showSticker(FakePlayer npc, StickerType type) {
             showSticker(npc.getPlayer().getGameProfile().getUniqueId(), type);
         }
 
-        public void showSticker(@Nonnull UUID player, @Nonnull StickerType type) {
+        public void showSticker(UUID player, StickerType type) {
             JsonArray array = new JsonArray();
             JsonObject sendSticker = new JsonObject();
             sendSticker.addProperty("uuid", player.toString());
@@ -481,15 +429,15 @@ public abstract class LabyPlayer extends ModPlayer {
         private Emote() {
         }
 
-        public void playEmote(@Nonnull TNLPlayer player, @Nonnull EmoteType emote) {
+        public void playEmote(TNLPlayer player, EmoteType emote) {
             playEmote(player.getUniqueId(), emote);
         }
 
-        public void playEmote(@Nonnull FakePlayer npc, @Nonnull EmoteType emote) {
+        public void playEmote(FakePlayer npc, EmoteType emote) {
             playEmote(npc.getPlayer().getGameProfile().getUniqueId(), emote);
         }
 
-        public void playEmote(@Nonnull UUID player, @Nonnull EmoteType emote) {
+        public void playEmote(UUID player, EmoteType emote) {
             JsonArray array = new JsonArray();
             JsonObject forcedEmote = new JsonObject();
             forcedEmote.addProperty("uuid", player.toString());
@@ -504,11 +452,11 @@ public abstract class LabyPlayer extends ModPlayer {
         private Addons() {
         }
 
-        public void recommend(@Nonnull Addon... addons) {
+        public void recommend(Addon... addons) {
             recommend(null, addons);
         }
 
-        public void recommend(@Nullable Answer.AddonRecommendation answer, @Nonnull Addon... addons) {
+        public void recommend(@Nullable Answer.AddonRecommendation answer, Addon... addons) {
             getPlayer().interfaceManager().closeGUI(false);
             if (answer != null) data.setAddonRecommendation(answer);
             JsonObject root = new JsonObject();
@@ -553,7 +501,7 @@ public abstract class LabyPlayer extends ModPlayer {
             sendMessage("user_menu_actions", new JsonArray());
         }
 
-        public void set(@Nonnull Entry... entries) {
+        public void set(Entry... entries) {
             JsonArray array = new JsonArray();
             for (Entry entry : entries) {
                 JsonObject object = new JsonObject();
@@ -567,12 +515,12 @@ public abstract class LabyPlayer extends ModPlayer {
     }
 
     @Override
-    public void sendMessage(@Nonnull String key, @Nonnull JsonElement message) {
+    public void sendMessage(String key, JsonElement message) {
         sendMessage(new ModMessage("labymod3:main", key, message));
     }
 
     @Override
-    public void handleMessage(@Nonnull ModMessage message) {
+    public void handleMessage(ModMessage message) {
         if (!message.channel().equals("main")) return;
         if (message.key().equals("INFO") && !isModUser()) {
             if (!message.message().isJsonObject()) return;
@@ -624,7 +572,7 @@ public abstract class LabyPlayer extends ModPlayer {
     }
 
     @Nullable
-    private Addon getAddon(@Nonnull JsonObject object) {
+    private Addon getAddon(JsonObject object) {
         if (!object.has("uuid") || !object.has("name")) return null;
         String uuid = object.get("uuid").getAsString();
         String name = object.get("name").getAsString();
@@ -633,8 +581,7 @@ public abstract class LabyPlayer extends ModPlayer {
         return addon;
     }
 
-    @Nonnull
-    private List<Addon> getAddons(@Nonnull JsonArray array) {
+    private List<Addon> getAddons(JsonArray array) {
         List<Addon> addons = new ArrayList<>();
         for (JsonElement element : array) {
             if (!element.isJsonObject()) continue;

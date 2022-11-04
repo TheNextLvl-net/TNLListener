@@ -3,8 +3,6 @@ package net.nonswag.tnl.listener.api.player.manager;
 import net.nonswag.tnl.listener.api.packets.outgoing.CooldownPacket;
 import org.bukkit.Material;
 
-import javax.annotation.Nonnull;
-
 public abstract class CooldownManager extends Manager {
 
     public void swingMainHand() {
@@ -23,28 +21,28 @@ public abstract class CooldownManager extends Manager {
 
     public abstract void setAttackCooldown(float cooldown);
 
-    public void setCooldown(@Nonnull Material material, int ticks, boolean packet) {
+    public void setCooldown(Material material, int ticks, boolean packet) {
         if (packet) CooldownPacket.create(material, ticks).send(getPlayer());
         else getPlayer().bukkit().setCooldown(material, ticks);
     }
 
-    public void setCooldown(@Nonnull Material material, int ticks) {
+    public void setCooldown(Material material, int ticks) {
         setCooldown(material, ticks, false);
     }
 
-    public void resetCooldown(@Nonnull Material material, boolean packet) {
+    public void resetCooldown(Material material, boolean packet) {
         setCooldown(material, 0, packet);
     }
 
-    public void resetCooldown(@Nonnull Material material) {
+    public void resetCooldown(Material material) {
         resetCooldown(material, false);
     }
 
-    public int getCooldown(@Nonnull Material material) {
+    public int getCooldown(Material material) {
         return getPlayer().bukkit().getCooldown(material);
     }
 
-    public boolean hasCooldown(@Nonnull Material material) {
+    public boolean hasCooldown(Material material) {
         return getPlayer().bukkit().hasCooldown(material);
     }
 

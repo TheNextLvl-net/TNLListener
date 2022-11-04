@@ -19,7 +19,6 @@ import javax.annotation.Nonnull;
 public abstract class TNLEvent extends Event implements Cancellable {
 
     @Getter
-    @Nonnull
     private static final HandlerList handlerList = new HandlerList();
 
     private boolean cancelled = false;
@@ -45,21 +44,7 @@ public abstract class TNLEvent extends Event implements Cancellable {
 
     @Nonnull
     @Override
-    public String getEventName() {
-        return getClass().getSimpleName();
-    }
-
-    @Nonnull
-    @Override
     public HandlerList getHandlers() {
         return handlerList;
-    }
-
-    @Override
-    public String toString() {
-        return "TNLEvent{" +
-                "cancelled=" + cancelled +
-                ", eventName='" + getEventName() + '\'' +
-                '}';
     }
 }

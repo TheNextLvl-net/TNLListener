@@ -14,7 +14,6 @@ import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
@@ -25,14 +24,10 @@ import java.net.URL;
 @Setter(AccessLevel.PROTECTED)
 public class PluginUpdate {
 
-    @Nonnull
     public static final String API_URL = "https://www.thenextlvl.net/api/";
-    @Nonnull
     public static final String PLUGIN_URL = "https://www.thenextlvl.net/static/plugins/";
-    @Nonnull
     public static final String VERIFICATION_URL = "https://www.thenextlvl.net/download/?plugin=";
 
-    @Nonnull
     private final String plugin;
     private final long currentVersion;
     private double latestUpdate = -1;
@@ -47,33 +42,33 @@ public class PluginUpdate {
     @Nullable
     private final String key;
 
-    public PluginUpdate(@Nonnull String plugin, long currentVersion) {
+    public PluginUpdate(String plugin, long currentVersion) {
         this(plugin, currentVersion, null);
     }
 
-    public PluginUpdate(@Nonnull String plugin, long currentVersion, @Nullable String key) {
+    public PluginUpdate(String plugin, long currentVersion, @Nullable String key) {
         this.plugin = plugin;
         this.currentVersion = currentVersion;
         this.key = key;
         update();
     }
 
-    public PluginUpdate(@Nonnull Plugin plugin) {
+    public PluginUpdate(Plugin plugin) {
         this(plugin, null);
     }
 
-    public PluginUpdate(@Nonnull Plugin plugin, @Nullable String key) {
+    public PluginUpdate(Plugin plugin, @Nullable String key) {
         this(plugin.getName(), new File("plugins/" + plugin.getName() + ".jar").lastModified() / 1000, key);
     }
 
-    public PluginUpdate(@Nonnull Mapping mapping) {
+    public PluginUpdate(Mapping mapping) {
         this(mapping.info().id(), mapping.getFile().lastModified() / 1000, null);
         this.mapping = true;
     }
 
     private boolean updateAccess() {
         if (getKey() != null) {
-            String url = getVerificationUrl() + getPlugin() + "&code=" + getKey();
+            String url = VERIFICATION_URL + getPlugin() + "&code=" + getKey();
             try {
                 HttpsURLConnection connection = (HttpsURLConnection) new URL(url).openConnection();
                 connection.setConnectTimeout(3000);
@@ -119,7 +114,7 @@ public class PluginUpdate {
         if (!isUpToDate()) {
             try {
                 String name = getPlugin().concat(".jar");
-                String url = getKey() != null ? (getVerificationUrl() + getPlugin() + "&code=" + getKey()) : (getPluginUrl() + name);
+                String url = getKey() != null ? (VERIFICATION_URL + getPlugin() + "&code=" + getKey()) : (PLUGIN_URL + name);
                 if (isMapping()) FileDownloader.download(url, new File(Mapping.get().getUpdateFolder(), name));
                 else FileDownloader.download(url, new File(Bukkit.getUpdateFolderFile(), name));
                 Logger.debug.println("Downloaded latest version of <'" + getPlugin() + "'>");
@@ -148,7 +143,6 @@ public class PluginUpdate {
     private static JsonElement cachedApi = null;
     private static long lastUpdate = 0;
 
-    @Nonnull
     public static synchronized JsonElement retrievePluginAPI(@Nullable String api) throws IOException {
         if (cachedApi != null && System.currentTimeMillis() - lastUpdate > 60000) return cachedApi;
         HttpsURLConnection connection = (HttpsURLConnection) new URL(api == null ? API_URL : api).openConnection();
@@ -172,9 +166,8 @@ public class PluginUpdate {
         }
     }
 
-    @Nonnull
     public JsonElement retrievePluginAPI() throws IOException {
-        return retrievePluginAPI(getApiUrl());
+        return retrievePluginAPI(API_URL);
     }
 
     protected void tip() {
@@ -182,20 +175,5 @@ public class PluginUpdate {
             Logger.tip.println("Run the updater of <'" + getPlugin() + "'> async", "this will prevent possible lags");
             suggested = true;
         }
-    }
-
-    @Nonnull
-    public String getApiUrl() {
-        return API_URL;
-    }
-
-    @Nonnull
-    public String getPluginUrl() {
-        return PLUGIN_URL;
-    }
-
-    @Nonnull
-    public String getVerificationUrl() {
-        return VERIFICATION_URL;
     }
 }

@@ -3,11 +3,9 @@ package net.nonswag.tnl.listener.api.player.manager;
 import net.nonswag.core.api.message.Message;
 import net.nonswag.tnl.listener.api.packets.outgoing.EntityStatusPacket;
 
-import javax.annotation.Nonnull;
-
 public abstract class DebugManager extends Manager {
 
-    public void setBrand(@Nonnull String brand) {
+    public void setBrand(String brand) {
         getPlayer().messenger().sendPluginMessage("minecraft:brand", Message.format(brand));
     }
 

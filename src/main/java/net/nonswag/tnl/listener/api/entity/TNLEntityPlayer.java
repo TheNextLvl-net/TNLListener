@@ -9,33 +9,28 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import javax.annotation.Nonnull;
-
 public interface TNLEntityPlayer extends TNLEntityLiving {
 
-    @Nonnull
-    static TNLEntityPlayer create(@Nonnull World world, double x, double y, double z, float yaw, float pitch, @Nonnull GameProfile profile) {
+    static TNLEntityPlayer create(World world, double x, double y, double z, float yaw, float pitch, GameProfile profile) {
         return Mapping.get().createEntityPlayer(world, x, y, z, yaw, pitch, profile);
     }
 
-    @Nonnull
-    static TNLEntityPlayer create(@Nonnull World world, double x, double y, double z, @Nonnull GameProfile profile) {
+    static TNLEntityPlayer create(World world, double x, double y, double z, GameProfile profile) {
         return create(world, x, y, z, 0f, 0f, profile);
     }
 
-    @Nonnull
-    static TNLEntityPlayer create(@Nonnull Location location, @Nonnull GameProfile profile) {
+    static TNLEntityPlayer create(Location location, GameProfile profile) {
         if (location.getWorld() == null) throw new NullPointerException("<'null'> is not a world");
         return create(location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch(), profile);
     }
 
-    void setLocation(@Nonnull Location location);
+    void setLocation(Location location);
 
     void setLocation(double x, double y, double z);
 
     void setLocation(double x, double y, double z, float yaw, float pitch);
 
-    void setItem(@Nonnull SlotType slot, @Nonnull TNLItem item);
+    void setItem(SlotType slot, TNLItem item);
 
     void setPing(int ping);
 
@@ -43,19 +38,16 @@ public interface TNLEntityPlayer extends TNLEntityLiving {
 
     int getPing();
 
-    @Nonnull
     Pose getPlayerPose();
 
-    void setPlayerPose(@Nonnull Pose pose);
+    void setPlayerPose(Pose pose);
 
-    @Nonnull
     GameProfile getGameProfile();
 
     void setCapeVisibility(boolean visible);
 
     boolean getCapeVisibility();
 
-    @Nonnull
     @Override
     Player bukkit();
 

@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
-import javax.annotation.Nonnull;
-
 @Getter
 @Setter
 public abstract class PaddleBoatPacket extends PacketBuilder {
@@ -17,7 +15,6 @@ public abstract class PaddleBoatPacket extends PacketBuilder {
         this.right = right;
     }
 
-    @Nonnull
     public static PaddleBoatPacket create(boolean left, boolean right) {
         return Mapping.get().packetManager().incoming().paddleBoatPacket(left, right);
     }

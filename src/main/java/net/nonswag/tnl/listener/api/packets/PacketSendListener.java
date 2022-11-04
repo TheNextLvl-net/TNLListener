@@ -1,16 +1,17 @@
 package net.nonswag.tnl.listener.api.packets;
 
+import net.nonswag.core.api.annotation.MethodsReturnNullableByDefault;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNullableByDefault
 public interface PacketSendListener {
 
-    void onSuccess(@Nonnull TNLPlayer player);
+    void onSuccess(TNLPlayer player);
 
-    @Nullable
-    default <P> P onFailure(@Nonnull TNLPlayer player) {
+    default <P> P onFailure(TNLPlayer player) {
         return null;
     }
 }

@@ -1,63 +1,43 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.core.api.object.MutualGetter;
 import net.nonswag.tnl.listener.api.gamemode.Gamemode;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
-import javax.annotation.Nonnull;
-
 @Getter
 @Setter
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class GameStateChangePacket extends PacketBuilder {
 
-    @Nonnull
     public static NoRespawnBlockAvailable NO_RESPAWN_BLOCK_AVAILABLE = new NoRespawnBlockAvailable();
-    @Nonnull
     public static StopRaining START_RAINING = new StopRaining();
-    @Nonnull
     public static StartRaining STOP_RAINING = new StartRaining();
-    @Nonnull
     public static ChangeGamemode CHANGE_GAMEMODE = new ChangeGamemode();
-    @Nonnull
     public static WinGame WIN_GAME = new WinGame();
-    @Nonnull
     public static DemoEvent DEMO_EVENT = new DemoEvent();
-    @Nonnull
     public static ArrowHitPlayer ARROW_HIT_PLAYER = new ArrowHitPlayer();
-    @Nonnull
     public static RainLevelChange RAIN_LEVEL_CHANGE = new RainLevelChange();
-    @Nonnull
     public static ThunderLevelChange THUNDER_LEVEL_CHANGE = new ThunderLevelChange();
-    @Nonnull
     public static PufferFishSting PUFFER_FISH_STING = new PufferFishSting();
-    @Nonnull
     public static GuardianElderEffect GUARDIAN_ELDER_EFFECT = new GuardianElderEffect();
-    @Nonnull
     public static ImmediateRespawn IMMEDIATE_RESPAWN = new ImmediateRespawn();
 
-    @Nonnull
     private Identifier identifier;
     private float state;
 
-    protected GameStateChangePacket(@Nonnull Identifier identifier, float state) {
-        this.identifier = identifier;
-        this.state = state;
-    }
-
-    @Nonnull
-    public static GameStateChangePacket create(@Nonnull Identifier identifier, float state) {
+    public static GameStateChangePacket create(Identifier identifier, float state) {
         return Mapping.get().packetManager().outgoing().gameStateChangePacket(identifier, state);
     }
 
-    @Nonnull
-    public static <I extends Identifier> GameStateChangePacket create(@Nonnull I identifier, @Nonnull MutualGetter<I, Float> state) {
+    public static <I extends Identifier> GameStateChangePacket create(I identifier, MutualGetter<I, Float> state) {
         return create(identifier, state.get(identifier));
     }
 
-    @Nonnull
-    public static GameStateChangePacket create(@Nonnull Identifier identifier) {
+    public static GameStateChangePacket create(Identifier identifier) {
         return create(identifier, 0);
     }
 
@@ -94,7 +74,7 @@ public abstract class GameStateChangePacket extends PacketBuilder {
             super(3);
         }
 
-        public float gamemode(@Nonnull Gamemode gamemode) {
+        public float gamemode(Gamemode gamemode) {
             return gamemode.getId();
         }
     }

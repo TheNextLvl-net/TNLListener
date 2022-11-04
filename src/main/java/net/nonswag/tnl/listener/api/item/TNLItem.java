@@ -34,17 +34,16 @@ public abstract class TNLItem extends ItemStack {
     @Nullable
     private InteractiveItem interactiveItem = null;
 
-    protected TNLItem(@Nonnull ItemStack item) {
+    protected TNLItem(ItemStack item) {
         this(item.getType());
         setItemMeta(item.getItemMeta());
         amount(item.getAmount());
     }
 
-    protected TNLItem(@Nonnull Material type) {
+    protected TNLItem(Material type) {
         super(type);
     }
 
-    @Nonnull
     public GUIItem toGUIItem() {
         if (guiItem == null) this.guiItem = new GUIItem() {
             @Nonnull
@@ -57,7 +56,6 @@ public abstract class TNLItem extends ItemStack {
     }
 
     @Beta
-    @Nonnull
     public InteractiveItem toInteractiveItem() {
         if (interactiveItem == null) interactiveItem = new InteractiveItem() {
             @Nonnull
@@ -70,17 +68,14 @@ public abstract class TNLItem extends ItemStack {
     }
 
     @Deprecated
-    @Nonnull
     public ItemStack build() {
         return getItemStack();
     }
 
-    @Nonnull
     public ItemStack getItemStack() {
         return this;
     }
 
-    @Nonnull
     public String getName() {
         String displayName = getDisplayName();
         return displayName != null ? displayName : "";
@@ -98,14 +93,12 @@ public abstract class TNLItem extends ItemStack {
         return itemMeta != null && itemMeta.hasDisplayName();
     }
 
-    @Nonnull
     public TNLItem amount(int amount) {
         setAmount(amount);
         return this;
     }
 
-    @Nonnull
-    public TNLItem type(@Nonnull Material material) {
+    public TNLItem type(Material material) {
         setType(material);
         return this;
     }
@@ -123,8 +116,10 @@ public abstract class TNLItem extends ItemStack {
     @Nonnull
     @SuppressWarnings("deprecation")
     public List<String> getLore() {
-        ItemMeta meta = getItemMeta();
-        return meta != null ? (meta.getLore() != null ? meta.getLore() : new ArrayList<>()) : new ArrayList<>();
+        ItemMeta itemMeta = getItemMeta();
+        if (itemMeta == null) return new ArrayList<>();
+        List<String> lore = itemMeta.getLore();
+        return lore != null ? lore : new ArrayList<>();
     }
 
     @Nullable
@@ -133,18 +128,14 @@ public abstract class TNLItem extends ItemStack {
         else if (getItemMeta() instanceof LeatherArmorMeta leatherArmorMeta) return leatherArmorMeta.getColor();
         else if (getItemMeta() instanceof MapMeta mapMeta) return mapMeta.getColor();
         else if (getItemStack() instanceof BannerMeta bannerMeta) {
-            if (!bannerMeta.getPatterns().isEmpty()) {
-                return bannerMeta.getPatterns().get(0).getColor().getColor();
-            }
+            if (bannerMeta.getPatterns().isEmpty()) return null;
+            return bannerMeta.getPatterns().get(0).getColor().getColor();
         } else if (getItemMeta() instanceof FireworkEffectMeta effectMeta) {
-            if (effectMeta.getEffect() != null && !effectMeta.getEffect().getColors().isEmpty()) {
-                return effectMeta.getEffect().getColors().get(0);
-            }
-        }
-        return null;
+            if (effectMeta.getEffect() == null || effectMeta.getEffect().getColors().isEmpty()) return null;
+            return effectMeta.getEffect().getColors().get(0);
+        } else return null;
     }
 
-    @Nonnull
     public TNLItem setName(@Nullable String name) {
         if (name != null) name = Message.format(name);
         ItemMeta meta = getItemMeta();
@@ -154,8 +145,7 @@ public abstract class TNLItem extends ItemStack {
         return this;
     }
 
-    @Nonnull
-    public TNLItem setAuthor(@Nonnull String author) {
+    public TNLItem setAuthor(String author) {
         author = Message.format(author);
         ItemMeta meta = getItemMeta();
         if (meta instanceof BookMeta) ((BookMeta) meta).setAuthor(author);
@@ -163,62 +153,53 @@ public abstract class TNLItem extends ItemStack {
         return this;
     }
 
-    @Nonnull
-    public TNLItem setGeneration(@Nonnull BookMeta.Generation generation) {
+    public TNLItem setGeneration(BookMeta.Generation generation) {
         ItemMeta meta = getItemMeta();
         if (meta instanceof BookMeta) ((BookMeta) meta).setGeneration(generation);
         setItemMeta(meta);
         return this;
     }
 
-    @Nonnull
-    public TNLItem addPage(@Nonnull String... text) {
+    public TNLItem addPage(String... text) {
         ItemMeta meta = getItemMeta();
         if (meta instanceof BookMeta book) for (String s : text) book.addPages(Component.text(Message.format(s)));
         setItemMeta(meta);
         return this;
     }
 
-    @Nonnull
-    public TNLItem setShiny(@Nonnull Condition condition) {
+    public TNLItem setShiny(Condition condition) {
         if (condition.check()) return enchant(Enchant.Defaults.SHINY);
         return unEnchant(Enchant.Defaults.SHINY);
     }
 
-    @Nonnull
     public TNLItem setShiny(boolean shiny) {
         return setShiny(() -> shiny);
     }
 
-    @Nonnull
-    public TNLItem enchant(@Nonnull Enchantment enchantment) {
+    public TNLItem enchant(Enchantment enchantment) {
         return enchant(enchantment, enchantment.getStartLevel());
     }
 
-    @Nonnull
-    public TNLItem enchant(@Nonnull Enchantment enchantment, int level) {
+    public TNLItem enchant(Enchantment enchantment, int level) {
         ItemMeta meta = getItemMeta();
         if (meta != null) meta.addEnchant(enchantment, level, true);
         setItemMeta(meta);
         return this;
     }
 
-    @Nonnull
-    public TNLItem unEnchant(@Nonnull Enchantment enchantment) {
+    public TNLItem unEnchant(Enchantment enchantment) {
         ItemMeta meta = getItemMeta();
         if (meta != null && meta.hasEnchant(enchantment)) meta.removeEnchant(enchantment);
         setItemMeta(meta);
         return this;
     }
 
-    @Nonnull
     public TNLItem unEnchant() {
         ItemMeta meta = getItemMeta();
         if (meta != null) for (Enchantment enchantment : meta.getEnchants().keySet()) unEnchant(enchantment);
         return this;
     }
 
-    @Nonnull
     public TNLItem setDamage(float damage) {
         ItemMeta meta = getItemMeta();
         if (meta instanceof Damageable damageable) damageable.setDamage(((short) damage));
@@ -232,15 +213,13 @@ public abstract class TNLItem extends ItemStack {
         return 0;
     }
 
-    @Nonnull
-    public TNLItem hideFlag(@Nonnull ItemFlag itemFlag) {
+    public TNLItem hideFlag(ItemFlag itemFlag) {
         ItemMeta meta = getItemMeta();
         if (meta != null) meta.addItemFlags(itemFlag);
         setItemMeta(meta);
         return this;
     }
 
-    @Nonnull
     public TNLItem setSkullOwner(@Nullable OfflinePlayer owner) {
         ItemMeta meta = getItemMeta();
         if (meta instanceof SkullMeta) ((SkullMeta) meta).setOwningPlayer(owner);
@@ -248,20 +227,17 @@ public abstract class TNLItem extends ItemStack {
         return this;
     }
 
-    @Nonnull
     public TNLItem setSkullOwner(@Nullable UUID uuid) {
         if (uuid == null) return this;
         return setSkullOwner(Bukkit.getOfflinePlayer(uuid));
     }
 
     @SuppressWarnings("deprecation")
-    @Nonnull
-    public TNLItem setSkullOwner(@Nonnull String name) {
+    public TNLItem setSkullOwner(String name) {
         return setSkullOwner(Bukkit.getOfflinePlayer(name));
     }
 
-    @Nonnull
-    public TNLItem setSkullImgURL(@Nonnull String url) {
+    public TNLItem setSkullImgURL(String url) {
         try {
             setSkullValue(Base64.getEncoder().encodeToString(("{\"textures\":{\"SKIN\":{\"url\":\"" + new URI(url) + "\"}}}").getBytes()));
         } catch (Exception e) {
@@ -270,8 +246,7 @@ public abstract class TNLItem extends ItemStack {
         return this;
     }
 
-    @Nonnull
-    public TNLItem setSkullValue(@Nonnull String base64) {
+    public TNLItem setSkullValue(String base64) {
         try {
             modifyNBT("{SkullOwner:{Id:\"" + new UUID(base64.hashCode(), base64.hashCode()) + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}");
         } catch (Exception e) {
@@ -280,7 +255,6 @@ public abstract class TNLItem extends ItemStack {
         return this;
     }
 
-    @Nonnull
     public TNLItem setColor(@Nullable Color color) {
         ItemMeta meta = getItemMeta();
         if (meta instanceof PotionMeta potionMeta) potionMeta.setColor(color);
@@ -299,22 +273,19 @@ public abstract class TNLItem extends ItemStack {
         return this;
     }
 
-    @Nonnull
-    public TNLItem addBannerPattern(@Nonnull Pattern pattern) {
+    public TNLItem addBannerPattern(Pattern pattern) {
         ItemMeta meta = getItemMeta();
         if (meta instanceof BannerMeta) ((BannerMeta) meta).addPattern(pattern);
         setItemMeta(meta);
         return this;
     }
 
-    @Nonnull
     public List<Pattern> getBannerPatterns() {
         ItemMeta meta = getItemMeta();
         if (meta instanceof BannerMeta) ((BannerMeta) meta).getPatterns();
         return new ArrayList<>();
     }
 
-    @Nonnull
     public TNLItem setCustomModelData(int customModelData) {
         modifyNBT("{CustomModelData:" + customModelData + "}");
         return this;
@@ -332,16 +303,12 @@ public abstract class TNLItem extends ItemStack {
         return getNBT().getInt("{CustomModelData}");
     }
 
-    @Nonnull
     public abstract NBTTag getNBT();
 
-    @Nonnull
-    public abstract TNLItem setNBT(@Nonnull NBTTag nbt);
+    public abstract TNLItem setNBT(NBTTag nbt);
 
-    @Nonnull
-    public abstract TNLItem modifyNBT(@Nonnull String nbt);
+    public abstract TNLItem modifyNBT(String nbt);
 
-    @Nonnull
     public TNLItem setPower(int power) {
         ItemMeta meta = getItemMeta();
         if (meta instanceof FireworkMeta) ((FireworkMeta) meta).setPower(power);
@@ -349,16 +316,14 @@ public abstract class TNLItem extends ItemStack {
         return this;
     }
 
-    @Nonnull
-    public TNLItem setEffect(@Nonnull FireworkEffect effect) {
+    public TNLItem setEffect(FireworkEffect effect) {
         ItemMeta meta = getItemMeta();
         if (meta instanceof FireworkEffectMeta) ((FireworkEffectMeta) meta).setEffect(effect);
         setItemMeta(meta);
         return this;
     }
 
-    @Nonnull
-    public TNLItem addEffects(@Nonnull PotionEffect... effects) {
+    public TNLItem addEffects(PotionEffect... effects) {
         ItemMeta meta = getItemMeta();
         if (meta instanceof PotionMeta) {
             for (PotionEffect effect : effects) ((PotionMeta) meta).addCustomEffect(effect, false);
@@ -367,7 +332,6 @@ public abstract class TNLItem extends ItemStack {
         return this;
     }
 
-    @Nonnull
     public TNLItem hideFlags() {
         ItemMeta meta = getItemMeta();
         if (meta != null) meta.addItemFlags(ItemFlag.values());
@@ -375,24 +339,21 @@ public abstract class TNLItem extends ItemStack {
         return this;
     }
 
-    @Nonnull
-    public TNLItem addAttribute(@Nonnull Attribute attribute, @Nonnull AttributeModifier modifier) {
+    public TNLItem addAttribute(Attribute attribute, AttributeModifier modifier) {
         ItemMeta meta = getItemMeta();
         if (meta != null) meta.addAttributeModifier(attribute, modifier);
         setItemMeta(meta);
         return this;
     }
 
-    @Nonnull
-    public TNLItem removeAttributes(@Nonnull Attribute... attributes) {
+    public TNLItem removeAttributes(Attribute... attributes) {
         ItemMeta meta = getItemMeta();
         if (meta != null) for (Attribute attribute : attributes) meta.removeAttributeModifier(attribute);
         setItemMeta(meta);
         return this;
     }
 
-    @Nonnull
-    public TNLItem addFlags(@Nonnull ItemFlag... itemFlags) {
+    public TNLItem addFlags(ItemFlag... itemFlags) {
         ItemMeta meta = getItemMeta();
         if (meta != null) meta.addItemFlags(itemFlags);
         setItemMeta(meta);
@@ -409,44 +370,38 @@ public abstract class TNLItem extends ItemStack {
         return meta != null && meta.hasEnchants();
     }
 
-    public boolean hasEnchantment(@Nonnull Enchantment enchantment) {
+    public boolean hasEnchantment(Enchantment enchantment) {
         ItemMeta meta = getItemMeta();
         return meta != null && meta.hasEnchant(enchantment);
     }
 
-    @Nonnull
-    public TNLItem addStoredEnchantment(@Nonnull Enchantment enchantment) {
+    public TNLItem addStoredEnchantment(Enchantment enchantment) {
         return addStoredEnchantment(enchantment, 1);
     }
 
-    @Nonnull
-    public TNLItem addStoredEnchantment(@Nonnull Enchantment enchantment, int level) {
+    public TNLItem addStoredEnchantment(Enchantment enchantment, int level) {
         return addStoredEnchantment(enchantment, level, false);
     }
 
-    @Nonnull
-    public TNLItem addStoredEnchantment(@Nonnull Enchantment enchantment, int level, boolean restricted) {
+    public TNLItem addStoredEnchantment(Enchantment enchantment, int level, boolean restricted) {
         ItemMeta itemMeta = getItemMeta();
         if (itemMeta instanceof EnchantmentStorageMeta meta) meta.addStoredEnchant(enchantment, level, !restricted);
         setItemMeta(itemMeta);
         return this;
     }
 
-    @Nonnull
-    public TNLItem removeStoredEnchantment(@Nonnull Enchantment enchantment) {
+    public TNLItem removeStoredEnchantment(Enchantment enchantment) {
         ItemMeta itemMeta = getItemMeta();
         if (itemMeta instanceof EnchantmentStorageMeta meta) meta.removeStoredEnchant(enchantment);
         setItemMeta(itemMeta);
         return this;
     }
 
-    @Nonnull
-    public TNLItem withLore(@Nonnull String... lore) {
+    public TNLItem withLore(String... lore) {
         return withLore(Arrays.asList(lore));
     }
 
-    @Nonnull
-    public TNLItem withLore(@Nonnull List<String> lore) {
+    public TNLItem withLore(List<String> lore) {
         if (lore.isEmpty()) return removeLore();
         ItemMeta meta = getItemMeta();
         List<Component> l = new ArrayList<>();
@@ -456,14 +411,12 @@ public abstract class TNLItem extends ItemStack {
         return this;
     }
 
-    @Nonnull
-    public TNLItem addLore(@Nonnull String... lore) {
+    public TNLItem addLore(String... lore) {
         List<String> list = getLore();
         for (String s : lore) list.addAll(Arrays.asList(s.split("\n")));
         return withLore(list);
     }
 
-    @Nonnull
     public TNLItem removeLore() {
         ItemMeta meta = getItemMeta();
         if (meta != null) meta.lore(null);
@@ -471,7 +424,6 @@ public abstract class TNLItem extends ItemStack {
         return this;
     }
 
-    @Nonnull
     public TNLItem setUnbreakable(boolean unbreakable) {
         ItemMeta meta = getItemMeta();
         if (meta != null) meta.setUnbreakable(unbreakable);
@@ -494,28 +446,23 @@ public abstract class TNLItem extends ItemStack {
         return itemStack == null ? null : create(itemStack);
     }
 
-    @Nonnull
-    public static TNLItem create(@Nonnull ItemStack itemStack) {
+    public static TNLItem create(ItemStack itemStack) {
         if (itemStack instanceof TNLItem item) return item;
         return Mapping.get().createItem(itemStack);
     }
 
-    @Nonnull
-    public static TNLItem create(@Nonnull Material material) {
+    public static TNLItem create(Material material) {
         return create(new ItemStack(material));
     }
 
-    @Nonnull
-    public static TNLItem create(@Nonnull OfflinePlayer player) {
+    public static TNLItem create(OfflinePlayer player) {
         return create(Material.PLAYER_HEAD).setSkullOwner(player);
     }
 
-    @Nonnull
-    public static TNLItem create(@Nonnull TNLPlayer player) {
+    public static TNLItem create(TNLPlayer player) {
         return create(player.bukkit());
     }
 
-    @Nonnull
     public static TNLItem create(@Nullable UUID uuid) {
         return create(Material.PLAYER_HEAD).setSkullOwner(uuid);
     }

@@ -12,17 +12,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.plugin.Plugin;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public record CommandManager(@Nonnull Plugin plugin) {
+public record CommandManager(Plugin plugin) {
 
-    @Nonnull
     private static final JsonFile configuration = new JsonFile("plugins/Listener", "removed-commands.json");
-    @Nonnull
     private static final List<String> FOR_REMOVAL = new ArrayList<>();
 
     static {
@@ -47,7 +44,7 @@ public record CommandManager(@Nonnull Plugin plugin) {
         }
     }
 
-    public void registerCommand(@Nonnull TNLCommand command) {
+    public void registerCommand(TNLCommand command) {
         command.setOwner(plugin());
         Reflection.Field.set(command, Command.class, "commandMap", PluginHelper.getInstance().getCommandMap());
         Map<String, Command> commands = PluginHelper.getInstance().getCommands();
@@ -56,7 +53,7 @@ public record CommandManager(@Nonnull Plugin plugin) {
         command.register(PluginHelper.getInstance().getCommandMap());
     }
 
-    public boolean registerCommand(@Nonnull Version version, @Nonnull Getter<TNLCommand> command) {
+    public boolean registerCommand(Version version, Getter<TNLCommand> command) {
         if (!Listener.getVersion().equals(version)) return false;
         registerCommand(command.get());
         return true;
@@ -66,13 +63,11 @@ public record CommandManager(@Nonnull Plugin plugin) {
         unregisterAllCommands(plugin());
     }
 
-    @Nonnull
     public List<TNLCommand> getRegisteredCommands() {
         return getRegisteredCommands(plugin());
     }
 
-    @Nonnull
-    public static List<TNLCommand> getRegisteredCommands(@Nonnull Plugin plugin) {
+    public static List<TNLCommand> getRegisteredCommands(Plugin plugin) {
         List<TNLCommand> commands = new ArrayList<>();
         for (Command command : PluginHelper.getInstance().getCommands().values()) {
             if (command instanceof TNLCommand tnlCommand && !commands.contains(tnlCommand)) {
@@ -82,7 +77,7 @@ public record CommandManager(@Nonnull Plugin plugin) {
         return commands;
     }
 
-    public static void unregisterAllCommands(@Nonnull Plugin plugin) {
+    public static void unregisterAllCommands(Plugin plugin) {
         List<String> commands = new ArrayList<>();
         for (TNLCommand command : getRegisteredCommands(plugin)) {
             commands.add(command.getName());
@@ -92,7 +87,7 @@ public record CommandManager(@Nonnull Plugin plugin) {
         unregisterCommands(commands);
     }
 
-    public static void unregisterCommands(@Nonnull List<String> commands) {
+    public static void unregisterCommands(List<String> commands) {
         if (commands.isEmpty()) return;
         UnregisterCommandsEvent event = new UnregisterCommandsEvent(commands);
         if (!event.call()) return;

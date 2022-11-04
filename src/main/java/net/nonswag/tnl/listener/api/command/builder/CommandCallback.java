@@ -15,8 +15,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,74 +25,65 @@ import java.util.stream.Collectors;
 @Beta
 @Getter
 public class CommandCallback implements Usable {
-    @Nonnull
-    private final List<CommandCallbackInfo> callbackInfo = new ArrayList<>();
     @Nullable
     private String permission, usage;
-    @Nonnull
-    private Executor executor = Executor.BOTH;
     @Nullable
     private BiConsumer<CommandSource, CommandParameters> providedArguments;
+    private final List<CommandCallbackInfo> callbackInfo = new ArrayList<>();
+    private Executor executor = Executor.BOTH;
     private boolean restAsString = false;
 
-    public CommandCallback(@Nonnull String... paths) {
+    public CommandCallback(String... paths) {
         for (String path : paths) addSubCommand(path);
     }
 
-    @Nonnull
-    public CommandCallback addSubCommand(@Nonnull String path) {
+    public CommandCallback addSubCommand(String path) {
         if (path.isEmpty()) return this;
         callbackInfo.add(new CommandPath(callbackInfo.size(), path));
         return this;
     }
 
-    public CommandCallback addSubCommand(@Nonnull String name, @Nonnull Value commandType, @Nonnull String... suggested) {
+    public CommandCallback addSubCommand(String name, Value commandType, String... suggested) {
         int index = callbackInfo.size();
         callbackInfo.add(new CommandParameter(index, name, commandType, Arrays.asList(suggested)));
         if (commandType.equals(Value.REST_OF_INPUT)) restAsString = true;
         return this;
     }
 
-    @Nonnull
-    public CommandCallback permission(@Nonnull String permission) {
+    public CommandCallback permission(String permission) {
         this.permission = permission;
         return this;
     }
 
-    @Nonnull
-    public CommandCallback usage(@Nonnull String usage) {
+    public CommandCallback usage(String usage) {
         this.usage = usage;
         return this;
     }
 
-    @Nonnull
-    public CommandCallback executor(@Nonnull Executor executor) {
+    public CommandCallback executor(Executor executor) {
         this.executor = executor;
         return this;
     }
 
-    @Nonnull
-    public CommandCallback commandCallback(@Nonnull BiConsumer<CommandSource, CommandParameters> providedArguments) {
+    public CommandCallback commandCallback(BiConsumer<CommandSource, CommandParameters> providedArguments) {
         this.providedArguments = providedArguments;
         return this;
     }
 
-    @Nonnull
-    private String getSuggested(@Nonnull CommandBuilder<?> command) {
+    private String getSuggested(CommandBuilder<?> command) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("§7/§b").append(command.getName()).append(" ");
         for (CommandCallbackInfo callback : callbackInfo) stringBuilder.append(callback.commandHelpPlaceholder()).append(" ");
         return stringBuilder.toString();
     }
 
+    @Nullable
     CommandCallbackInfo getCallbackInfo(int index) {
-        if (index < 0 || index >= callbackInfo.size())
-            return null;
+        if (index < 0 || index >= callbackInfo.size()) return null;
         return callbackInfo.get(index);
     }
 
-    @Nonnull
-    protected List<String> suggest(@Nonnull Invocation invocation) {
+    protected List<String> suggest(Invocation invocation) {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
         List<String> suggested = new ArrayList<>();
@@ -113,7 +102,7 @@ public class CommandCallback implements Usable {
         return callbackInfo.get(currentArgument).suggest(args[currentArgument]);
     }
 
-    protected void execute(@Nonnull Invocation invocation) throws CommandException {
+    protected void execute(Invocation invocation) throws CommandException {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
         if (canUse(source)) throw new SourceMismatchException();
@@ -171,13 +160,13 @@ public class CommandCallback implements Usable {
     }
 
     @Override
-    public void usage(@Nonnull Invocation invocation) {
+    public void usage(Invocation invocation) {
         if (getUsage() != null && !getUsage().isEmpty()) invocation.source().sendMessage(getUsage());
         else invocation.source().sendMessage(Messages.INVALID_COMMAND_USAGE);
     }
 
     @Override
-    public boolean canUse(@Nonnull CommandSource source) {
+    public boolean canUse(CommandSource source) {
         return switch (getExecutor()) {
             case PLAYER -> source instanceof PlatformPlayer;
             case CONSOLE -> source instanceof Console;
@@ -212,23 +201,23 @@ public class CommandCallback implements Usable {
     }
 
     public static class CommandParameters {
-        @Nonnull
         private final List<Object> parameters;
 
-        private CommandParameters(@Nonnull List<Object> parameters) {
+        private CommandParameters(List<Object> parameters) {
             this.parameters = parameters;
         }
 
-        public <T> T getObject(@Nonnegative int index) {
+        public <T> T getObject(int index) {
             return (T) parameters.get(index);
         }
 
-        public <E extends Enum<?>> E getEnum(@Nonnegative int index, @Nonnull Class<E> enumeration) {
+        @Nullable
+        public <E extends Enum<?>> E getEnum(int index, Class<E> enumeration) {
             String input = getObject(index);
             return Arrays.stream(enumeration.getEnumConstants()).filter(constant -> constant.name().equals(input)).findAny().orElse(null);
         }
 
-        public Class<?> getType(@Nonnegative int index) {
+        public Class<?> getType(int index) {
             return parameters.get(index).getClass();
         }
 
@@ -245,37 +234,31 @@ public class CommandCallback implements Usable {
             this.index = index;
         }
 
-        @Nonnull
         public abstract String commandHelpPlaceholder();
 
-        @Nonnull
-        public abstract List<String> suggest(@Nonnull String argument);
+        public abstract List<String> suggest(String argument);
     }
 
     @Getter
     public static class CommandPath extends CommandCallbackInfo {
-        @Nonnull
         private final String path;
 
-        private CommandPath(int index, @Nonnull String path) {
+        private CommandPath(int index, String path) {
             super(index);
             this.path = path;
         }
 
-        @Nonnull
         @Override
-        public List<String> suggest(@Nonnull String argument) {
+        public List<String> suggest(String argument) {
             if (getPath().contains(argument)) return List.of(getPath());
             return List.of();
         }
 
-        @Nonnull
         @Override
         public String commandHelpPlaceholder() {
             return getPath();
         }
 
-        @Nonnull
         @Override
         public String toString() {
             return getPath();
@@ -284,23 +267,19 @@ public class CommandCallback implements Usable {
 
     @Getter
     public static class CommandParameter extends CommandCallbackInfo {
-        @Nonnull
         private final String name;
-        @Nonnull
         private final Value value;
-        @Nonnull
         private final List<String> suggested;
 
-        private CommandParameter(int index, @Nonnull String name, @Nonnull Value value, @Nonnull List<String> suggested) {
+        private CommandParameter(int index, String name, Value value, List<String> suggested) {
             super(index);
             this.name = name;
             this.value = value;
             this.suggested = suggested;
         }
 
-        @Nonnull
         @Override
-        public List<String> suggest(@Nonnull String argument) {
+        public List<String> suggest(String argument) {
             return switch (value) {
                 case INTEGER -> List.of("0");
                 case DOUBLE -> List.of("0.0");
@@ -312,7 +291,6 @@ public class CommandCallback implements Usable {
             };
         }
 
-        @Nonnull
         @Override
         public String commandHelpPlaceholder() {
             return "§8[§6%s§8]".formatted(getName());

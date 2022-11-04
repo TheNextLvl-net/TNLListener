@@ -3,15 +3,16 @@ package net.nonswag.tnl.manager.commands;
 import net.nonswag.core.api.command.CommandSource;
 import net.nonswag.tnl.listener.api.command.exceptions.InsufficientPermissionException;
 import net.nonswag.tnl.listener.api.command.simple.SimpleCommand;
-import net.nonswag.tnl.listener.api.gui.builtin.PluginsGUI;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import net.nonswag.tnl.listener.api.plugin.PluginManager;
 import net.nonswag.tnl.manager.Manager;
 import net.nonswag.tnl.manager.commands.subcommands.*;
+import net.nonswag.tnl.manager.gui.PluginsGUI;
 
-import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
+@ParametersAreNonnullByDefault
 public class PluginCommand extends SimpleCommand {
 
     public PluginCommand() {
@@ -28,7 +29,7 @@ public class PluginCommand extends SimpleCommand {
         addSubCommand(new PluginUpdate());
     }
 
-    public static void sendPlugins(@Nonnull CommandSource source) {
+    public static void sendPlugins(CommandSource source) {
         if (Manager.getInstance().isPublishPlugins() || source.hasPermission("tnl.manage")) {
             if (!Manager.getInstance().isPluginsGUI() || !(source instanceof TNLPlayer player)) {
                 List<String> pluginList = PluginManager.getPlugins(false);

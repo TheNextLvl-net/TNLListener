@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
-import javax.annotation.Nonnull;
-
 @Getter
 @Setter
 public abstract class PlayerAbilitiesPacket extends PacketBuilder {
@@ -15,7 +13,6 @@ public abstract class PlayerAbilitiesPacket extends PacketBuilder {
         this.flying = flying;
     }
 
-    @Nonnull
     public static PlayerAbilitiesPacket create(boolean flying) {
         return Mapping.get().packetManager().incoming().playerAbilitiesPacket(flying);
     }

@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
-import javax.annotation.Nonnull;
-
 @Getter
 @Setter
 public abstract class WindowButtonClickPacket extends PacketBuilder {
@@ -17,7 +15,6 @@ public abstract class WindowButtonClickPacket extends PacketBuilder {
         this.buttonId = buttonId;
     }
 
-    @Nonnull
     public static WindowButtonClickPacket create(int containerId, int buttonId) {
         return Mapping.get().packetManager().incoming().windowButtonClickPacket(containerId, buttonId);
     }

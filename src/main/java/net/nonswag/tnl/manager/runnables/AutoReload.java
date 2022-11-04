@@ -21,6 +21,7 @@ public class AutoReload {
     }
 
     @Nonnull
+    @SuppressWarnings("UnstableApiUsage")
     private static Thread getNewThread() {
         return new Thread(() -> {
             HashMap<String, Long> timestamps = new HashMap<>();

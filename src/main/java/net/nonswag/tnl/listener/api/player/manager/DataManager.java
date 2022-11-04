@@ -5,15 +5,12 @@ import lombok.Getter;
 import net.nonswag.core.api.file.formats.JsonFile;
 import net.nonswag.core.api.language.Language;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 @Getter
 public abstract class DataManager extends Manager {
 
-    @Nonnull
     private final JsonFile file;
-    @Nonnull
     private Language language = Language.AMERICAN_ENGLISH;
 
     protected DataManager() {
@@ -29,48 +26,45 @@ public abstract class DataManager extends Manager {
         getFile().save();
     }
 
-    public void setLanguage(@Nonnull Language language) {
+    public void setLanguage(Language language) {
         if (!language.equals(Language.UNKNOWN)) this.language = language;
     }
 
-    @Nonnull
-    public <V> V getOrDefault(@Nonnull String key, @Nonnull V defaultValue, @Nonnull Parser<V> parser) {
+    public <V> V getOrDefault(String key, V defaultValue, Parser<V> parser) {
         String value = get(key);
         if (value == null) put(key, defaultValue);
         return value != null ? parser.parse(value) : defaultValue;
     }
 
-    @Nonnull
-    public String getOrDefault(@Nonnull String key, @Nonnull String defaultValue) {
+    public String getOrDefault(String key, String defaultValue) {
         String value = get(key);
         if (value == null) put(key, defaultValue);
         return value != null ? value : defaultValue;
     }
 
     @Nullable
-    public <V> V get(@Nonnull String key, @Nonnull Parser<V> parser) {
+    public <V> V get(String key, Parser<V> parser) {
         String value = get(key);
         return value != null ? parser.parse(value) : null;
     }
 
     @Nullable
-    public String get(@Nonnull String key) {
+    public String get(String key) {
         JsonObject root = getFile().getJsonElement().getAsJsonObject();
         return root.has(key) ? root.get(key).getAsString() : null;
     }
 
-    public <V> void put(@Nonnull String key, @Nullable V value) {
+    public <V> void put(String key, @Nullable V value) {
         JsonObject root = getFile().getJsonElement().getAsJsonObject();
         if (value != null) root.addProperty(key, value.toString());
         else remove(key);
     }
 
-    public void remove(@Nonnull String key) {
+    public void remove(String key) {
         getFile().getJsonElement().getAsJsonObject().remove(key);
     }
 
     public interface Parser<V> {
-        @Nonnull
-        V parse(@Nonnull String value);
+        V parse(String value);
     }
 }

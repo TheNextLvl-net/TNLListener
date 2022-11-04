@@ -1,9 +1,9 @@
 package net.nonswag.tnl.listener.api.plugin;
 
-import javax.annotation.Nullable;
+import net.nonswag.core.api.annotation.MethodsReturnNullableByDefault;
 
+@MethodsReturnNullableByDefault
 public interface Updatable {
 
-    @Nullable
     PluginUpdate getUpdater();
 }

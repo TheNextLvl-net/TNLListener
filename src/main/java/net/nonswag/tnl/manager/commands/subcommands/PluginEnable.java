@@ -8,7 +8,6 @@ import net.nonswag.tnl.listener.api.plugin.PluginBuilder;
 import net.nonswag.tnl.listener.api.plugin.PluginManager;
 import org.bukkit.plugin.Plugin;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class PluginEnable extends SubCommand {
     }
 
     @Override
-    protected void execute(@Nonnull Invocation invocation) {
+    protected void execute(Invocation invocation) {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
         if (args.length < 2) throw new InvalidUseException(this);
@@ -34,9 +33,8 @@ public class PluginEnable extends SubCommand {
         } else source.sendMessage("%prefix% §cThe Plugin §4" + plugin.getName() + "§c is already enabled");
     }
 
-    @Nonnull
     @Override
-    protected List<String> suggest(@Nonnull Invocation invocation) {
+    protected List<String> suggest(Invocation invocation) {
         if (invocation.arguments().length > 2) return new ArrayList<>();
         List<String> suggestions = new ArrayList<>();
         for (Plugin plugin : PluginManager.getPlugins()) {
@@ -47,7 +45,7 @@ public class PluginEnable extends SubCommand {
     }
 
     @Override
-    public void usage(@Nonnull Invocation invocation) {
+    public void usage(Invocation invocation) {
         invocation.source().sendMessage("%prefix% §c/plugin enable §8[§6Plugin§8]");
     }
 }

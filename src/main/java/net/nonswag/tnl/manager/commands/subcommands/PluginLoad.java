@@ -9,7 +9,6 @@ import net.nonswag.tnl.listener.api.command.simple.SubCommand;
 import net.nonswag.tnl.listener.api.plugin.PluginManager;
 import org.bukkit.plugin.Plugin;
 
-import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +20,8 @@ public class PluginLoad extends SubCommand {
     }
 
     @Override
-    protected void execute(@Nonnull Invocation invocation) {
+    @SuppressWarnings("UnstableApiUsage")
+    protected void execute(Invocation invocation) {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
         if (args.length < 2) throw new InvalidUseException(this);
@@ -44,13 +44,12 @@ public class PluginLoad extends SubCommand {
     }
 
     @Override
-    public void usage(@Nonnull Invocation invocation) {
+    public void usage(Invocation invocation) {
         invocation.source().sendMessage("%prefix% §c/plugin load §8[§6File§8]");
     }
 
-    @Nonnull
     @Override
-    protected List<String> suggest(@Nonnull Invocation invocation) {
+    protected List<String> suggest(Invocation invocation) {
         List<String> suggestions = new ArrayList<>();
         if (invocation.arguments().length > 2) return suggestions;
         File[] plugins = new File("plugins").listFiles();

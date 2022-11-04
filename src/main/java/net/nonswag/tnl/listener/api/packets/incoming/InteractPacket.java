@@ -6,8 +6,6 @@ import net.nonswag.tnl.listener.api.mapper.Mapping;
 import net.nonswag.tnl.listener.api.player.Hand;
 import org.bukkit.util.Vector;
 
-import javax.annotation.Nonnull;
-
 @Getter
 @Setter
 public abstract class InteractPacket extends PacketBuilder {
@@ -24,7 +22,6 @@ public abstract class InteractPacket extends PacketBuilder {
             super(entityId, sneaking);
         }
 
-        @Nonnull
         public static Attack create(int entityId, boolean sneaking) {
             return Mapping.get().packetManager().incoming().attack(entityId, sneaking);
         }
@@ -33,16 +30,14 @@ public abstract class InteractPacket extends PacketBuilder {
     @Getter
     @Setter
     public static abstract class Interact extends InteractPacket {
-        @Nonnull
         private Hand hand;
 
-        protected Interact(int entityId, boolean sneaking, @Nonnull Hand hand) {
+        protected Interact(int entityId, boolean sneaking, Hand hand) {
             super(entityId, sneaking);
             this.hand = hand;
         }
 
-        @Nonnull
-        public static Interact create(int entityId, boolean sneaking, @Nonnull Hand hand) {
+        public static Interact create(int entityId, boolean sneaking, Hand hand) {
             return Mapping.get().packetManager().incoming().interactPacket(entityId, sneaking, hand);
         }
     }
@@ -50,16 +45,14 @@ public abstract class InteractPacket extends PacketBuilder {
     @Getter
     @Setter
     public static abstract class InteractAt extends Interact {
-        @Nonnull
         private Vector location;
 
-        protected InteractAt(int entityId, boolean sneaking, @Nonnull Hand hand, @Nonnull Vector location) {
+        protected InteractAt(int entityId, boolean sneaking, Hand hand, Vector location) {
             super(entityId, sneaking, hand);
             this.location = location;
         }
 
-        @Nonnull
-        public static InteractAt create(int entityId, boolean sneaking, @Nonnull Hand hand, @Nonnull Vector location) {
+        public static InteractAt create(int entityId, boolean sneaking, Hand hand, Vector location) {
             return Mapping.get().packetManager().incoming().interactAtPacket(entityId, sneaking, hand, location);
         }
     }

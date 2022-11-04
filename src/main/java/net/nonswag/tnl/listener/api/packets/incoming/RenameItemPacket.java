@@ -4,20 +4,16 @@ import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
-import javax.annotation.Nonnull;
-
 @Getter
 @Setter
 public abstract class RenameItemPacket extends PacketBuilder {
-    @Nonnull
     private String name;
 
-    protected RenameItemPacket(@Nonnull String name) {
+    protected RenameItemPacket(String name) {
         this.name = name;
     }
 
-    @Nonnull
-    public static RenameItemPacket create(@Nonnull String name) {
+    public static RenameItemPacket create(String name) {
         return Mapping.get().packetManager().incoming().renameItemPacket(name);
     }
 }

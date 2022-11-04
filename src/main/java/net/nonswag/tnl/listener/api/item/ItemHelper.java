@@ -6,7 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Objects;
@@ -16,19 +15,19 @@ public abstract class ItemHelper {
     protected ItemHelper() {
     }
 
-    public abstract void setMaxStackSize(@Nonnull Material material, int maxStackSize);
+    public abstract void setMaxStackSize(Material material, int maxStackSize);
 
-    public void setMaxStackSize(@Nonnull ItemType item, int maxStackSize) {
+    public void setMaxStackSize(ItemType item, int maxStackSize) {
         for (Material material : item.all(ItemType.Selector.ANY)) setMaxStackSize(material, maxStackSize);
     }
 
-    public abstract void setDurability(@Nonnull Material material, int durability);
+    public abstract void setDurability(Material material, int durability);
 
-    public void setDurability(@Nonnull ItemType item, int durability) {
+    public void setDurability(ItemType item, int durability) {
         for (Material material : item.all(ItemType.Selector.ANY)) setDurability(material, durability);
     }
 
-    public boolean removeInventoryItems(@Nonnull TNLPlayer player, @Nonnull ItemStack item) {
+    public boolean removeInventoryItems(TNLPlayer player, ItemStack item) {
         int amount = 0;
         int needed = item.getAmount();
         for (@Nullable ItemStack itemStack : player.inventoryManager().getInventory().getContents()) {
@@ -49,7 +48,7 @@ public abstract class ItemHelper {
     }
 
     @SuppressWarnings("NullableProblems")
-    public boolean removeInventoryItems(@Nonnull TNLPlayer player, @Nonnull Material type, int amount) {
+    public boolean removeInventoryItems(TNLPlayer player, Material type, int amount) {
         int ra = amount;
         boolean succeeded = false;
         for (@Nullable ItemStack is : player.inventoryManager().getInventory().getStorageContents()) {
@@ -78,7 +77,7 @@ public abstract class ItemHelper {
     }
 
     @SuppressWarnings("NullableProblems")
-    public int getAmount(@Nonnull Inventory inventory, @Nonnull Material material) {
+    public int getAmount(Inventory inventory, Material material) {
         int amount = 0;
         for (@Nullable ItemStack item : inventory.getStorageContents()) {
             if (item != null && item.getType().equals(material)) amount += item.getAmount();
@@ -86,14 +85,12 @@ public abstract class ItemHelper {
         return amount;
     }
 
-    @Nonnull
     public abstract Map<Material, Float> getCompostableItems();
 
-    public boolean isCompostable(@Nonnull Material material) {
+    public boolean isCompostable(Material material) {
         return getCompostableItems().containsKey(material);
     }
 
-    @Nonnull
     public static ItemHelper getInstance() {
         return Mapping.get().itemHelper();
     }

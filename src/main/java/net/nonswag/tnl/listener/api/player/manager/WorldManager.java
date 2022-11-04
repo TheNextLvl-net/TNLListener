@@ -20,7 +20,6 @@ import org.bukkit.util.BoundingBox;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,41 +31,34 @@ public abstract class WorldManager extends Manager {
 
     private boolean immediateRespawn = Boolean.TRUE.equals(getWorld().getGameRuleValue(GameRule.DO_IMMEDIATE_RESPAWN));
 
-    @Nonnull
     public Location getLocation() {
         return getPlayer().bukkit().getLocation();
     }
 
-    @Nonnull
-    public Location getLocation(@Nonnull Location location) {
+    public Location getLocation(Location location) {
         return getPlayer().bukkit().getLocation(location);
     }
 
-    @Nonnull
     public Location getEyeLocation() {
         return getPlayer().bukkit().getEyeLocation();
     }
 
-    public void setVelocity(@Nonnull Vector vector) {
+    public void setVelocity(Vector vector) {
         getPlayer().bukkit().setVelocity(vector);
     }
 
-    @Nonnull
     public Vector getVelocity() {
         return getPlayer().bukkit().getVelocity();
     }
 
-    @Nonnull
     public BoundingBox getBoundingBox() {
         return getPlayer().bukkit().getBoundingBox();
     }
 
-    @Nonnull
     public Pose getPose() {
         return getPlayer().bukkit().getPose();
     }
 
-    @Nonnull
     public BlockFace getFacing() {
         return getPlayer().bukkit().getFacing();
     }
@@ -87,12 +79,10 @@ public abstract class WorldManager extends Manager {
 
     public abstract boolean isInRain();
 
-    @Nonnull
     public World getWorld() {
         return getPlayer().bukkit().getWorld();
     }
 
-    @Nonnull
     public WeatherType getWeather() {
         return getWorld().isClearWeather() ? WeatherType.CLEAR : WeatherType.DOWNFALL;
     }
@@ -104,55 +94,54 @@ public abstract class WorldManager extends Manager {
         teleport(location);
     }
 
-    public void teleport(@Nonnull Location location) {
+    public void teleport(Location location) {
         teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN);
     }
 
-    public void teleport(@Nonnull Location location, @Nonnull PlayerTeleportEvent.TeleportCause cause) {
+    public void teleport(Location location, PlayerTeleportEvent.TeleportCause cause) {
         Bootstrap.getInstance().sync(() -> getPlayer().bukkit().teleport(location));
     }
 
-    public void teleport(@Nonnull Entity entity) {
+    public void teleport(Entity entity) {
         teleport(entity.getLocation());
     }
 
-    public void teleport(@Nonnull Entity entity, @Nonnull PlayerTeleportEvent.TeleportCause cause) {
+    public void teleport(Entity entity, PlayerTeleportEvent.TeleportCause cause) {
         teleport(entity.getLocation(), cause);
     }
 
-    @Nonnull
     public List<Entity> getNearbyEntities(double x, double y, double z) {
         return getPlayer().bukkit().getNearbyEntities(x, y, z);
     }
 
-    public void sendBlockChange(@Nonnull Location location, @Nonnull BlockData blockData) {
+    public void sendBlockChange(Location location, BlockData blockData) {
         getPlayer().bukkit().sendBlockChange(location, blockData);
     }
 
-    public void sendBlockChange(@Nonnull Location location, @Nonnull BlockFace blockFace) {
+    public void sendBlockChange(Location location, BlockFace blockFace) {
         Block relative = location.getBlock().getRelative(blockFace);
         sendBlockChange(relative.getLocation());
     }
 
-    public void sendBlockChange(@Nonnull Location location) {
+    public void sendBlockChange(Location location) {
         sendBlockChange(location.getBlock());
     }
 
-    public void sendBlockChange(@Nonnull Block block) {
+    public void sendBlockChange(Block block) {
         sendBlockChange(block.getLocation(), block.getBlockData());
     }
 
-    public void sendSignChange(@Nonnull Location location, @Nonnull String[] lines) {
+    public void sendSignChange(Location location, String[] lines) {
         sendSignChange(location, lines, DyeColor.BLACK);
     }
 
-    public void sendSignChange(@Nonnull Location location, @Nonnull String[] lines, @Nonnull DyeColor color) {
+    public void sendSignChange(Location location, String[] lines, DyeColor color) {
         List<Component> components = new ArrayList<>();
         for (String line : lines) components.add(Component.text(line));
         getPlayer().bukkit().sendSignChange(location, components, color);
     }
 
-    public void sendMap(@Nonnull MapView mapView) {
+    public void sendMap(MapView mapView) {
         getPlayer().bukkit().sendMap(mapView);
     }
 
@@ -183,7 +172,7 @@ public abstract class WorldManager extends Manager {
     }
 
     @Nullable
-    public RayTraceResult rayTraceBlocks(double range, @Nonnull FluidCollisionMode mode) {
+    public RayTraceResult rayTraceBlocks(double range, FluidCollisionMode mode) {
         return getPlayer().bukkit().rayTraceBlocks(range, mode);
     }
 
@@ -193,7 +182,6 @@ public abstract class WorldManager extends Manager {
                 !getPlayer().getUniqueId().equals(entity.getUniqueId()));
     }
 
-    @Nonnull
     public List<Block> getLineOfSight(@Nullable Set<Material> ignoredBlocks, int range) {
         return getPlayer().bukkit().getLineOfSight(ignoredBlocks, range);
     }
@@ -204,7 +192,6 @@ public abstract class WorldManager extends Manager {
         return result == null ? null : result.getHitEntity();
     }
 
-    @Nonnull
     public Block getTargetBlock(@Nullable Set<Material> ignoredBlocks, int range) {
         return getPlayer().bukkit().getTargetBlock(ignoredBlocks, range);
     }
@@ -215,17 +202,16 @@ public abstract class WorldManager extends Manager {
     }
 
     @Nullable
-    public Block getTargetBlock(double range, @Nonnull FluidCollisionMode mode) {
+    public Block getTargetBlock(double range, FluidCollisionMode mode) {
         RayTraceResult hitResult = rayTraceBlocks(range, mode);
         return hitResult != null ? hitResult.getHitBlock() : null;
     }
 
-    @Nonnull
     public Location getTargetLocation(double range) {
         return getLocation().clone().add(getLocation().getDirection().multiply(range));
     }
 
-    public void leash(@Nonnull TNLEntity entity) {
+    public void leash(TNLEntity entity) {
         EntityAttachPacket.create(getPlayer().getEntityId(), entity.getEntityId()).send(getPlayer());
     }
 
@@ -233,28 +219,25 @@ public abstract class WorldManager extends Manager {
         EntityAttachPacket.create(getPlayer().bukkit()).send(getPlayer());
     }
 
-    public void strikeLightning(@Nonnull Location location) {
+    public void strikeLightning(Location location) {
         strikeLightning(location, true, true);
     }
 
-    public abstract void strikeLightning(@Nonnull Location location, boolean effect, boolean sound);
+    public abstract void strikeLightning(Location location, boolean effect, boolean sound);
 
-    public void setCompassTarget(@Nonnull Location location) {
+    public void setCompassTarget(Location location) {
         getPlayer().bukkit().setCompassTarget(location);
     }
 
-    @Nonnull
-    public Entity spawn(@Nonnull EntityType type) {
+    public Entity spawn(EntityType type) {
         return getWorld().spawnEntity(getLocation(), type);
     }
 
-    @Nonnull
-    public <T extends Entity> T spawn(@Nonnull EntityType type, @Nonnull Class<T> clazz) {
+    public <T extends Entity> T spawn(EntityType type, Class<T> clazz) {
         return spawn(type, clazz, t -> {});
     }
 
-    @Nonnull
-    public <T extends Entity> T spawn(@Nonnull EntityType type, @Nonnull Class<T> clazz, @Nonnull Consumer<T> function) {
+    public <T extends Entity> T spawn(EntityType type, Class<T> clazz, Consumer<T> function) {
         return getWorld().spawn(getLocation(), clazz);
     }
 }

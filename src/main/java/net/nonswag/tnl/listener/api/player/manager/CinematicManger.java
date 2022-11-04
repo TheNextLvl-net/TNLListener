@@ -7,11 +7,11 @@ import net.nonswag.tnl.listener.api.cinematic.CinematicRecordException;
 import net.nonswag.tnl.listener.api.cinematic.Recording;
 import net.nonswag.tnl.listener.api.entity.TNLArmorStand;
 import net.nonswag.tnl.listener.api.gamemode.Gamemode;
+import net.nonswag.tnl.listener.api.location.Position;
 import net.nonswag.tnl.listener.api.packets.outgoing.*;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.Location;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 @Getter
@@ -28,11 +28,12 @@ public abstract class CinematicManger extends Manager {
         this.playing = false;
     }
 
-    public void play(@Nonnull Recording recording) throws CinematicPlayException {
-        play(recording, Finished.EMPTY);
+    public void play(Recording recording) throws CinematicPlayException {
+        play(recording, (player, record) -> {
+        });
     }
 
-    public void play(@Nonnull Recording recording, @Nonnull Finished finished) throws CinematicPlayException {
+    public void play(Recording recording, Finished finished) throws CinematicPlayException {
         if (isPlaying()) throw new CinematicPlayException(recording, this, "Already playing a cinematic");
         if (isRecording()) throw new CinematicPlayException(recording, this, "Can't play a cinematic while recording");
         new Thread(() -> {
@@ -43,7 +44,7 @@ public abstract class CinematicManger extends Manager {
                 armorStand.setBasePlate(false);
                 armorStand.setVisible(false);
                 GameStateChangePacket.create(GameStateChangePacket.CHANGE_GAMEMODE, Gamemode.SPECTATOR.getId()).send(getPlayer());
-                EntitySpawnPacket.create(armorStand.bukkit()).send(getPlayer());
+                AddEntityPacket.create(armorStand.bukkit()).send(getPlayer());
                 EntityMetadataPacket.create(armorStand.bukkit()).send(getPlayer());
                 EntityHeadRotationPacket.create(armorStand.bukkit(), step.getKey().getYaw()).send(getPlayer());
                 try {
@@ -54,7 +55,7 @@ public abstract class CinematicManger extends Manager {
                         if (!getPlayer().isOnline() || !isPlaying()) break;
                         step = pair;
                         Thread.sleep(step.getValue() != null ? step.getValue() : 50);
-                        EntityTeleportPacket.create(armorStand.getEntityId(), step.getKey()).send(getPlayer());
+                        TeleportEntityPacket.create(armorStand.bukkit(), new Position(step.getKey())).send(getPlayer());
                         EntityHeadRotationPacket.create(armorStand.getEntityId(), step.getKey().getYaw()).send(getPlayer());
                     }
                     Thread.sleep(step.getValue() != null ? step.getValue() : 50);
@@ -62,10 +63,10 @@ public abstract class CinematicManger extends Manager {
                 } catch (Exception ignored) {
                     finished.failure(getPlayer(), recording);
                 } finally {
-                    EntityDestroyPacket.create(armorStand.getEntityId()).send(getPlayer());
+                    RemoveEntitiesPacket.create(armorStand.getEntityId()).send(getPlayer());
                     CameraPacket.create(getPlayer().bukkit()).send(getPlayer());
                     GameStateChangePacket.create(GameStateChangePacket.CHANGE_GAMEMODE, getPlayer().getGamemode().getId()).send(getPlayer());
-                    EntityTeleportPacket.create(getPlayer().bukkit()).send(getPlayer());
+                    TeleportEntityPacket.create(getPlayer().bukkit()).send(getPlayer());
                     getPlayer().abilityManager().updateAbilities();
                     this.playing = false;
                     finished.general(getPlayer(), recording);
@@ -74,19 +75,20 @@ public abstract class CinematicManger extends Manager {
         }).start();
     }
 
-    public void record(@Nonnull Recording recording) throws CinematicRecordException {
+    public void record(Recording recording) throws CinematicRecordException {
         record(recording, p -> true);
     }
 
-    public void record(@Nonnull Recording recording, @Nonnull Circumstance circumstance) throws CinematicRecordException {
-        record(recording, circumstance, Finished.EMPTY);
+    public void record(Recording recording, Circumstance circumstance) throws CinematicRecordException {
+        record(recording, circumstance, (player, record) -> {
+        });
     }
 
-    public void record(@Nonnull Recording recording, @Nonnull Finished finished) throws CinematicRecordException {
+    public void record(Recording recording, Finished finished) throws CinematicRecordException {
         record(recording, p -> true, finished);
     }
 
-    public void record(@Nonnull Recording recording, @Nonnull Circumstance circumstance, @Nonnull Finished finished) throws CinematicRecordException {
+    public void record(Recording recording, Circumstance circumstance, Finished finished) throws CinematicRecordException {
         if (isPlaying()) throw new CinematicRecordException(recording, this, "Can't record a cinematic while playing");
         if (isRecording()) throw new CinematicRecordException(recording, this, "Already recording a cinematic");
         new Thread(() -> {
@@ -110,23 +112,18 @@ public abstract class CinematicManger extends Manager {
         }).start();
     }
 
-    public abstract static class Finished {
+    @FunctionalInterface
+    public interface Finished {
+        void general(TNLPlayer player, Recording recording);
 
-        @Nonnull
-        private static final Finished EMPTY = new Finished() {
-        };
-
-        public void success(@Nonnull TNLPlayer player, @Nonnull Recording recording) {
+        default void success(TNLPlayer player, Recording recording) {
         }
 
-        public void failure(@Nonnull TNLPlayer player, @Nonnull Recording recording) {
-        }
-
-        public void general(@Nonnull TNLPlayer player, @Nonnull Recording recording) {
+        default void failure(TNLPlayer player, Recording recording) {
         }
     }
 
     public interface Circumstance {
-        boolean check(@Nonnull TNLPlayer player);
+        boolean check(TNLPlayer player);
     }
 }

@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
-import javax.annotation.Nonnull;
-
 @Getter
 @Setter
 public abstract class MovePlayerPacket extends PacketBuilder {
@@ -33,7 +31,6 @@ public abstract class MovePlayerPacket extends PacketBuilder {
             super(x, y, z, 0, 0, onGround, true, false);
         }
 
-        @Nonnull
         public static Position create(double x, double y, double z, boolean onGround) {
             return Mapping.get().packetManager().incoming().movePlayerPacket(x, y, z, onGround);
         }
@@ -44,7 +41,6 @@ public abstract class MovePlayerPacket extends PacketBuilder {
             super(x, y, z, yaw, pitch, onGround, true, true);
         }
 
-        @Nonnull
         public static PositionRotation create(double x, double y, double z, float yaw, float pitch, boolean onGround) {
             return Mapping.get().packetManager().incoming().movePlayerPacket(x, y, z, yaw, pitch, onGround);
         }
@@ -55,7 +51,6 @@ public abstract class MovePlayerPacket extends PacketBuilder {
             super(0, 0, 0, yaw, pitch, onGround, false, true);
         }
 
-        @Nonnull
         public static Rotation create(float yaw, float pitch, boolean onGround) {
             return Mapping.get().packetManager().incoming().movePlayerPacket(yaw, pitch, onGround);
         }
@@ -66,7 +61,6 @@ public abstract class MovePlayerPacket extends PacketBuilder {
             super(0, 0, 0, 0, 0, onGround, false, false);
         }
 
-        @Nonnull
         public static Status create(boolean onGround) {
             return Mapping.get().packetManager().incoming().movePlayerPacket(onGround);
         }

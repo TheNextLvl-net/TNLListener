@@ -8,33 +8,31 @@ import org.bukkit.Location;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.List;
 
 public abstract class EffectManager extends Manager {
 
-    @Nonnull
     public Collection<PotionEffect> getEffects() {
         return getPlayer().bukkit().getActivePotionEffects();
     }
 
-    public void addEffect(@Nonnull PotionEffect effect) {
+    public void addEffect(PotionEffect effect) {
         Bootstrap.getInstance().sync(() -> getPlayer().bukkit().addPotionEffect(effect));
     }
 
-    public void addEffects(@Nonnull List<PotionEffect> effects) {
+    public void addEffects(List<PotionEffect> effects) {
         Bootstrap.getInstance().sync(() -> {
             for (PotionEffect effect : effects) addEffect(effect);
         });
     }
 
-    public void removeEffect(@Nonnull PotionEffectType type) {
+    public void removeEffect(PotionEffectType type) {
         Bootstrap.getInstance().sync(() -> getPlayer().bukkit().removePotionEffect(type));
     }
 
-    public void removeEffects(@Nonnull List<PotionEffect> effects) {
+    public void removeEffects(List<PotionEffect> effects) {
         Bootstrap.getInstance().sync(() -> {
             for (PotionEffect effect : effects) removeEffect(effect.getType());
         });
@@ -47,20 +45,20 @@ public abstract class EffectManager extends Manager {
     }
 
     @Nullable
-    public PotionEffect getEffect(@Nonnull PotionEffectType type) {
+    public PotionEffect getEffect(PotionEffectType type) {
         for (PotionEffect effect : getEffects()) if (effect.getType().equals(type)) return effect;
         return null;
     }
 
-    public boolean hasEffect(@Nonnull PotionEffectType type) {
+    public boolean hasEffect(PotionEffectType type) {
         return getPlayer().bukkit().hasPotionEffect(type);
     }
 
-    public void playEffect(@Nonnull EntityEffect effect) {
+    public void playEffect(EntityEffect effect) {
         getPlayer().bukkit().playEffect(effect);
     }
 
-    public <T> void playEffect(@Nonnull Location location, @Nonnull Effect effect, @Nullable T data) {
+    public <T> void playEffect(Location location, Effect effect, @Nullable T data) {
         getPlayer().bukkit().playEffect(location, effect, data);
     }
 

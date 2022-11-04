@@ -4,7 +4,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Getter;
 
-import javax.annotation.Nonnull;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -12,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 
 public final class PacketSerializer {
 
-    public static void writeString(@Nonnull DataOutputStream outputStream, @Nonnull String value) {
+    public static void writeString(DataOutputStream outputStream, String value) {
         try {
             byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
             writeVarInt(outputStream, bytes.length);
@@ -21,7 +20,7 @@ public final class PacketSerializer {
         }
     }
 
-    public static void writeVarInt(@Nonnull DataOutputStream outputStream, int value) {
+    public static void writeVarInt(DataOutputStream outputStream, int value) {
         try {
             while (true) {
                 if ((value & 0xFFFFFF80) == 0) {
@@ -35,7 +34,7 @@ public final class PacketSerializer {
         }
     }
 
-    public static int readVarInt(@Nonnull DataInputStream inputStream) {
+    public static int readVarInt(DataInputStream inputStream) {
         int i = 0, j = 0;
         try {
             while (true) {
@@ -50,12 +49,10 @@ public final class PacketSerializer {
     }
 
     @Getter
-    @Nonnull
     private final ByteBuf buf = Unpooled.buffer();
-    @Nonnull
     private final byte[] result;
 
-    public PacketSerializer(@Nonnull String string) {
+    public PacketSerializer(String string) {
         writeString(string);
         result = buf.array();
         buf.release();
@@ -72,7 +69,7 @@ public final class PacketSerializer {
         buf.release();
     }
 
-    public void writeString(@Nonnull String s) {
+    public void writeString(String s) {
         if (s.length() > 32767) {
             throw new IllegalArgumentException(String.format("Cannot send string longer than Short.MAX_VALUE (got %s characters)", s.length()));
         } else {
@@ -97,7 +94,6 @@ public final class PacketSerializer {
         } while (value != 0);
     }
 
-    @Nonnull
     public byte[] toArray() {
         return this.result;
     }

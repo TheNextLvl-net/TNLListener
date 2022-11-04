@@ -2,6 +2,8 @@ package net.nonswag.tnl.listener.api.server;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import lombok.Getter;
+import lombok.ToString;
 import net.nonswag.core.api.file.helper.JsonHelper;
 import net.nonswag.core.api.logger.Logger;
 import net.nonswag.core.api.message.Placeholder;
@@ -9,7 +11,6 @@ import net.nonswag.tnl.listener.Listener;
 import net.nonswag.tnl.listener.api.data.Buffer;
 import net.nonswag.tnl.listener.api.settings.Settings;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -23,24 +24,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
 
+@Getter
+@ToString
 public class Server {
 
-    @Nonnull
+    @Getter
     private static final HashMap<String, Server> servers = new HashMap<>();
 
-    @Nonnull
     private final ServerInfo serverInfo;
-    @Nonnull
     private final String name;
-    @Nonnull
     private final InetSocketAddress inetSocketAddress;
 
-    @Nonnull
     private Status status = Status.OFFLINE;
     private int playerCount = 0;
     private int maxPlayerCount = 0;
 
-    private Server(@Nonnull ServerInfo serverInfo) {
+    private Server(ServerInfo serverInfo) {
         this.serverInfo = serverInfo;
         this.name = serverInfo.name();
         this.inetSocketAddress = serverInfo.address();
@@ -53,48 +52,21 @@ public class Server {
         Placeholder.Registry.register(new Placeholder("status_" + getName(), () -> getStatus().getName()));
     }
 
-    @Nonnull
-    public ServerInfo getServerInfo() {
-        return serverInfo;
-    }
-
-    @Nonnull
-    public String getName() {
-        return name;
-    }
-
-    @Nonnull
-    public InetSocketAddress getInetSocketAddress() {
-        return inetSocketAddress;
-    }
-
-    public int getPlayerCount() {
-        return playerCount;
-    }
-
-    public int getMaxPlayerCount() {
-        return maxPlayerCount;
-    }
-
-    @Nonnull
-    public Server setStatus(@Nonnull Status status) {
+    public Server setStatus(Status status) {
         this.status = status;
         return this;
     }
 
-    @Nonnull
     private Server setPlayerCount(int playerCount) {
         this.playerCount = playerCount;
         return this;
     }
 
-    @Nonnull
     private Server setMaxPlayerCount(int maxPlayerCount) {
         this.maxPlayerCount = maxPlayerCount;
         return this;
     }
 
-    @Nonnull
     public Status getStatus() {
         return status;
     }
@@ -104,7 +76,7 @@ public class Server {
         });
     }
 
-    public void update(@Nonnull Consumer<Server> update) {
+    public void update(Consumer<Server> update) {
         new Thread(() -> {
             try {
                 Socket socket = new Socket();
@@ -140,8 +112,7 @@ public class Server {
         }).start();
     }
 
-    @Nonnull
-    private JsonElement sendHandshake(@Nonnull Socket socket) throws IOException {
+    private JsonElement sendHandshake(Socket socket) throws IOException {
         if (socket.isConnected()) {
             DataOutputStream output = new DataOutputStream(socket.getOutputStream());
             DataInputStream input = new DataInputStream(socket.getInputStream());
@@ -168,8 +139,7 @@ public class Server {
         return new JsonObject();
     }
 
-    @Nonnull
-    public static Server wrap(@Nonnull ServerInfo serverInfo) {
+    public static Server wrap(ServerInfo serverInfo) {
         if (!getServers().containsKey(serverInfo.name())) {
             getServers().put(serverInfo.name(), new Server(serverInfo));
         }
@@ -177,33 +147,27 @@ public class Server {
     }
 
     @Nullable
-    public static Server wrap(@Nonnull String server) {
+    public static Server wrap(String server) {
         return getServers().get(server);
     }
 
-    public static void purgeCache(@Nonnull ServerInfo server) {
+    public static void purgeCache(ServerInfo server) {
         purgeCache(server.name());
     }
 
-    public static void purgeCache(@Nonnull String server) {
+    public static void purgeCache(String server) {
         getServers().remove(server);
     }
 
-    @Nonnull
-    private static HashMap<String, Server> getServers() {
-        return servers;
-    }
-
-    @Nonnull
     public static List<Server> servers() {
         return new ArrayList<>(getServers().values());
     }
 
-    public static boolean isReachable(@Nonnull ServerInfo serverInfo) {
+    public static boolean isReachable(ServerInfo serverInfo) {
         return isReachable(serverInfo.address());
     }
 
-    public static boolean isReachable(@Nonnull InetSocketAddress address) {
+    public static boolean isReachable(InetSocketAddress address) {
         try {
             Socket socket = new Socket();
             socket.setSoTimeout(1000);
@@ -215,33 +179,16 @@ public class Server {
         }
     }
 
-    @Override
-    public String toString() {
-        return "Server{" +
-                "serverInfo=" + serverInfo +
-                ", name='" + name + '\'' +
-                ", inetSocketAddress=" + inetSocketAddress +
-                ", status=" + status +
-                ", playerCount=" + playerCount +
-                ", maxPlayerCount=" + maxPlayerCount +
-                '}';
-    }
-
+    @Getter
     public enum Status {
         ONLINE("Online"),
         OFFLINE("Offline"),
         STARTING("Starting");
 
-        @Nonnull
         private final String name;
 
-        Status(@Nonnull String name) {
+        Status(String name) {
             this.name = name;
-        }
-
-        @Nonnull
-        public String getName() {
-            return name;
         }
 
         public boolean isStarting() {

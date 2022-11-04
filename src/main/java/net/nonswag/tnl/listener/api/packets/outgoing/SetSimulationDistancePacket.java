@@ -1,22 +1,17 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
-import javax.annotation.Nonnull;
-
 @Getter
 @Setter
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class SetSimulationDistancePacket extends PacketBuilder {
-
     private int simulationDistance;
 
-    protected SetSimulationDistancePacket(int simulationDistance) {
-        this.simulationDistance = simulationDistance;
-    }
-
-    @Nonnull
     public static SetSimulationDistancePacket create(int simulationDistance) {
         return Mapping.get().packetManager().outgoing().setSimulationDistancePacket(simulationDistance);
     }

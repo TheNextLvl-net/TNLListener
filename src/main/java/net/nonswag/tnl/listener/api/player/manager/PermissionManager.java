@@ -6,24 +6,20 @@ import net.nonswag.tnl.listener.api.packets.outgoing.EntityStatusPacket;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.ServerOperator;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public abstract class PermissionManager extends Manager implements ServerOperator {
 
-    @Nonnull
     protected final PermissionAttachment attachment;
 
     protected PermissionManager() {
         this.attachment = getPlayer().bukkit().addAttachment(Bootstrap.getInstance());
     }
 
-    @Nonnull
     public abstract Map<String, Boolean> getPermissions();
 
-    @Nonnull
     public List<String> getAllowedPermissions() {
         List<String> permissions = new ArrayList<>();
         getPermissions().forEach((permission, allowed) -> {
@@ -32,7 +28,6 @@ public abstract class PermissionManager extends Manager implements ServerOperato
         return permissions;
     }
 
-    @Nonnull
     public List<String> getDeniedPermissions() {
         List<String> permissions = new ArrayList<>();
         getPermissions().forEach((permission, allowed) -> {
@@ -41,45 +36,45 @@ public abstract class PermissionManager extends Manager implements ServerOperato
         return permissions;
     }
 
-    public void setPermissions(@Nonnull Map<String, Boolean> permissions) {
+    public void setPermissions(Map<String, Boolean> permissions) {
         Reflection.Field.set(attachment, "permissions", permissions);
         updatePermissions();
     }
 
-    public void setPermission(@Nonnull String permission, boolean allowed) {
+    public void setPermission(String permission, boolean allowed) {
         attachment.setPermission(permission, allowed);
         updatePermissions();
     }
 
-    public void addPermissions(@Nonnull String... permissions) {
+    public void addPermissions(String... permissions) {
         for (String permission : permissions) addPermission(permission);
     }
 
-    public void addPermission(@Nonnull String permission) {
+    public void addPermission(String permission) {
         setPermission(permission, true);
     }
 
-    public void removePermissions(@Nonnull String... permissions) {
+    public void removePermissions(String... permissions) {
         for (String permission : permissions) removePermission(permission);
     }
 
-    public void removePermission(@Nonnull String permission) {
+    public void removePermission(String permission) {
         setPermission(permission, false);
     }
 
-    public void unsetPermissions(@Nonnull String... permissions) {
+    public void unsetPermissions(String... permissions) {
         for (String permission : permissions) unsetPermission(permission);
     }
 
-    public void unsetPermission(@Nonnull String permission) {
+    public void unsetPermission(String permission) {
         attachment.unsetPermission(permission);
     }
 
-    public boolean hasPermission(@Nonnull String permission) {
+    public boolean hasPermission(String permission) {
         return attachment.getPermissible().hasPermission(permission);
     }
 
-    public boolean isPermissionSet(@Nonnull String permission) {
+    public boolean isPermissionSet(String permission) {
         return attachment.getPermissible().isPermissionSet(permission);
     }
 

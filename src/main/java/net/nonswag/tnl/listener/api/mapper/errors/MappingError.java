@@ -2,7 +2,6 @@ package net.nonswag.tnl.listener.api.mapper.errors;
 
 import net.nonswag.core.api.errors.TNLRuntimeException;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class MappingError extends TNLRuntimeException {
@@ -10,15 +9,15 @@ public class MappingError extends TNLRuntimeException {
     public MappingError() {
     }
 
-    public MappingError(@Nonnull String message) {
+    public MappingError(String message) {
         super(message);
     }
 
-    public MappingError(@Nonnull String message, @Nonnull Throwable cause) {
+    public MappingError(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public MappingError(@Nonnull Throwable cause) {
+    public MappingError(Throwable cause) {
         super(cause);
     }
 

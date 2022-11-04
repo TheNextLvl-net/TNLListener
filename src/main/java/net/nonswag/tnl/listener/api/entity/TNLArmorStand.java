@@ -6,23 +6,19 @@ import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public interface TNLArmorStand extends TNLEntityLiving {
 
-    @Nonnull
-    static TNLArmorStand create(@Nonnull World world, double x, double y, double z, float yaw, float pitch) {
+    static TNLArmorStand create(World world, double x, double y, double z, float yaw, float pitch) {
         return Mapping.get().createArmorStand(world, x, y, z, yaw, pitch);
     }
 
-    @Nonnull
-    static TNLArmorStand create(@Nonnull World world, double x, double y, double z) {
+    static TNLArmorStand create(World world, double x, double y, double z) {
         return create(world, x, y, z, 0f, 0f);
     }
 
-    @Nonnull
-    static TNLArmorStand create(@Nonnull Location location) {
+    static TNLArmorStand create(Location location) {
         if (location.getWorld() == null) throw new NullPointerException();
         return create(location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
     }

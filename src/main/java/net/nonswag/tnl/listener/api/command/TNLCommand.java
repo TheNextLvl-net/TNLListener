@@ -32,22 +32,22 @@ public abstract class TNLCommand extends BukkitCommand implements Usable {
     @Nullable
     private Plugin owner;
 
-    protected TNLCommand(@Nonnull String command) {
+    protected TNLCommand(String command) {
         this(command, null);
     }
 
-    protected TNLCommand(@Nonnull String command, @Nullable String permission, @Nonnull String... aliases) {
+    protected TNLCommand(String command, @Nullable String permission, String... aliases) {
         this(command, permission, Arrays.asList(aliases));
     }
 
-    protected TNLCommand(@Nonnull String command, @Nullable String permission, @Nonnull List<String> aliases) {
+    protected TNLCommand(String command, @Nullable String permission, List<String> aliases) {
         super(command, "", "", aliases);
         this.permission = permission;
         setPermission(permission);
     }
 
     @Override
-    public final boolean execute(@Nonnull CommandSender sender, @Nonnull String label, @Nonnull String[] args) {
+    public final boolean execute(CommandSender sender, String label, String[] args) {
         CommandSource source;
         if (sender instanceof Player p) {
             TNLPlayer player = TNLPlayer.cast(p);
@@ -77,11 +77,11 @@ public abstract class TNLCommand extends BukkitCommand implements Usable {
         return true;
     }
 
-    protected abstract void execute(@Nonnull Invocation invocation);
+    protected abstract void execute(Invocation invocation);
 
     @Nonnull
     @Override
-    public final List<String> tabComplete(@Nonnull CommandSender sender, @Nonnull String label, @Nonnull String[] args) {
+    public final List<String> tabComplete(CommandSender sender, String label, String[] args) {
         CommandSource source;
         if (sender instanceof Player) {
             TNLPlayer player = TNLPlayer.cast((Player) sender);
@@ -109,12 +109,11 @@ public abstract class TNLCommand extends BukkitCommand implements Usable {
 
     @Nonnull
     @Override
-    public final List<String> tabComplete(@Nonnull CommandSender sender, @Nonnull String alias, @Nonnull String[] args, @Nullable Location location) {
+    public final List<String> tabComplete(CommandSender sender, String alias, String[] args, @Nullable Location location) {
         return tabComplete(sender, alias, args);
     }
 
-    @Nonnull
-    protected List<String> suggest(@Nonnull Invocation invocation) {
+    protected List<String> suggest(Invocation invocation) {
         return new ArrayList<>();
     }
 
@@ -127,38 +126,37 @@ public abstract class TNLCommand extends BukkitCommand implements Usable {
 
     @Nonnull
     @Override
-    public TNLCommand setDescription(@Nonnull String description) {
+    public TNLCommand setDescription(String description) {
         super.setDescription(Message.format(description));
         return this;
     }
 
     @Nonnull
     @Override
-    public TNLCommand setUsage(@Nonnull String usage) {
+    public TNLCommand setUsage(String usage) {
         super.setUsage(Message.format(usage));
         return this;
     }
 
     @Nonnull
     @Override
-    public TNLCommand setAliases(@Nonnull List<String> aliases) {
+    public TNLCommand setAliases(List<String> aliases) {
         super.setAliases(aliases);
         return this;
     }
 
-    @Nonnull
     public TNLCommand setOwner(@Nullable Plugin owner) {
         this.owner = owner;
         return this;
     }
 
     @Override
-    public boolean canUse(@Nonnull CommandSource source) {
+    public boolean canUse(CommandSource source) {
         return true;
     }
 
     @Override
-    public void usage(@Nonnull Invocation invocation) {
+    public void usage(Invocation invocation) {
         String usage = getUsage();
         if (!usage.isEmpty()) invocation.source().sendMessage(usage);
         else invocation.source().sendMessage(Messages.INVALID_COMMAND_USAGE);

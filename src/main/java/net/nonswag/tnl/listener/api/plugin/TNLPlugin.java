@@ -17,11 +17,8 @@ import java.util.function.Consumer;
 
 public abstract class TNLPlugin extends JavaPlugin implements CombinedPlugin, Updatable {
 
-    @Nonnull
     private final EventManager eventManager = new EventManager(this);
-    @Nonnull
     private final CommandManager commandManager = new CommandManager(this);
-    @Nonnull
     private final RegistrationManager registrationManager = new RegistrationManager(this);
     @Nullable
     protected PluginUpdate updater = null;
@@ -60,19 +57,16 @@ public abstract class TNLPlugin extends JavaPlugin implements CombinedPlugin, Up
         }
     }
 
-    @Nonnull
     @Override
     public final EventManager getEventManager() {
         return eventManager;
     }
 
-    @Nonnull
     @Override
     public final CommandManager getCommandManager() {
         return commandManager;
     }
 
-    @Nonnull
     public final RegistrationManager getRegistrationManager() {
         return registrationManager;
     }
@@ -89,9 +83,8 @@ public abstract class TNLPlugin extends JavaPlugin implements CombinedPlugin, Up
         return updater == null ? updater = new PluginUpdate(this) : updater;
     }
 
-    @Nonnull
     @Override
-    public Thread async(@Nonnull Condition condition, @Nonnull Runnable runnable) {
+    public Thread async(Condition condition, Runnable runnable) {
         Thread thread = new Thread(() -> {
             if (condition.check()) runnable.run();
         });
@@ -99,9 +92,8 @@ public abstract class TNLPlugin extends JavaPlugin implements CombinedPlugin, Up
         return thread;
     }
 
-    @Nonnull
     @Override
-    public Thread async(@Nonnull Condition condition, @Nonnull Runnable runnable, long millis) {
+    public Thread async(Condition condition, Runnable runnable, long millis) {
         Thread thread = new Thread(() -> {
             if (Task.sleep(millis)) if (condition.check()) runnable.run();
         });
@@ -110,7 +102,7 @@ public abstract class TNLPlugin extends JavaPlugin implements CombinedPlugin, Up
     }
 
     @Override
-    public void sync(@Nonnull Condition condition, @Nonnull Runnable runnable) {
+    public void sync(Condition condition, Runnable runnable) {
         if (Bukkit.isPrimaryThread()) {
             if (condition.check()) runnable.run();
         } else Bukkit.getScheduler().runTask(this, () -> {
@@ -118,33 +110,30 @@ public abstract class TNLPlugin extends JavaPlugin implements CombinedPlugin, Up
         });
     }
 
-    @Nonnull
     @Override
-    public BukkitTask sync(@Nonnull Condition condition, @Nonnull Runnable runnable, long ticks) {
+    public BukkitTask sync(Condition condition, Runnable runnable, long ticks) {
         return Bukkit.getScheduler().runTaskLater(this, () -> {
             if (condition.check()) runnable.run();
         }, ticks);
     }
 
-    @Nonnull
     @Override
-    public BukkitTask repeatSynced(@Nonnull Runnable runnable, long period, long delay) {
+    public BukkitTask repeatSynced(Runnable runnable, long period, long delay) {
         return Bukkit.getScheduler().runTaskTimer(this, runnable, delay, period);
     }
 
     @Override
-    public void repeatSynced(@Nonnull Consumer<BukkitTask> runnable, long period, long delay) {
+    public void repeatSynced(Consumer<BukkitTask> runnable, long period, long delay) {
         Bukkit.getScheduler().runTaskTimer(this, runnable, delay, period);
     }
 
     @Override
-    public void repeatAsync(@Nonnull Consumer<BukkitTask> runnable, long period, long delay) {
+    public void repeatAsync(Consumer<BukkitTask> runnable, long period, long delay) {
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, runnable, delay, period);
     }
 
-    @Nonnull
     @Override
-    public BukkitTask repeatAsync(@Nonnull Runnable runnable, long period, long delay) {
+    public BukkitTask repeatAsync(Runnable runnable, long period, long delay) {
         return Bukkit.getScheduler().runTaskTimerAsynchronously(this, runnable, delay, period);
     }
 }

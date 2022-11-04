@@ -3,7 +3,6 @@ package net.nonswag.tnl.listener.api.player.manager;
 import lombok.Getter;
 import net.nonswag.tnl.listener.api.packets.outgoing.ResourcePackPacket;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 @Getter
@@ -16,19 +15,19 @@ public abstract class ResourceManager extends Manager {
     @Nullable
     protected Status status = null;
 
-    public void setResourcePack(@Nonnull String url) {
+    public void setResourcePack(String url) {
         ResourcePackPacket.create(url).send(getPlayer());
     }
 
-    public void setResourcePack(@Nonnull String url, @Nullable String hash) {
+    public void setResourcePack(String url, @Nullable String hash) {
         ResourcePackPacket.create(url, hash).send(getPlayer());
     }
 
-    public void setResourcePack(@Nonnull String url, @Nullable String hash, @Nullable String prompt) {
+    public void setResourcePack(String url, @Nullable String hash, @Nullable String prompt) {
         ResourcePackPacket.create(url, hash, prompt).send(getPlayer());
     }
 
-    public void setResourcePack(@Nonnull String url, @Nullable String hash, @Nullable String prompt, boolean required) {
+    public void setResourcePack(String url, @Nullable String hash, @Nullable String prompt, boolean required) {
         ResourcePackPacket.create(url, hash, prompt, required).send(getPlayer());
     }
 
