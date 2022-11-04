@@ -256,12 +256,13 @@ public class GUI implements Iterable<GUIItem>, Cloneable {
     }
 
     @Nonnull
-    public List<ItemStack> items() {
-        List<ItemStack> items = new ArrayList<>();
+    public List<TNLItem> items() {
+        List<TNLItem> items = new ArrayList<>();
+        TNLItem air = TNLItem.create(Material.AIR);
         for (int i = 0; i < getSize(); i++) {
             GUIItem item = getItem(i);
-            if (item != null) items.add(item.getItem().getItemStack());
-            else items.add(new ItemStack(Material.AIR));
+            if (item != null) items.add(item.getItem());
+            else items.add(air);
         }
         return items;
     }

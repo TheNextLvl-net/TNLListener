@@ -6,6 +6,8 @@ import net.nonswag.tnl.listener.api.packets.incoming.IncomingPacket;
 import net.nonswag.tnl.listener.api.packets.listener.PacketReader;
 import net.nonswag.tnl.listener.api.packets.listener.PacketWriter;
 import net.nonswag.tnl.listener.api.packets.outgoing.OutgoingPacket;
+import net.nonswag.tnl.listener.api.plugin.CombinedPlugin;
+import net.nonswag.tnl.listener.api.plugin.PluginHelper;
 import net.nonswag.tnl.listener.api.version.Version;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
@@ -63,5 +65,23 @@ public class EventManager {
         if (!Listener.getVersion().equals(version)) return false;
         registerListener(listener.get());
         return true;
+    }
+
+    @Nonnull
+    public static HashMap<PacketReader<?>, Class<? extends IncomingPacket>> getAllReaders() {
+        HashMap<PacketReader<?>, Class<? extends IncomingPacket>> readers = new HashMap<>();
+        PluginHelper.getInstance().getPlugins().forEach(plugin -> {
+            if (plugin instanceof CombinedPlugin combo) readers.putAll(combo.getEventManager().getReaders());
+        });
+        return readers;
+    }
+
+    @Nonnull
+    public static HashMap<PacketWriter<?>, Class<? extends OutgoingPacket>> getAllWriters() {
+        HashMap<PacketWriter<?>, Class<? extends OutgoingPacket>> readers = new HashMap<>();
+        PluginHelper.getInstance().getPlugins().forEach(plugin -> {
+            if (plugin instanceof CombinedPlugin combo) readers.putAll(combo.getEventManager().getWriters());
+        });
+        return readers;
     }
 }

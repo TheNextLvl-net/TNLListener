@@ -496,6 +496,7 @@ public abstract class TNLItem extends ItemStack {
 
     @Nonnull
     public static TNLItem create(@Nonnull ItemStack itemStack) {
+        if (itemStack instanceof TNLItem item) return item;
         return Mapping.get().createItem(itemStack);
     }
 

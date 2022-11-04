@@ -20,14 +20,16 @@ import net.nonswag.tnl.listener.api.location.Direction;
 import net.nonswag.tnl.listener.api.location.Position;
 import net.nonswag.tnl.listener.api.logger.LogManager;
 import net.nonswag.tnl.listener.api.mapper.errors.MappingError;
+import net.nonswag.tnl.listener.api.nbt.NBTTag;
+import net.nonswag.tnl.listener.api.packets.incoming.ChatPreviewPacket;
 import net.nonswag.tnl.listener.api.packets.incoming.PacketBuilder;
 import net.nonswag.tnl.listener.api.packets.incoming.*;
 import net.nonswag.tnl.listener.api.packets.outgoing.ChatPacket;
 import net.nonswag.tnl.listener.api.packets.outgoing.CustomPayloadPacket;
 import net.nonswag.tnl.listener.api.packets.outgoing.MoveVehiclePacket;
 import net.nonswag.tnl.listener.api.packets.outgoing.ResourcePackPacket;
-import net.nonswag.tnl.listener.api.packets.outgoing.*;
 import net.nonswag.tnl.listener.api.packets.outgoing.SetCarriedItemPacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.*;
 import net.nonswag.tnl.listener.api.player.GameProfile;
 import net.nonswag.tnl.listener.api.player.Hand;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
@@ -378,6 +380,9 @@ public abstract class Mapping extends PluginBuilder implements Updatable {
         interface Outgoing {
 
             @Nonnull
+            net.nonswag.tnl.listener.api.packets.outgoing.ChatPreviewPacket chatPreviewPacket(int queryId, @Nullable String query);
+
+            @Nonnull
             SetSimulationDistancePacket setSimulationDistancePacket(int simulationDistance);
 
             @Nonnull
@@ -387,7 +392,7 @@ public abstract class Mapping extends PluginBuilder implements Updatable {
             SetDisplayObjectivePacket setDisplayObjectivePacket(int slot, @Nullable String objectiveName);
 
             @Nonnull
-            BlockBreakAnimationPacket blockBreakAnimationPacket(@Nonnull BlockLocation location, int state);
+            BlockDestructionPacket blockDestructionPacket(int id, @Nonnull BlockPosition position, int state);
 
             @Nonnull
             SetExperiencePacket setExperiencePacket(float experienceProgress, int totalExperience, int experienceLevel);
@@ -492,7 +497,7 @@ public abstract class Mapping extends PluginBuilder implements Updatable {
             WindowDataPacket windowDataPacket(int windowId, int property, int value);
 
             @Nonnull
-            WindowItemsPacket windowItemsPacket(int windowId, @Nonnull List<ItemStack> items);
+            ContainerSetContentPacket containerSetContentPacket(int containerId, int stateId, @Nonnull List<TNLItem> content, @Nonnull TNLItem cursor);
 
             @Nonnull
             InitializeBorderPacket initializeBorderPacket(@Nonnull VirtualBorder virtualBorder);
@@ -528,7 +533,22 @@ public abstract class Mapping extends PluginBuilder implements Updatable {
             ResourcePackPacket resourcePackPacket(@Nonnull String url, @Nullable String hash, @Nullable String prompt, boolean required);
 
             @Nonnull
-            ItemTakePacket itemTakePacket(int itemId, int collectorId, int amount);
+            SetPlayerTeamPacket setPlayerTeamPacket(@Nonnull String name, @Nonnull SetPlayerTeamPacket.Option option, @Nullable SetPlayerTeamPacket.Parameters parameters, @Nonnull List<String> entries);
+
+            @Nonnull
+            TagQueryPacket tagQueryPacket(int transactionId, @Nullable NBTTag tag);
+
+            @Nonnull
+            SetChunkCacheRadiusPacket setChunkCacheRadiusPacket(int radius);
+
+            @Nonnull
+            RotateHeadPacket rotateHeadPacket(int entityId, byte yaw);
+
+            @Nonnull
+            TakeItemEntityPacket takeItemEntityPacket(int entityId, int playerId, int amount);
+
+            @Nonnull
+            SetChunkCacheCenterPacket setChunkCacheCenterPacket(int x, int z);
 
             @Nonnull
             <P> net.nonswag.tnl.listener.api.packets.outgoing.PacketBuilder map(@Nonnull P packet);

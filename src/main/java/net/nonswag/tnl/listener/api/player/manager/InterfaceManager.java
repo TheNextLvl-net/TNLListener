@@ -4,9 +4,11 @@ import lombok.Getter;
 import net.nonswag.core.api.message.Message;
 import net.nonswag.core.api.object.MutualGetter;
 import net.nonswag.tnl.listener.api.gui.GUI;
+import net.nonswag.tnl.listener.api.item.TNLItem;
 import net.nonswag.tnl.listener.api.location.BlockLocation;
 import net.nonswag.tnl.listener.api.packets.outgoing.*;
 import net.nonswag.tnl.listener.api.sign.SignMenu;
+import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
@@ -54,7 +56,7 @@ public abstract class InterfaceManager extends Manager {
     }
 
     public void updateGUI(@Nonnull GUI gui) {
-        WindowItemsPacket.create(gui.items()).send(getPlayer());
+        ContainerSetContentPacket.create(gui.items(), TNLItem.create(Material.AIR)).send(getPlayer());
     }
 
     public void closeGUI(boolean update) {
