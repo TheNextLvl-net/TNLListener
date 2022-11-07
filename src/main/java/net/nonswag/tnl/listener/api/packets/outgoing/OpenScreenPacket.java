@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.text.Component;
 import net.nonswag.core.api.math.Range;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.event.inventory.InventoryType;
@@ -11,57 +12,52 @@ import org.bukkit.event.inventory.InventoryType;
 @Getter
 @Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class OpenWindowPacket extends PacketBuilder {
-
-    private int windowId;
+public abstract class OpenScreenPacket extends PacketBuilder {
+    private int containerId;
     private Type type;
-    private String title;
+    private Component title;
 
-    public static OpenWindowPacket create(int windowId, Type type, String title) {
-        return Mapping.get().packetManager().outgoing().openWindowPacket(windowId, type, title);
+    public static OpenScreenPacket create(int containerId, Type type, Component title) {
+        return Mapping.get().packetManager().outgoing().openScreenPacket(containerId, type, title);
     }
 
-    public static OpenWindowPacket create(int windowId, int size, String title) {
-        return create(windowId, Type.chest(size), title);
+    public static OpenScreenPacket create(int containerId, int size, Component title) {
+        return create(containerId, Type.chest(size), title);
     }
 
-    public static OpenWindowPacket create(Type type, String title) {
+    public static OpenScreenPacket create(Type type, Component title) {
         return create(1, type, title);
     }
 
-    public static OpenWindowPacket create(int size, String title) {
+    public static OpenScreenPacket create(int size, Component title) {
         return create(Type.chest(size), title);
     }
 
-    @Getter
-    @AllArgsConstructor
     public enum Type {
-        CHEST_9X1(0),
-        CHEST_9X2(1),
-        CHEST_9X3(2),
-        CHEST_9X4(3),
-        CHEST_9X5(4),
-        CHEST_9X6(5),
-        DISPENSER(6),
-        ANVIL(7),
-        BEACON(8),
-        BLAST_FURNACE(9),
-        BREWING_STAND(10),
-        WORKBENCH(11),
-        ENCHANTER(12),
-        FURNACE(13),
-        GRINDSTONE(14),
-        HOPPER(15),
-        LECTERN(16),
-        LOOM(17),
-        MERCHANT(18),
-        SHULKER_BOX(19),
-        SMITHING_TABLE(20),
-        SMOKER(21),
-        CARTOGRAPHY_TABLE(22),
-        STONECUTTER(23);
-
-        private final int id;
+        CHEST_9X1,
+        CHEST_9X2,
+        CHEST_9X3,
+        CHEST_9X4,
+        CHEST_9X5,
+        CHEST_9X6,
+        DISPENSER,
+        ANVIL,
+        BEACON,
+        BLAST_FURNACE,
+        BREWING_STAND,
+        WORKBENCH,
+        ENCHANTER,
+        FURNACE,
+        GRINDSTONE,
+        HOPPER,
+        LECTERN,
+        LOOM,
+        MERCHANT,
+        SHULKER_BOX,
+        SMITHING_TABLE,
+        SMOKER,
+        CARTOGRAPHY_TABLE,
+        STONECUTTER;
 
         public static Type chest(@Range(from = 1, to = 6) int size) {
             int validate = Math.min(Math.max(size, 1), 6);

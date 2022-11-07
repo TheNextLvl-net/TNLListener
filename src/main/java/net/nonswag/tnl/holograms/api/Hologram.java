@@ -3,6 +3,8 @@ package net.nonswag.tnl.holograms.api;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import net.nonswag.core.api.math.Range;
 import net.nonswag.core.utils.StringUtil;
 import net.nonswag.tnl.holograms.Holograms;
@@ -19,34 +21,34 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+@Getter
+@Setter
+@Accessors(chain = true)
 public class Hologram {
 
     @Nonnull
     private static final HashMap<String, Hologram> holograms = new HashMap<>();
 
-    @Getter
     @Nonnull
     private final String name;
-    @Getter
     @Nonnull
     private final List<String> lines = new ArrayList<>();
-    @Getter
     @Nullable
     private Location location;
-    @Getter
     private double lineDistance = 0.25D;
-    @Getter
     @Range(from = 1, to = 5)
     private int darkness = 1;
     @Nonnull
+    @Accessors(fluent = true)
     private Consumer<SendEvent> onSend = event -> {
     };
     @Nonnull
+    @Accessors(fluent = true)
     private Consumer<InteractEvent> onInteract = event -> {
     };
     @Nonnull
+    @Accessors(fluent = true)
     private Predicate<TNLPlayer> canSee = player -> true;
-    @Getter
     private final boolean automaticReload;
 
     public Hologram() {
@@ -89,57 +91,11 @@ public class Hologram {
         return addLines(lines);
     }
 
-
-    @Nonnull
-    public Hologram setLineDistance(double lineDistance) {
-        this.lineDistance = lineDistance;
-        return this;
-    }
-
     @Nonnull
     public Hologram setDarkness(@Range(from = 1, to = 5) int darkness) {
         if (darkness > 5) throw new IllegalArgumentException("The hologram darkness can't be higher then 5");
         if (darkness < 1) throw new IllegalArgumentException("The hologram darkness can't be lower then 1");
         this.darkness = darkness;
-        return this;
-    }
-
-    @Nonnull
-    public Consumer<SendEvent> onSend() {
-        return onSend;
-    }
-
-    @Nonnull
-    public Consumer<InteractEvent> onInteract() {
-        return onInteract;
-    }
-
-    @Nonnull
-    public Predicate<TNLPlayer> canSee() {
-        return canSee;
-    }
-
-    @Nonnull
-    public Hologram canSee(@Nonnull Predicate<TNLPlayer> canSee) {
-        this.canSee = canSee;
-        return this;
-    }
-
-    @Nonnull
-    public Hologram onSend(@Nonnull Consumer<SendEvent> onSend) {
-        this.onSend = onSend;
-        return this;
-    }
-
-    @Nonnull
-    public Hologram onInteract(@Nonnull Consumer<InteractEvent> onInteract) {
-        this.onInteract = onInteract;
-        return this;
-    }
-
-    @Nonnull
-    public Hologram setLocation(@Nonnull Location location) {
-        this.location = location;
         return this;
     }
 

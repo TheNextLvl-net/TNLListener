@@ -1,5 +1,6 @@
 package net.nonswag.tnl.listener.api.player.manager;
 
+import net.kyori.adventure.text.Component;
 import net.nonswag.core.api.object.Pair;
 import net.nonswag.tnl.listener.api.packets.outgoing.SetActionBarTextPacket;
 import net.nonswag.tnl.listener.api.packets.outgoing.TitlePacket;
@@ -13,13 +14,17 @@ public abstract class TitleManager extends Manager {
     private Pair<Title.Animation, Thread> titleAnimation = null;
 
     public void resetTitle() {
-        TitlePacket.create().send(getPlayer());
+        TitlePacket.ClearTitles.create(true).send(getPlayer());
     }
 
     public void sendTitle(Title title) {
-        TitlePacket.create(title.getTimeIn(), title.getTimeStay(), title.getTimeOut()).send(getPlayer());
-        if (title.hasTitle()) TitlePacket.create(TitlePacket.Action.TITLE, title.getTitle()).send(getPlayer());
-        if (title.hasSubtitle()) TitlePacket.create(TitlePacket.Action.SUBTITLE, title.getSubtitle()).send(getPlayer());
+        TitlePacket.SetTitlesAnimation.create(title.getTimeIn(), title.getTimeStay(), title.getTimeOut()).send(getPlayer());
+        if (title.getTitle() != null) {
+            TitlePacket.SetTitleText.create(Component.text(title.getTitle())).send(getPlayer());
+        }
+        if (title.getSubtitle() != null) {
+            TitlePacket.SetSubtitleText.create(Component.text(title.getSubtitle())).send(getPlayer());
+        }
     }
 
     @Nullable
@@ -66,11 +71,15 @@ public abstract class TitleManager extends Manager {
         thread.start();
     }
 
-    public void sendActionbar(String actionbar) {
+    public void sendActionbar(Component actionbar) {
         SetActionBarTextPacket.create(actionbar).send(getPlayer());
     }
 
+    public void sendActionbar(String actionbar) {
+        sendActionbar(Component.text(actionbar));
+    }
+
     public void resetActionbar() {
-        sendActionbar("");
+        sendActionbar(Component.empty());
     }
 }

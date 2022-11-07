@@ -1,9 +1,9 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
+import net.kyori.adventure.text.Component;
 import net.nonswag.tnl.listener.api.border.VirtualBorder;
 import net.nonswag.tnl.listener.api.item.SlotType;
 import net.nonswag.tnl.listener.api.item.TNLItem;
-import net.nonswag.tnl.listener.api.location.BlockLocation;
 import net.nonswag.tnl.listener.api.location.BlockPosition;
 import net.nonswag.tnl.listener.api.location.Position;
 import net.nonswag.tnl.listener.api.nbt.NBTTag;
@@ -21,7 +21,7 @@ import java.util.UUID;
 
 public interface Outgoing {
 
-    ChatPreviewPacket chatPreviewPacket(int queryId, @Nullable String query);
+    ChatPreviewPacket chatPreviewPacket(int queryId, @Nullable Component query);
 
     SetSimulationDistancePacket setSimulationDistancePacket(int simulationDistance);
 
@@ -39,13 +39,13 @@ public interface Outgoing {
 
     CameraPacket cameraPacket(int targetId);
 
-    SystemChatPacket systemChatPacket(String message, boolean overlay);
+    SystemChatPacket systemChatPacket(Component message, boolean overlay);
 
     ContainerClosePacket containerClosePacket(int windowId);
 
     CooldownPacket cooldownPacket(Material item, int cooldown);
 
-    CustomPayloadPacket customPayloadPacket(String channel, byte[]... bytes);
+    CustomPayloadPacket customPayloadPacket(NamespacedKey channel, byte[]... bytes);
 
     AnimationPacket animationPacket(int entityId, AnimationPacket.Animation animation);
 
@@ -81,19 +81,17 @@ public interface Outgoing {
 
     NamedEntitySpawnPacket namedEntitySpawnPacket(HumanEntity human);
 
-    OpenSignPacket openSignPacket(BlockLocation location);
+    OpenSignEditorPacket openSignEditorPacket(BlockPosition position);
 
     OpenBookPacket openBookPacket(Hand hand);
 
     MoveVehiclePacket moveVehiclePacket(Position position);
 
-    OpenWindowPacket openWindowPacket(int windowId, OpenWindowPacket.Type type, String title);
+    OpenScreenPacket openScreenPacket(int containerId, OpenScreenPacket.Type type, Component title);
 
     PlayerInfoPacket playerInfoPacket(Player player, PlayerInfoPacket.Action action);
 
-    SetSlotPacket setSlotPacket(SetSlotPacket.Inventory inventory, int slot, @Nullable ItemStack itemStack);
-
-    TitlePacket titlePacket(TitlePacket.Action action, @Nullable String text, int timeIn, int timeStay, int timeOut);
+    ContainerSetSlotPacket containerSetSlotPacket(int containerId, int stateId, int slot, @Nullable ItemStack itemStack);
 
     UpdateTimePacket updateTimePacket(long age, long timestamp, boolean cycle);
 
@@ -121,7 +119,7 @@ public interface Outgoing {
 
     SetDisplayChatPreviewPacket setDisplayChatPreviewPacket(boolean enabled);
 
-    ResourcePackPacket resourcePackPacket(String url, @Nullable String hash, @Nullable String prompt, boolean required);
+    ResourcePackPacket resourcePackPacket(String url, @Nullable String hash, @Nullable Component prompt, boolean required);
 
     SetPlayerTeamPacket setPlayerTeamPacket(String name, SetPlayerTeamPacket.Option option, @Nullable SetPlayerTeamPacket.Parameters parameters, List<String> entries);
 
@@ -139,15 +137,29 @@ public interface Outgoing {
 
     KeepAlivePacket keepAlivePacket(long id);
 
-    ClearTitlesPacket clearTitlesPacket(boolean resetTimes);
+    SetActionBarTextPacket setActionBarTextPacket(Component text);
 
-    SetActionBarTextPacket setActionBarTextPacket(String text);
-
-    DisconnectPacket disconnectPacket(String reason);
+    DisconnectPacket disconnectPacket(Component reason);
 
     ForgetLevelChunkPacket forgetLevelChunkPacket(int x, int z);
 
-    TabListPacket tabListPacket(String header, String footer);
+    TabListPacket tabListPacket(Component header, Component footer);
+
+    PingPacket pingPacket(int id);
+
+    BlockChangedAckPacket blockChangedAckPacket(int sequence);
+
+    TitlePacket.SetTitlesAnimation setTitlesAnimation(int timeIn, int timeStay, int timeOut);
+
+    TitlePacket.SetTitleText setTitleText(Component text);
+
+    TitlePacket.SetSubtitleText setSubtitleText(Component text);
+
+    TitlePacket.ClearTitles clearTitles(boolean resetTimes);
+
+    SetEntityLinkPacket setEntityLinkPacket(int leashHolderId, int leashedEntityId);
+
+    BlockEventPacket blockEventPacket(BlockPosition position, Material blockType, int type, int data);
 
     <P> PacketBuilder map(P packet);
 }

@@ -10,7 +10,7 @@ import net.nonswag.core.api.object.Pair;
 import net.nonswag.tnl.listener.api.gui.iterators.GUIIterator;
 import net.nonswag.tnl.listener.api.item.ItemType;
 import net.nonswag.tnl.listener.api.item.TNLItem;
-import net.nonswag.tnl.listener.api.packets.outgoing.SetSlotPacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.ContainerSetSlotPacket;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -118,8 +118,8 @@ public class GUI implements Iterable<GUIItem>, Cloneable {
             else throw new IllegalArgumentException("Slot '" + slot + "' is outside the gui");
         } else remove(slot);
         getViewers().forEach(player -> {
-            if (item != null) SetSlotPacket.create(SetSlotPacket.Inventory.TOP, slot, item.getItem()).send(player);
-            else SetSlotPacket.create(SetSlotPacket.Inventory.TOP, slot, new ItemStack(Material.AIR)).send(player);
+            if (item != null) ContainerSetSlotPacket.create(1, slot, item.getItem()).send(player);
+            else ContainerSetSlotPacket.create(1, slot, new ItemStack(Material.AIR)).send(player);
         });
         return this;
     }

@@ -20,7 +20,7 @@ public abstract class CommandSuggestionsPacket extends PacketBuilder {
 
     @Getter
     @Setter
-    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
     public static class Suggestions {
         public static final Suggestions EMPTY = new Suggestions(new StringRange(0, 0), new ArrayList<>());
 
@@ -30,7 +30,7 @@ public abstract class CommandSuggestionsPacket extends PacketBuilder {
 
     @Getter
     @Setter
-    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
     public static class Suggestion {
         private StringRange range;
         private String text;

@@ -1,6 +1,7 @@
 package net.nonswag.tnl.listener.api.player.manager;
 
 import lombok.Getter;
+import net.kyori.adventure.text.Component;
 import net.nonswag.core.api.message.Message;
 import net.nonswag.core.api.object.MutualGetter;
 import net.nonswag.tnl.listener.api.gui.GUI;
@@ -41,10 +42,10 @@ public abstract class InterfaceManager extends Manager {
     }
 
     private void openPackets(GUI gui) {
-        String title = Message.format(gui.getTitle(), getPlayer());
+        Component title = Component.text(Message.format(gui.getTitle(), getPlayer()));
         if (!gui.getType().equals(InventoryType.CHEST)) {
-            OpenWindowPacket.create(OpenWindowPacket.Type.valueOf(gui.getType()), title).send(getPlayer());
-        } else OpenWindowPacket.create(gui.getSize() / 9, title).send(getPlayer());
+            OpenScreenPacket.create(OpenScreenPacket.Type.valueOf(gui.getType()), title).send(getPlayer());
+        } else OpenScreenPacket.create(gui.getSize() / 9, title).send(getPlayer());
         EntityStatusPacket.create(getPlayer().getEntityId(), EntityStatusPacket.Status.STOP_EATING).send(getPlayer());
         updateGUI(gui);
     }
@@ -76,7 +77,7 @@ public abstract class InterfaceManager extends Manager {
     public abstract void openVirtualSignEditor(SignMenu signMenu);
 
     public void openSignEditor(BlockLocation location) {
-        OpenSignPacket.create(location).send(getPlayer());
+        OpenSignEditorPacket.create(location).send(getPlayer());
     }
 
     public void closeSignMenu() {

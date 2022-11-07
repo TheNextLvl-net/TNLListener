@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 @Getter
 @Setter
-public abstract class WindowClickPacket extends PacketBuilder {
+public abstract class ContainerClickPacket extends PacketBuilder {
     private ClickType clickType;
     private TNLItem item;
     private HashMap<Integer, TNLItem> changedSlots;
@@ -18,8 +18,7 @@ public abstract class WindowClickPacket extends PacketBuilder {
     private int slot;
     private int buttonId;
 
-    protected WindowClickPacket(int containerId, int stateId, int slot, int buttonId, ClickType clickType,
-                                TNLItem item, HashMap<Integer, TNLItem> changedSlots) {
+    protected ContainerClickPacket(int containerId, int stateId, int slot, int buttonId, ClickType clickType, TNLItem item, HashMap<Integer, TNLItem> changedSlots) {
         this.containerId = containerId;
         this.stateId = stateId;
         this.slot = slot;
@@ -39,7 +38,7 @@ public abstract class WindowClickPacket extends PacketBuilder {
         PICKUP_ALL
     }
 
-    public static WindowClickPacket create(int containerId, int stateId, int slot, int buttonId, ClickType clickType, TNLItem item, HashMap<Integer, TNLItem> changedSlots) {
-        return Mapping.get().packetManager().incoming().windowClickPacket(containerId, stateId, slot, buttonId, clickType, item, changedSlots);
+    public static ContainerClickPacket create(int containerId, int stateId, int slot, int buttonId, ClickType clickType, TNLItem item, HashMap<Integer, TNLItem> changedSlots) {
+        return Mapping.get().packetManager().incoming().containerClickPacket(containerId, stateId, slot, buttonId, clickType, item, changedSlots);
     }
 }

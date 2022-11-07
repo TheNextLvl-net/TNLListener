@@ -6,6 +6,7 @@ import net.nonswag.tnl.listener.api.location.BlockPosition;
 import net.nonswag.tnl.listener.api.location.Direction;
 import net.nonswag.tnl.listener.api.location.Position;
 import net.nonswag.tnl.listener.api.player.Hand;
+import net.nonswag.tnl.listener.api.player.manager.ResourceManager;
 import org.bukkit.Difficulty;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Rotation;
@@ -36,7 +37,7 @@ public interface Incoming {
 
     ClientCommandPacket clientCommandPacket(ClientCommandPacket.Action action);
 
-    ClientInformationPacket clientInformationPacket(String language, int viewDistance, ClientInformationPacket.ChatVisibility chatVisibility, boolean chatColors, int modelCustomisation, ClientInformationPacket.HandSide mainHand, boolean textFiltering, boolean listingAllowed);
+    ClientInformationPacket clientInformationPacket(String language, int viewDistance, ClientInformationPacket.ChatVisibility chatVisibility, boolean chatColors, int modelCustomisation, Hand.Side mainHand, boolean textFiltering, boolean listingAllowed);
 
     CommandSuggestionPacket commandSuggestionPacket(int id, String partialCommand);
 
@@ -90,7 +91,7 @@ public interface Incoming {
 
     RenameItemPacket renameItemPacket(String name);
 
-    ResourcePackPacket resourcePackPacket(ResourcePackPacket.Action action);
+    ResourcePackPacket resourcePackPacket(ResourceManager.Action action);
 
     SeenAdvancementsPacket seenAdvancementsPacket(SeenAdvancementsPacket.Action action, @Nullable NamespacedKey tab);
 
@@ -120,11 +121,11 @@ public interface Incoming {
 
     UseItemPacket useItemPacket(Hand hand, int sequence);
 
-    WindowButtonClickPacket windowButtonClickPacket(int containerId, int buttonId);
+    ContainerButtonClickPacket containerButtonClickPacket(int containerId, int buttonId);
 
-    WindowClickPacket windowClickPacket(int containerId, int stateId, int slot, int buttonId, WindowClickPacket.ClickType clickType, TNLItem item, HashMap<Integer, TNLItem> changedSlots);
+    ContainerClickPacket containerClickPacket(int containerId, int stateId, int slot, int buttonId, ContainerClickPacket.ClickType clickType, TNLItem item, HashMap<Integer, TNLItem> changedSlots);
 
-    WindowClosePacket windowClosePacket(int containerId);
+    ContainerClosePacket containerClosePacket(int containerId);
 
     <P> PacketBuilder map(P packet);
 }

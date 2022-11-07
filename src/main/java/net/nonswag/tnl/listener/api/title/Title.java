@@ -2,7 +2,9 @@ package net.nonswag.tnl.listener.api.title;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 import net.nonswag.core.api.annotation.FieldsAreNonnullByDefault;
 import net.nonswag.core.api.annotation.MethodsReturnNonnullByDefault;
 import org.bukkit.ChatColor;
@@ -11,8 +13,10 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @Getter
+@Setter
 @ToString
 @EqualsAndHashCode
+@Accessors(chain = true)
 @FieldsAreNonnullByDefault
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -36,39 +40,6 @@ public class Title {
 
     public Title() {
         this(null, null);
-    }
-
-    public Title setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public Title setSubtitle(String subtitle) {
-        this.subtitle = subtitle;
-        return this;
-    }
-
-    public Title setTimeIn(int timeIn) {
-        this.timeIn = timeIn;
-        return this;
-    }
-
-    public Title setTimeStay(int timeStay) {
-        this.timeStay = timeStay;
-        return this;
-    }
-
-    public Title setTimeOut(int timeOut) {
-        this.timeOut = timeOut;
-        return this;
-    }
-
-    public boolean hasTitle() {
-        return getTitle() != null;
-    }
-
-    public boolean hasSubtitle() {
-        return getSubtitle() != null;
     }
 
     public Animation animate(Design design) {

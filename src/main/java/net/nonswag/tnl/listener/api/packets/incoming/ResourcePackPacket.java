@@ -3,24 +3,18 @@ package net.nonswag.tnl.listener.api.packets.incoming;
 import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
+import net.nonswag.tnl.listener.api.player.manager.ResourceManager;
 
 @Getter
 @Setter
 public abstract class ResourcePackPacket extends PacketBuilder {
-    private Action action;
+    private ResourceManager.Action action;
 
-    protected ResourcePackPacket(Action action) {
+    protected ResourcePackPacket(ResourceManager.Action action) {
         this.action = action;
     }
 
-    public enum Action {
-        SUCCESSFULLY_LOADED,
-        DECLINED,
-        FAILED_DOWNLOAD,
-        ACCEPTED
-    }
-
-    public static ResourcePackPacket create(Action action) {
+    public static ResourcePackPacket create(ResourceManager.Action action) {
         return Mapping.get().packetManager().incoming().resourcePackPacket(action);
     }
 }

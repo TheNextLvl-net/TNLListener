@@ -10,4 +10,16 @@ public enum Hand {
     public boolean isOffHand() {
         return equals(OFF_HAND);
     }
+
+    public enum Side {
+        LEFT, RIGHT;
+
+        public boolean isRightSide() {
+            return equals(RIGHT);
+        }
+
+        public boolean isLeftSide() {
+            return equals(LEFT);
+        }
+    }
 }

@@ -14,6 +14,7 @@ import net.nonswag.tnl.listener.api.packets.outgoing.AnimationPacket;
 import net.nonswag.tnl.listener.api.packets.outgoing.EntityStatusPacket;
 import net.nonswag.tnl.listener.api.packets.outgoing.PlayerInfoPacket;
 import net.nonswag.tnl.listener.api.player.GameProfile;
+import net.nonswag.tnl.listener.api.player.Hand;
 import net.nonswag.tnl.listener.api.player.Skin;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.Location;
@@ -119,16 +120,11 @@ public class FakePlayer {
     @Getter
     public static class InteractEvent extends FakePlayerEvent {
 
-        private final Type type;
+        private final Hand.Side handSide;
 
-        public InteractEvent(TNLPlayer player, FakePlayer fakePlayer, Type type) {
+        public InteractEvent(TNLPlayer player, FakePlayer fakePlayer, Hand.Side handSide) {
             super(fakePlayer, player);
-            this.type = type;
-        }
-
-        public enum Type {
-            LEFT_CLICK,
-            RIGHT_CLICK
+            this.handSide = handSide;
         }
     }
 }

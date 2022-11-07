@@ -32,17 +32,9 @@ public final class EventManager {
         else throw new IllegalStateException("reader already registered");
     }
 
-    public void registerPacketReader(PacketReader<IncomingPacket> reader) {
-        registerPacketReader(reader, IncomingPacket.class);
-    }
-
     public <P extends OutgoingPacket> void registerPacketWriter(PacketWriter<P> writer, Class<P> clazz) throws IllegalStateException {
         if (!writers.containsKey(writer)) writers.put(writer, clazz);
         else throw new IllegalStateException("writer already registered");
-    }
-
-    public void registerPacketWriter(PacketWriter<OutgoingPacket> writer) {
-        registerPacketWriter(writer, OutgoingPacket.class);
     }
 
     public void registerListener(org.bukkit.event.Listener listener) {
@@ -72,10 +64,10 @@ public final class EventManager {
     }
 
     public static HashMap<PacketWriter<?>, Class<? extends OutgoingPacket>> getAllWriters() {
-        HashMap<PacketWriter<?>, Class<? extends OutgoingPacket>> readers = new HashMap<>();
+        HashMap<PacketWriter<?>, Class<? extends OutgoingPacket>> writers = new HashMap<>();
         PluginHelper.getInstance().getPlugins().forEach(plugin -> {
-            if (plugin instanceof CombinedPlugin combo) readers.putAll(combo.getEventManager().getWriters());
+            if (plugin instanceof CombinedPlugin combo) writers.putAll(combo.getEventManager().getWriters());
         });
-        return readers;
+        return writers;
     }
 }

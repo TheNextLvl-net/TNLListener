@@ -45,8 +45,6 @@ public abstract class TNLPlayer implements CommandSource, PlatformPlayer, TNLEnt
     @Getter
     protected Version version = Listener.getVersion();
     @Getter
-    protected final GameProfile gameProfile;
-    @Getter
     private final String realName;
     private Player player;
     @Getter
@@ -57,7 +55,6 @@ public abstract class TNLPlayer implements CommandSource, PlatformPlayer, TNLEnt
 
     protected TNLPlayer(Player player) {
         this.player = player;
-        this.gameProfile = new GameProfile(player);
         this.realName = player.getName();
     }
 
@@ -80,6 +77,8 @@ public abstract class TNLPlayer implements CommandSource, PlatformPlayer, TNLEnt
     public UUID getUniqueId() {
         return bukkit().getUniqueId();
     }
+
+    public abstract GameProfile getGameProfile();
 
     @Override
     public int getEntityId() {

@@ -9,11 +9,10 @@ import net.nonswag.tnl.listener.api.mapper.Mapping;
 @Getter
 @Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class ClearTitlesPacket extends PacketBuilder {
+public abstract class PingPacket extends PacketBuilder {
+    private int id;
 
-    private boolean resetTimes;
-
-    public static ClearTitlesPacket create(boolean resetTimes) {
-        return Mapping.get().packetManager().outgoing().clearTitlesPacket(resetTimes);
+    public static PingPacket create(int id) {
+        return Mapping.get().packetManager().outgoing().pingPacket(id);
     }
 }
