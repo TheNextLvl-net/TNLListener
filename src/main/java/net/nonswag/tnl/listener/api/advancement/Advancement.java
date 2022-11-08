@@ -1,10 +1,7 @@
 package net.nonswag.tnl.listener.api.advancement;
 
-import com.google.gson.JsonElement;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.google.gson.JsonObject;
+import lombok.*;
 import net.kyori.adventure.text.Component;
 import net.nonswag.core.api.annotation.MethodsReturnNonnullByDefault;
 import net.nonswag.tnl.listener.api.item.TNLItem;
@@ -18,10 +15,12 @@ import java.util.List;
 
 @Getter
 @Setter
-@Builder
+@ToString
+@EqualsAndHashCode
 @AllArgsConstructor
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
+@Builder(builderClassName = "Builder")
 public class Advancement {
     private NamespacedKey id;
     @Nullable
@@ -29,7 +28,7 @@ public class Advancement {
     @Nullable
     private DisplayInfo display;
     private Rewards rewards;
-    private HashMap<String, Criterion> criteria;
+    private HashMap<String, Criterion<?>> criteria;
     private String[][] requirements;
     private List<Advancement> children;
     private Component title;
@@ -40,6 +39,8 @@ public class Advancement {
 
     @Getter
     @Setter
+    @ToString
+    @EqualsAndHashCode
     @AllArgsConstructor
     public static class Rewards {
         private final int experience;
@@ -51,14 +52,18 @@ public class Advancement {
 
     @Getter
     @Setter
+    @ToString
+    @EqualsAndHashCode
     @AllArgsConstructor
-    public static abstract class Criterion {
+    public static abstract class Criterion<C> {
         private NamespacedKey id;
 
-        public abstract JsonElement serialize();
+        public abstract JsonObject serialize(C context);
 
         @Getter
         @Setter
+        @ToString
+        @EqualsAndHashCode
         @AllArgsConstructor
         public static class Progress {
             @Nullable
@@ -68,6 +73,8 @@ public class Advancement {
 
     @Getter
     @Setter
+    @ToString
+    @EqualsAndHashCode
     @AllArgsConstructor
     public static class DisplayInfo {
         private TNLItem icon;
@@ -85,6 +92,8 @@ public class Advancement {
 
     @Getter
     @Setter
+    @ToString
+    @EqualsAndHashCode
     @AllArgsConstructor
     public static class Progress {
         private HashMap<String, Criterion.Progress> progress;

@@ -16,11 +16,11 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class UpdateAdvancementsPacket extends PacketBuilder {
     private boolean reset;
-    private HashMap<NamespacedKey, Advancement> added;
+    private HashMap<NamespacedKey, Advancement.Builder> added;
     private List<NamespacedKey> removed;
     private HashMap<NamespacedKey, Advancement.Progress> progress;
 
-    public static UpdateAdvancementsPacket create(boolean reset, HashMap<NamespacedKey, Advancement> added, List<NamespacedKey> removed, HashMap<NamespacedKey, Advancement.Progress> progress) {
+    public static UpdateAdvancementsPacket create(boolean reset, HashMap<NamespacedKey, Advancement.Builder> added, List<NamespacedKey> removed, HashMap<NamespacedKey, Advancement.Progress> progress) {
         return Mapping.get().packetManager().outgoing().updateAdvancementsPacket(reset, added, removed, progress);
     }
 }

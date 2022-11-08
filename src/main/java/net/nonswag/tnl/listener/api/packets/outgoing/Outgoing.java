@@ -166,7 +166,7 @@ public interface Outgoing {
 
     SetScorePacket setScorePacket(SetScorePacket.Method method, @Nullable String objectiveName, String owner, int score);
 
-    UpdateAdvancementsPacket updateAdvancementsPacket(boolean reset, HashMap<NamespacedKey, Advancement> added, List<NamespacedKey> removed, HashMap<NamespacedKey, Advancement.Progress> progress);
+    UpdateAdvancementsPacket updateAdvancementsPacket(boolean reset, HashMap<NamespacedKey, Advancement.Builder> added, List<NamespacedKey> removed, HashMap<NamespacedKey, Advancement.Progress> progress);
 
     <P> PacketBuilder map(P packet);
 }
