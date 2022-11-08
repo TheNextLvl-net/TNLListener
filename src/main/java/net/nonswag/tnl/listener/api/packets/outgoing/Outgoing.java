@@ -161,5 +161,9 @@ public interface Outgoing {
 
     BlockEventPacket blockEventPacket(BlockPosition position, Material blockType, int type, int data);
 
+    SetDefaultSpawnPositionPacket setDefaultSpawnPositionPacket(BlockPosition position, float angle);
+
+    SetScorePacket setScorePacket(SetScorePacket.Method method, @Nullable String objectiveName, String owner, int score);
+
     <P> PacketBuilder map(P packet);
 }
