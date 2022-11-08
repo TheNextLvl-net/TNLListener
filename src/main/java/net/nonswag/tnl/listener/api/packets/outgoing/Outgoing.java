@@ -1,6 +1,7 @@
 package net.nonswag.tnl.listener.api.packets.outgoing;
 
 import net.kyori.adventure.text.Component;
+import net.nonswag.tnl.listener.api.advancement.Advancement;
 import net.nonswag.tnl.listener.api.border.VirtualBorder;
 import net.nonswag.tnl.listener.api.item.SlotType;
 import net.nonswag.tnl.listener.api.item.TNLItem;
@@ -164,6 +165,8 @@ public interface Outgoing {
     SetDefaultSpawnPositionPacket setDefaultSpawnPositionPacket(BlockPosition position, float angle);
 
     SetScorePacket setScorePacket(SetScorePacket.Method method, @Nullable String objectiveName, String owner, int score);
+
+    UpdateAdvancementsPacket updateAdvancementsPacket(boolean reset, HashMap<NamespacedKey, Advancement> added, List<NamespacedKey> removed, HashMap<NamespacedKey, Advancement.Progress> progress);
 
     <P> PacketBuilder map(P packet);
 }
