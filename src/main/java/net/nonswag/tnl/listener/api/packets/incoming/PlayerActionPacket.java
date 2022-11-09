@@ -1,5 +1,7 @@
 package net.nonswag.tnl.listener.api.packets.incoming;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.location.BlockPosition;
@@ -8,18 +10,12 @@ import net.nonswag.tnl.listener.api.mapper.Mapping;
 
 @Getter
 @Setter
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class PlayerActionPacket extends PacketBuilder {
     private Action action;
     private BlockPosition position;
     private Direction direction;
     private int sequence;
-
-    protected PlayerActionPacket(Action action, BlockPosition position, Direction direction, int sequence) {
-        this.action = action;
-        this.position = position;
-        this.direction = direction;
-        this.sequence = sequence;
-    }
 
     public enum Action {
         START_DESTROY_BLOCK,

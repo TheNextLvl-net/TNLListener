@@ -1,30 +1,18 @@
 package net.nonswag.tnl.listener.api.packets.incoming;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
 @Getter
 @Setter
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class MovePlayerPacket extends PacketBuilder {
-    private double x;
-    private double y;
-    private double z;
-    private float yaw;
-    private float pitch;
-    private boolean onGround;
-    private boolean changingPosition;
-    private boolean changingLook;
-
-    protected MovePlayerPacket(double x, double y, double z, float yaw, float pitch, boolean onGround, boolean changingPosition, boolean changingLook) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.yaw = yaw;
-        this.pitch = pitch;
-        this.changingPosition = changingPosition;
-        this.changingLook = changingLook;
-    }
+    private double x, y, z;
+    private float yaw, pitch;
+    private boolean onGround, changingPosition, changingLook;
 
     public static abstract class Position extends MovePlayerPacket {
         protected Position(double x, double y, double z, boolean onGround) {

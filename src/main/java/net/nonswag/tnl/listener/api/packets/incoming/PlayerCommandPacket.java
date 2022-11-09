@@ -1,21 +1,18 @@
 package net.nonswag.tnl.listener.api.packets.incoming;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
 @Getter
 @Setter
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class PlayerCommandPacket extends PacketBuilder {
     private int entityId;
     private Action action;
     private int data;
-
-    protected PlayerCommandPacket(int entityId, Action action, int data) {
-        this.entityId = entityId;
-        this.action = action;
-        this.data = data;
-    }
 
     public enum Action {
         PRESS_SHIFT_KEY,

@@ -18,7 +18,6 @@ import net.nonswag.tnl.listener.api.item.TNLItem;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import net.nonswag.tnl.listener.api.mods.ModPlayer;
 import net.nonswag.tnl.listener.api.mods.labymod.LabyPlayer;
-import net.nonswag.tnl.listener.api.packets.injection.Injection;
 import net.nonswag.tnl.listener.api.packets.outgoing.GameStateChangePacket;
 import net.nonswag.tnl.listener.api.packets.outgoing.InitializeBorderPacket;
 import net.nonswag.tnl.listener.api.player.manager.*;
@@ -47,9 +46,6 @@ public abstract class TNLPlayer implements CommandSource, PlatformPlayer, TNLEnt
     @Getter
     private final String realName;
     private Player player;
-    @Getter
-    @Deprecated
-    private final List<Injection<?>> injections = new ArrayList<>();
     private final HashMap<Class<? extends Manager>, Manager> managers = new HashMap<>();
     private final HashMap<Class<? extends ModPlayer>, ModPlayer> modHandlers = new HashMap<>();
 
@@ -114,36 +110,6 @@ public abstract class TNLPlayer implements CommandSource, PlatformPlayer, TNLEnt
 
     @Override
     public abstract void setPing(int ping);
-
-    @Deprecated
-    public <P> void inject(Injection<P> injection) {
-        getInjections().add(injection);
-    }
-
-    @Deprecated
-    public <P> void uninject(Injection<P> injection) {
-        getInjections().remove(injection);
-    }
-
-    @Deprecated
-    @SuppressWarnings("WhileLoopReplaceableByForEach")
-    protected boolean handleInjections(Object packet) {
-        boolean success = true;
-        Iterator<Injection<?>> iterator = getInjections().iterator();
-        while (iterator.hasNext()) {
-            Injection<?> injection = iterator.next();
-            if (!injection.getPacketClass().equals(packet.getClass())) continue;
-            Injection.After after = injection.getAfter();
-            try {
-                if (((Injection<Object>) injection).run(this, packet) && after != null) after.run(this);
-            } catch (Throwable t) {
-                injection.handle(t);
-            } finally {
-                if (injection.isCancelled()) success = false;
-            }
-        }
-        return success;
-    }
 
     public boolean delay(String id, long millis) {
         String key = UUID.nameUUIDFromBytes(id.getBytes(StandardCharsets.UTF_8)).toString();

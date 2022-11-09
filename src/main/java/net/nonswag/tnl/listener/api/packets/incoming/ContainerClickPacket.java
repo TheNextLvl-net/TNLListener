@@ -1,5 +1,7 @@
 package net.nonswag.tnl.listener.api.packets.incoming;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.item.TNLItem;
@@ -9,24 +11,12 @@ import java.util.HashMap;
 
 @Getter
 @Setter
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class ContainerClickPacket extends PacketBuilder {
+    private int containerId, slot, stateId, buttonId;
     private ClickType clickType;
     private TNLItem item;
     private HashMap<Integer, TNLItem> changedSlots;
-    private int containerId;
-    private int stateId;
-    private int slot;
-    private int buttonId;
-
-    protected ContainerClickPacket(int containerId, int stateId, int slot, int buttonId, ClickType clickType, TNLItem item, HashMap<Integer, TNLItem> changedSlots) {
-        this.containerId = containerId;
-        this.stateId = stateId;
-        this.slot = slot;
-        this.buttonId = buttonId;
-        this.clickType = clickType;
-        this.item = item;
-        this.changedSlots = changedSlots;
-    }
 
     public enum ClickType {
         PICKUP,

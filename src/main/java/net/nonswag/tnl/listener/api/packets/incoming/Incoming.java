@@ -39,7 +39,7 @@ public interface Incoming {
 
     ClientInformationPacket clientInformationPacket(String language, int viewDistance, ClientInformationPacket.ChatVisibility chatVisibility, boolean chatColors, int modelCustomisation, Hand.Side mainHand, boolean textFiltering, boolean listingAllowed);
 
-    CommandSuggestionPacket commandSuggestionPacket(int id, String partialCommand);
+    CommandSuggestionPacket commandSuggestionPacket(int id, String command);
 
     CustomPayloadPacket customPayloadPacket(NamespacedKey channel, byte[] data);
 

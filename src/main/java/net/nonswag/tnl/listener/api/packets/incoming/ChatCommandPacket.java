@@ -1,5 +1,7 @@
 package net.nonswag.tnl.listener.api.packets.incoming;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.chat.LastSeenMessages;
@@ -9,23 +11,14 @@ import java.time.Instant;
 
 @Getter
 @Setter
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class ChatCommandPacket extends PacketBuilder {
-
     private String command;
     private Instant timeStamp;
-    private Entry[] argumentSignatures;
-    private LastSeenMessages.Update lastSeenMessages;
-    private boolean signedPreview;
     private long salt;
-
-    protected ChatCommandPacket(String command, Instant timeStamp, long salt, Entry[] argumentSignatures, boolean signedPreview, LastSeenMessages.Update lastSeenMessages) {
-        this.command = command;
-        this.timeStamp = timeStamp;
-        this.salt = salt;
-        this.argumentSignatures = argumentSignatures;
-        this.signedPreview = signedPreview;
-        this.lastSeenMessages = lastSeenMessages;
-    }
+    private Entry[] argumentSignatures;
+    private boolean signedPreview;
+    private LastSeenMessages.Update lastSeenMessages;
 
     @Getter
     @Setter

@@ -1,5 +1,7 @@
 package net.nonswag.tnl.listener.api.packets.incoming;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
@@ -8,14 +10,10 @@ import org.bukkit.util.Vector;
 
 @Getter
 @Setter
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class InteractPacket extends PacketBuilder {
     private int entityId;
     private boolean sneaking;
-
-    private InteractPacket(int entityId, boolean sneaking) {
-        this.entityId = entityId;
-        this.sneaking = sneaking;
-    }
 
     public static abstract class Attack extends InteractPacket {
         protected Attack(int entityId, boolean sneaking) {

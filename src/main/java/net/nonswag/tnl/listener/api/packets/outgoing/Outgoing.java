@@ -116,7 +116,7 @@ public interface Outgoing {
 
     HorseScreenOpenPacket horseScreenOpenPacket(int containerId, int size, int entityId);
 
-    CommandSuggestionsPacket commandSuggestionsPacket(int completionId, CommandSuggestionsPacket.Suggestions suggestions);
+    CommandSuggestionsPacket commandSuggestionsPacket(int id, CommandSuggestionsPacket.Suggestions suggestions);
 
     SetDisplayChatPreviewPacket setDisplayChatPreviewPacket(boolean enabled);
 
@@ -167,6 +167,24 @@ public interface Outgoing {
     SetScorePacket setScorePacket(SetScorePacket.Method method, @Nullable String objectiveName, String owner, int score);
 
     UpdateAdvancementsPacket updateAdvancementsPacket(boolean reset, HashMap<NamespacedKey, Advancement.Builder> added, List<NamespacedKey> removed, HashMap<NamespacedKey, Advancement.Progress> progress);
+
+    LevelEventPacket levelEventPacket(int eventId, BlockPosition position, int data, boolean global);
+
+    SetHealthPacket setHealthPacket(float health, int food, float saturation);
+
+    ServerDataPacket serverDataPacket(@Nullable Component motd, @Nullable String serverIcon, boolean chatPreview, boolean secureChat);
+
+    SectionBlocksUpdatePacket sectionBlocksUpdatePacket(long section, short[] positions, int[] states, boolean suppressLightUpdates);
+
+    PlayerLookAtPacket playerLookAtPacket(PlayerLookAtPacket.Anchor self, Position position, int entityId, @Nullable PlayerLookAtPacket.Anchor target);
+
+    PlayerCombatKillPacket playerCombatKillPacket(int victimId, int killerId, Component message);
+
+    PlayerCombatEndPacket playerCombatEndPacket(int durationSinceLastAttack, int killerId);
+
+    PlayerCombatEnterPacket playerCombatEnterPacket();
+
+    MerchantOffersPacket merchantOffersPacket(int containerId, List<MerchantOffersPacket.Offer> offers, int level, int experience, boolean showProgress, boolean canRestock);
 
     <P> PacketBuilder map(P packet);
 }

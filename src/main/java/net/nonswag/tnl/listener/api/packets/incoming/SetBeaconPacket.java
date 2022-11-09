@@ -1,32 +1,30 @@
 package net.nonswag.tnl.listener.api.packets.incoming;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import net.nonswag.core.api.annotation.FieldsAreNullableByDefault;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNullableByDefault;
 
 @Getter
 @Setter
+@FieldsAreNullableByDefault
+@ParametersAreNullableByDefault
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class SetBeaconPacket extends PacketBuilder {
-    @Nullable
-    private Effect primary;
-    @Nullable
-    private Effect secondary;
+    private Effect primary, secondary;
 
-    protected SetBeaconPacket(@Nullable Effect primary, @Nullable Effect secondary) {
-        this.primary = primary;
-        this.secondary = secondary;
-    }
-
-    public record Effect(Category category, int color, int id) {
-
+    public record Effect(@Nonnull Category category, int color, int id) {
         public enum Category {
             BENEFICIAL, HARMFUL, NEUTRAL
         }
     }
 
-    public static SetBeaconPacket create(@Nullable Effect primary, @Nullable Effect secondary) {
+    public static SetBeaconPacket create(Effect primary, Effect secondary) {
         return Mapping.get().packetManager().incoming().setBeaconPacket(primary, secondary);
     }
 }

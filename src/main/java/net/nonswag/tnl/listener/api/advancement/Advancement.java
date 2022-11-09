@@ -30,11 +30,20 @@ public class Advancement {
     private Rewards rewards;
     private HashMap<String, Criterion<?>> criteria;
     private String[][] requirements;
-    private List<Advancement> children;
+    private final List<Advancement> children;
     private Component title;
 
-    public int getMaxCriteriaRequired() {
-        return this.requirements.length;
+    {
+        setParent(parent);
+    }
+
+    public void setParent(@Nullable Advancement parent) {
+        if ((this.parent = parent) != null) parent.children.add(this);
+    }
+
+    public void addChild(Advancement advancement) {
+        advancement.setParent(this);
+        children.add(advancement);
     }
 
     @Getter
