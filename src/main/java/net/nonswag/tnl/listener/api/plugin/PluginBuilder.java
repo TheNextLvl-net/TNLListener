@@ -139,6 +139,7 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
                 disable();
             } finally {
                 getCommandManager().unregisterAllCommands();
+                getEventManager().unregisterAll();
                 HandlerList.unregisterAll(this);
             }
         } catch (Throwable t) {

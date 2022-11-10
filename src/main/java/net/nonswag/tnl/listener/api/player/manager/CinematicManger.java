@@ -43,14 +43,14 @@ public abstract class CinematicManger extends Manager {
                 TNLArmorStand armorStand = TNLArmorStand.create(step.getKey());
                 armorStand.setBasePlate(false);
                 armorStand.setVisible(false);
-                GameStateChangePacket.create(GameStateChangePacket.CHANGE_GAMEMODE, Gamemode.SPECTATOR.getId()).send(getPlayer());
+                GameEventPacket.create(GameEventPacket.CHANGE_GAMEMODE, Gamemode.SPECTATOR.getId()).send(getPlayer());
                 AddEntityPacket.create(armorStand.bukkit()).send(getPlayer());
                 EntityMetadataPacket.create(armorStand.bukkit()).send(getPlayer());
                 EntityHeadRotationPacket.create(armorStand.bukkit(), step.getKey().getYaw()).send(getPlayer());
                 try {
                     this.playing = true;
                     Thread.sleep(step.getValue() != null ? step.getValue() : 50);
-                    CameraPacket.create(armorStand.getEntityId()).send(getPlayer());
+                    SetCameraPacket.create(armorStand.getEntityId()).send(getPlayer());
                     for (Pair<Location, Long> pair : steps) {
                         if (!getPlayer().isOnline() || !isPlaying()) break;
                         step = pair;
@@ -64,8 +64,8 @@ public abstract class CinematicManger extends Manager {
                     finished.failure(getPlayer(), recording);
                 } finally {
                     RemoveEntitiesPacket.create(armorStand.getEntityId()).send(getPlayer());
-                    CameraPacket.create(getPlayer().bukkit()).send(getPlayer());
-                    GameStateChangePacket.create(GameStateChangePacket.CHANGE_GAMEMODE, getPlayer().getGamemode().getId()).send(getPlayer());
+                    SetCameraPacket.create(getPlayer().bukkit()).send(getPlayer());
+                    GameEventPacket.create(GameEventPacket.CHANGE_GAMEMODE, getPlayer().getGamemode().getId()).send(getPlayer());
                     TeleportEntityPacket.create(getPlayer().bukkit()).send(getPlayer());
                     getPlayer().abilityManager().updateAbilities();
                     this.playing = false;

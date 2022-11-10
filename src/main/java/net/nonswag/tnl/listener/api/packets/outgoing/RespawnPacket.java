@@ -8,5 +8,5 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class RespawnPacket {
+public abstract class RespawnPacket extends PacketBuilder {
 }

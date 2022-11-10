@@ -127,5 +127,7 @@ public interface Incoming {
 
     ContainerClosePacket containerClosePacket(int containerId);
 
+    <P> Class<? extends IncomingPacket> map(Class<P> clazz);
+
     <P> PacketBuilder map(P packet);
 }

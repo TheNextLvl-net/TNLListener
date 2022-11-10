@@ -8,5 +8,5 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class UpdateMobEffectPacket {
+public abstract class UpdateMobEffectPacket extends PacketBuilder {
 }

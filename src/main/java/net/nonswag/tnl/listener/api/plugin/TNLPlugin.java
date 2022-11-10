@@ -51,6 +51,7 @@ public abstract class TNLPlugin extends JavaPlugin implements CombinedPlugin, Up
             } finally {
                 getRegistrationManager().unregisterAll();
                 getCommandManager().unregisterAllCommands();
+                getEventManager().unregisterAll();
             }
         } catch (Throwable t) {
             Logger.error.println("There was an error while disabling plugin <'" + getName() + "'>", t);

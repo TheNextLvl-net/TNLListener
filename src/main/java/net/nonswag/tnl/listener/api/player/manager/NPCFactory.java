@@ -61,15 +61,15 @@ public abstract class NPCFactory extends Manager {
         if (!manager.getWorld().equals(fakePlayer.getLocation().getWorld())) return false;
         if (checkDistance && manager.getLocation().distance(fakePlayer.getLocation()) > LOADING_RANGE) return false;
         PlayerInfoPacket.create(fakePlayer.getPlayer(), PlayerInfoPacket.Action.ADD_PLAYER).send(getPlayer());
-        NamedEntitySpawnPacket.create(fakePlayer.getPlayer()).send(getPlayer());
+        AddPlayerPacket.create(fakePlayer.getPlayer()).send(getPlayer());
         EntityMetadataPacket.create(fakePlayer.getPlayer().bukkit()).send(getPlayer());
-        EntityEquipmentPacket.create(fakePlayer.getPlayer().bukkit()).send(getPlayer());
+        SetEquipmentPacket.create(fakePlayer.getPlayer().bukkit()).send(getPlayer());
         EntityHeadRotationPacket.create(fakePlayer.getPlayer().bukkit()).send(getPlayer());
         Bootstrap.getInstance().async(() -> {
             Task.sleep(1000);
-            fakePlayer.playAnimation(getPlayer(), AnimationPacket.Animation.SWING_MAIN_HAND);
+            fakePlayer.playAnimation(getPlayer(), AnimatePacket.Animation.SWING_MAIN_HAND);
             Task.sleep(1000);
-            fakePlayer.playAnimation(getPlayer(), AnimationPacket.Animation.SWING_OFF_HAND);
+            fakePlayer.playAnimation(getPlayer(), AnimatePacket.Animation.SWING_OFF_HAND);
             Task.sleep(5000);
             fakePlayer.hideTabListName(getPlayer());
         });

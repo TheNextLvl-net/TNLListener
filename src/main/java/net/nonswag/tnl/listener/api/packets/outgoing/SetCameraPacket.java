@@ -10,15 +10,14 @@ import org.bukkit.entity.Entity;
 @Getter
 @Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class CameraPacket extends PacketBuilder {
-
+public abstract class SetCameraPacket extends PacketBuilder {
     private int targetId;
 
-    public static CameraPacket create(int targetId) {
-        return Mapping.get().packetManager().outgoing().cameraPacket(targetId);
+    public static SetCameraPacket create(int targetId) {
+        return Mapping.get().packetManager().outgoing().setCameraPacket(targetId);
     }
 
-    public static CameraPacket create(Entity target) {
+    public static SetCameraPacket create(Entity target) {
         return create(target.getEntityId());
     }
 }

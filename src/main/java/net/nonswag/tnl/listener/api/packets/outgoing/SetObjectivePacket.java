@@ -8,5 +8,5 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class PlayerAbilitiesPacket extends PacketBuilder {
+public abstract class SetObjectivePacket extends PacketBuilder {
 }

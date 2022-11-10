@@ -10,16 +10,15 @@ import org.bukkit.entity.LivingEntity;
 @Getter
 @Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class AnimationPacket extends PacketBuilder {
-
+public abstract class AnimatePacket extends PacketBuilder {
     private int entityId;
     private Animation animation;
 
-    public static AnimationPacket create(int entityId, Animation animation) {
-        return Mapping.get().packetManager().outgoing().animationPacket(entityId, animation);
+    public static AnimatePacket create(int entityId, Animation animation) {
+        return Mapping.get().packetManager().outgoing().animatePacket(entityId, animation);
     }
 
-    public static AnimationPacket create(LivingEntity entity, Animation animation) {
+    public static AnimatePacket create(LivingEntity entity, Animation animation) {
         return create(entity.getEntityId(), animation);
     }
 

@@ -1,7 +1,7 @@
 package net.nonswag.tnl.listener.api.player.manager;
 
 import net.nonswag.tnl.listener.Bootstrap;
-import net.nonswag.tnl.listener.api.packets.outgoing.GameStateChangePacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.GameEventPacket;
 import org.bukkit.Effect;
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;
@@ -63,6 +63,6 @@ public abstract class EffectManager extends Manager {
     }
 
     public void playMobAppearance() {
-        GameStateChangePacket.create(GameStateChangePacket.GUARDIAN_ELDER_EFFECT).send(getPlayer());
+        GameEventPacket.create(GameEventPacket.GUARDIAN_ELDER_EFFECT).send(getPlayer());
     }
 }

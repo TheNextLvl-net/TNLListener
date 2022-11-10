@@ -6,7 +6,7 @@ import net.nonswag.core.api.annotation.Info;
 import net.nonswag.tnl.listener.Bootstrap;
 import net.nonswag.tnl.listener.api.entity.TNLEntity;
 import net.nonswag.tnl.listener.api.packets.outgoing.EntityAttachPacket;
-import net.nonswag.tnl.listener.api.packets.outgoing.GameStateChangePacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.GameEventPacket;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -163,7 +163,7 @@ public abstract class WorldManager extends Manager {
 
     public void setImmediateRespawn(boolean immediate) {
         immediateRespawn = immediate;
-        GameStateChangePacket.create(GameStateChangePacket.IMMEDIATE_RESPAWN, respawn -> respawn.immediate(immediate)).send(getPlayer());
+        GameEventPacket.create(GameEventPacket.IMMEDIATE_RESPAWN, respawn -> respawn.immediate(immediate)).send(getPlayer());
     }
 
     @Nullable

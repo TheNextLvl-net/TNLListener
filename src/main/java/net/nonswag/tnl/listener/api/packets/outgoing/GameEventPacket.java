@@ -11,8 +11,7 @@ import net.nonswag.tnl.listener.api.mapper.Mapping;
 @Getter
 @Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class GameStateChangePacket extends PacketBuilder {
-
+public abstract class GameEventPacket extends PacketBuilder {
     public static NoRespawnBlockAvailable NO_RESPAWN_BLOCK_AVAILABLE = new NoRespawnBlockAvailable();
     public static StopRaining START_RAINING = new StopRaining();
     public static StartRaining STOP_RAINING = new StartRaining();
@@ -29,15 +28,15 @@ public abstract class GameStateChangePacket extends PacketBuilder {
     private Identifier identifier;
     private float state;
 
-    public static GameStateChangePacket create(Identifier identifier, float state) {
-        return Mapping.get().packetManager().outgoing().gameStateChangePacket(identifier, state);
+    public static GameEventPacket create(Identifier identifier, float state) {
+        return Mapping.get().packetManager().outgoing().gameEventPacket(identifier, state);
     }
 
-    public static <I extends Identifier> GameStateChangePacket create(I identifier, MutualGetter<I, Float> state) {
+    public static <I extends Identifier> GameEventPacket create(I identifier, MutualGetter<I, Float> state) {
         return create(identifier, state.get(identifier));
     }
 
-    public static GameStateChangePacket create(Identifier identifier) {
+    public static GameEventPacket create(Identifier identifier) {
         return create(identifier, 0);
     }
 

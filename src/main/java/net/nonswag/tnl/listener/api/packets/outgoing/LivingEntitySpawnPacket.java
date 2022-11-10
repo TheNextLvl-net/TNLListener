@@ -11,7 +11,6 @@ import org.bukkit.entity.LivingEntity;
 @Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class LivingEntitySpawnPacket extends PacketBuilder {
-
     private LivingEntity entity;
 
     public static LivingEntitySpawnPacket create(LivingEntity entity) {

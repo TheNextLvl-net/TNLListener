@@ -14,26 +14,25 @@ import java.util.HashMap;
 @Getter
 @Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class EntityEquipmentPacket extends PacketBuilder {
-
+public abstract class SetEquipmentPacket extends PacketBuilder {
     private int entityId;
     private HashMap<SlotType, TNLItem> equipment;
 
-    public static EntityEquipmentPacket create(int entityId, HashMap<SlotType, TNLItem> equipment) {
-        return Mapping.get().packetManager().outgoing().entityEquipmentPacket(entityId, equipment);
+    public static SetEquipmentPacket create(int entityId, HashMap<SlotType, TNLItem> equipment) {
+        return Mapping.get().packetManager().outgoing().setEquipmentPacket(entityId, equipment);
     }
 
-    public static EntityEquipmentPacket create(LivingEntity entity, HashMap<SlotType, TNLItem> equipment) {
+    public static SetEquipmentPacket create(LivingEntity entity, HashMap<SlotType, TNLItem> equipment) {
         return create(entity.getEntityId(), equipment);
     }
 
-    public static EntityEquipmentPacket create(int entityId, SlotType slotType, TNLItem item) {
+    public static SetEquipmentPacket create(int entityId, SlotType slotType, TNLItem item) {
         HashMap<SlotType, TNLItem> map = new HashMap<>();
         map.put(slotType, item);
         return create(entityId, map);
     }
 
-    public static EntityEquipmentPacket create(LivingEntity entity) {
+    public static SetEquipmentPacket create(LivingEntity entity) {
         EntityEquipment equipment = entity.getEquipment();
         HashMap<SlotType, TNLItem> map = new HashMap<>();
         if (equipment != null) for (SlotType slot : SlotType.values()) {

@@ -85,7 +85,7 @@ public abstract class InterfaceManager extends Manager {
         if (GUI == null) ContainerClosePacket.create().send(getPlayer());
     }
 
-    public void demo(MutualGetter<GameStateChangePacket.DemoEvent, Float> demo) {
-        GameStateChangePacket.create(GameStateChangePacket.DEMO_EVENT, demo).send(getPlayer());
+    public void demo(MutualGetter<GameEventPacket.DemoEvent, Float> demo) {
+        GameEventPacket.create(GameEventPacket.DEMO_EVENT, demo).send(getPlayer());
     }
 }

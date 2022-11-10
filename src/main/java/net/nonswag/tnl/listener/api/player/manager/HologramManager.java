@@ -72,7 +72,7 @@ public abstract class HologramManager extends Manager {
                 if (armorStand == null) continue;
                 AddEntityPacket.create(armorStand.bukkit()).send(getPlayer());
                 EntityMetadataPacket.create(armorStand.bukkit()).send(getPlayer());
-                EntityEquipmentPacket.create(armorStand.bukkit()).send(getPlayer());
+                SetEquipmentPacket.create(armorStand.bukkit()).send(getPlayer());
             }
         }
         holograms.put(hologram, armorStandLines);

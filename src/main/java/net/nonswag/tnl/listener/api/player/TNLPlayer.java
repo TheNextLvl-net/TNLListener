@@ -18,7 +18,7 @@ import net.nonswag.tnl.listener.api.item.TNLItem;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import net.nonswag.tnl.listener.api.mods.ModPlayer;
 import net.nonswag.tnl.listener.api.mods.labymod.LabyPlayer;
-import net.nonswag.tnl.listener.api.packets.outgoing.GameStateChangePacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.GameEventPacket;
 import net.nonswag.tnl.listener.api.packets.outgoing.InitializeBorderPacket;
 import net.nonswag.tnl.listener.api.player.manager.*;
 import net.nonswag.tnl.listener.api.registrations.RegistrationManager;
@@ -101,7 +101,7 @@ public abstract class TNLPlayer implements CommandSource, PlatformPlayer, TNLEnt
         Bootstrap.getInstance().sync(() -> {
             bukkit().setGameMode(gamemode.bukkit());
             if (!gamemode.isUnknown()) return;
-            GameStateChangePacket.create(GameStateChangePacket.CHANGE_GAMEMODE, gamemode.getId()).send(this);
+            GameEventPacket.create(GameEventPacket.CHANGE_GAMEMODE, gamemode.getId()).send(this);
         });
     }
 

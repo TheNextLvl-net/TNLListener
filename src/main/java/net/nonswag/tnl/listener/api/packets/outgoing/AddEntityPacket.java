@@ -16,7 +16,6 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class AddEntityPacket extends PacketBuilder {
-
     private int entityId;
     private UUID uniqueId;
     private Position position;

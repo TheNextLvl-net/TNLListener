@@ -1,6 +1,6 @@
 package net.nonswag.tnl.listener.api.player.manager;
 
-import net.nonswag.tnl.listener.api.packets.outgoing.GameStateChangePacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.GameEventPacket;
 import org.bukkit.*;
 
 public abstract class SoundManager extends Manager {
@@ -78,6 +78,6 @@ public abstract class SoundManager extends Manager {
     }
 
     public void playPufferfishSting() {
-        GameStateChangePacket.create(GameStateChangePacket.PUFFER_FISH_STING).send(getPlayer());
+        GameEventPacket.create(GameEventPacket.PUFFER_FISH_STING).send(getPlayer());
     }
 }

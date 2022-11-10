@@ -38,7 +38,7 @@ public interface Outgoing {
 
     BossEventPacket bossEventPacket(BossEventPacket.Action action, BossBar bossBar);
 
-    CameraPacket cameraPacket(int targetId);
+    SetCameraPacket setCameraPacket(int targetId);
 
     SystemChatPacket systemChatPacket(Component message, boolean overlay);
 
@@ -48,15 +48,15 @@ public interface Outgoing {
 
     CustomPayloadPacket customPayloadPacket(NamespacedKey channel, byte[]... bytes);
 
-    AnimationPacket animationPacket(int entityId, AnimationPacket.Animation animation);
+    AnimatePacket animatePacket(int entityId, AnimatePacket.Animation animation);
 
     EntityAttachPacket entityAttachPacket(int holderId, int leashedId);
 
     RemoveEntitiesPacket removeEntitiesPacket(int... entityIds);
 
-    EntityEquipmentPacket entityEquipmentPacket(int entityId, HashMap<SlotType, TNLItem> equipment);
+    SetEquipmentPacket setEquipmentPacket(int entityId, HashMap<SlotType, TNLItem> equipment);
 
-    GameStateChangePacket gameStateChangePacket(GameStateChangePacket.Identifier identifier, float state);
+    GameEventPacket gameEventPacket(GameEventPacket.Identifier identifier, float state);
 
     EntityStatusPacket entityStatusPacket(int entityId, EntityStatusPacket.Status status);
 
@@ -80,7 +80,7 @@ public interface Outgoing {
 
     SetPassengersPacket setPassengersPacket(int holderId, int[] passengers);
 
-    NamedEntitySpawnPacket namedEntitySpawnPacket(HumanEntity human);
+    AddPlayerPacket addPlayerPacket(int entityId, UUID uniqueId, Position position);
 
     OpenSignEditorPacket openSignEditorPacket(BlockPosition position);
 
@@ -94,7 +94,7 @@ public interface Outgoing {
 
     ContainerSetSlotPacket containerSetSlotPacket(int containerId, int stateId, int slot, @Nullable ItemStack itemStack);
 
-    UpdateTimePacket updateTimePacket(long age, long timestamp, boolean cycle);
+    SetTimePacket setTimePacket(long age, long timestamp, boolean cycle);
 
     ContainerSetDataPacket containerSetDataPacket(int containerId, int propertyId, int value);
 
@@ -185,6 +185,26 @@ public interface Outgoing {
     PlayerCombatEnterPacket playerCombatEnterPacket();
 
     MerchantOffersPacket merchantOffersPacket(int containerId, List<MerchantOffersPacket.Offer> offers, int level, int experience, boolean showProgress, boolean canRestock);
+
+    AddExperienceOrbPacket addExperienceOrbPacket(int entityId, Position position, int value);
+
+    ExplodePacket explodePacket(Position position, float radius, List<BlockPosition> affectedBlocks, Vector knockback);
+
+    PlaceGhostRecipePacket placeGhostRecipePacket(int containerId, NamespacedKey recipe);
+
+    BlockUpdatePacket blockUpdatePacket(BlockPosition position, int blockState);
+
+    CustomChatCompletionsPacket customChatCompletionsPacket(CustomChatCompletionsPacket.Action action, List<String> entries);
+
+    EntityEventPacket entityEventPacket(int entityId, byte eventId);
+
+    MoveEntityPacket.PositionRotation moveEntityPacket(int entityId, double x, double y, double z, float yaw, float pitch, boolean onGround);
+
+    MoveEntityPacket.Rotation moveEntityPacket(int entityId, float yaw, float pitch, boolean onGround);
+
+    MoveEntityPacket.Position moveEntityPacket(int entityId, double x, double y, double z, boolean onGround);
+
+    <P> Class<? extends OutgoingPacket> map(Class<P> clazz);
 
     <P> PacketBuilder map(P packet);
 }
