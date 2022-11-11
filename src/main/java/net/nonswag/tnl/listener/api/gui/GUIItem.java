@@ -1,13 +1,11 @@
 package net.nonswag.tnl.listener.api.gui;
 
 import com.google.common.collect.ImmutableList;
-import net.nonswag.tnl.listener.api.gui.iterators.InteractionIterator;
 import net.nonswag.tnl.listener.api.item.TNLItem;
 
-import javax.annotation.Nullable;
 import java.util.*;
 
-public abstract class GUIItem implements Iterable<Interaction> {
+public abstract class GUIItem {
 
     private final List<Interaction> interactions = new ArrayList<>();
 
@@ -26,7 +24,7 @@ public abstract class GUIItem implements Iterable<Interaction> {
 
     public GUIItem addInteractions(Interaction... interactions) {
         for (Interaction interaction : interactions) {
-            if (!this.interactions.contains(interaction)) this.interactions.add(interaction);
+            if (interaction != null && !this.interactions.contains(interaction)) this.interactions.add(interaction);
         }
         return this;
     }
@@ -42,23 +40,15 @@ public abstract class GUIItem implements Iterable<Interaction> {
         return this;
     }
 
-    public List<Interaction> getInteractions(Interaction.Type type) {
+    public List<Interaction> interactions(Interaction.Type type) {
         List<Interaction> interactions = new ArrayList<>();
-        for (Interaction interaction : this) {
-            for (@Nullable Interaction.Type interactionType : interaction) {
-                if (!type.comparable(interactionType != null ? interactionType : Interaction.Type.LEFT)) continue;
+        this.interactions.forEach(interaction -> {
+            for (Interaction.Type interactionType : interaction.types()) {
+                if (!interactionType.comparable(type)) continue;
                 interactions.add(interaction);
+                break;
             }
-        }
+        });
         return interactions;
-    }
-
-    @Override
-    public Iterator<Interaction> iterator() {
-        return new InteractionIterator(this);
-    }
-
-    public ListIterator<Interaction> iterator(int index) {
-        return new InteractionIterator(this, index);
     }
 }

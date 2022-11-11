@@ -1,26 +1,26 @@
 package net.nonswag.tnl.listener.api.gui;
 
+import com.google.common.collect.ImmutableList;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import net.nonswag.tnl.listener.api.gui.iterators.TypeIterator;
+import lombok.experimental.Accessors;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
-import org.bukkit.event.inventory.ClickType;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Consumer;
 
-@Getter
 @ToString
 @EqualsAndHashCode
-public class Interaction implements Iterable<Interaction.Type>, Cloneable {
-
-    public static final Interaction EMPTY = new Interaction(player -> {
-    });
-
-    private final List<Type> types = new ArrayList<>();
+public class Interaction implements Cloneable {
+    @Getter
+    @Accessors(fluent = true)
     private final Consumer<TNLPlayer> action;
+    private final List<Type> types = new ArrayList<>();
 
     public Interaction(Consumer<TNLPlayer> action, List<Type> types) {
         this.action = action;
@@ -45,43 +45,32 @@ public class Interaction implements Iterable<Interaction.Type>, Cloneable {
         this(Type.GENERAL, action);
     }
 
+    public List<Type> types() {
+        return ImmutableList.copyOf(types);
+    }
+
     @Override
     public Interaction clone() {
-        return new Interaction(getAction(), getTypes());
+        return new Interaction(action(), types());
     }
 
     @Getter
     public enum Type {
         GENERAL,
-        RIGHT(ClickType.RIGHT),
-        LEFT(ClickType.LEFT),
-        MIDDLE(ClickType.MIDDLE),
-        SHIFT_RIGHT(ClickType.SHIFT_RIGHT),
-        SHIFT_LEFT(ClickType.SHIFT_LEFT),
-        NUMBER_KEY_GENERAL(ClickType.NUMBER_KEY),
-        NUMBER_KEY_1(ClickType.NUMBER_KEY),
-        NUMBER_KEY_2(ClickType.NUMBER_KEY),
-        NUMBER_KEY_3(ClickType.NUMBER_KEY),
-        NUMBER_KEY_4(ClickType.NUMBER_KEY),
-        NUMBER_KEY_5(ClickType.NUMBER_KEY),
-        NUMBER_KEY_6(ClickType.NUMBER_KEY),
-        NUMBER_KEY_7(ClickType.NUMBER_KEY),
-        NUMBER_KEY_8(ClickType.NUMBER_KEY),
-        NUMBER_KEY_9(ClickType.NUMBER_KEY),
-        OFF_HAND(ClickType.NUMBER_KEY),
-        DOUBLE_CLICK(ClickType.DOUBLE_CLICK),
-        DROP(ClickType.DROP),
-        DROP_ALL(ClickType.CONTROL_DROP);
-
-        private final ClickType type;
-
-        Type(ClickType type) {
-            this.type = type;
-        }
-
-        Type() {
-            this.type = ClickType.UNKNOWN;
-        }
+        RIGHT, LEFT, DOUBLE_CLICK,
+        SHIFT_RIGHT, SHIFT_LEFT,
+        NUMBER_KEY_GENERAL,
+        NUMBER_KEY_1,
+        NUMBER_KEY_2,
+        NUMBER_KEY_3,
+        NUMBER_KEY_4,
+        NUMBER_KEY_5,
+        NUMBER_KEY_6,
+        NUMBER_KEY_7,
+        NUMBER_KEY_8,
+        NUMBER_KEY_9,
+        OFF_HAND, MIDDLE,
+        DROP, DROP_ALL;
 
         public boolean isKeyboardClick() {
             return isNumberClick() || equals(DROP) || equals(DROP_ALL) || equals(OFF_HAND);
@@ -106,23 +95,9 @@ public class Interaction implements Iterable<Interaction.Type>, Cloneable {
             return equals(SHIFT_LEFT) || equals(SHIFT_RIGHT) || equals(DROP_ALL) || equals(GENERAL);
         }
 
-        public boolean equals(ClickType type) {
-            if (equals(GENERAL)) return true;
-            return getType().equals(type);
-        }
-
         public boolean comparable(Type type) {
             if (equals(GENERAL) || type.equals(GENERAL)) return true;
             return equals(type);
         }
-    }
-
-    @Override
-    public Iterator<Type> iterator() {
-        return new TypeIterator(this);
-    }
-
-    public ListIterator<Type> iterator(int i) {
-        return new TypeIterator(this, i);
     }
 }

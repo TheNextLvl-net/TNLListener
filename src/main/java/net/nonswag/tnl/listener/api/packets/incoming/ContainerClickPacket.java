@@ -13,7 +13,7 @@ import java.util.HashMap;
 @Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class ContainerClickPacket extends PacketBuilder {
-    private int containerId, slot, stateId, buttonId;
+    private int containerId, stateId, slot, buttonId;
     private ClickType clickType;
     private TNLItem item;
     private HashMap<Integer, TNLItem> changedSlots;

@@ -117,7 +117,7 @@ public interface Incoming {
 
     TeleportToEntityPacket teleportToEntityPacket(UUID target);
 
-    UseItemOnPacket useItemOnPacket(Hand hand, UseItemOnPacket.BlockTargetResult target, int sequence);
+    UseItemOnPacket useItemOnPacket(Hand hand, UseItemOnPacket.BlockTargetResult target, int sequence, long timestamp);
 
     UseItemPacket useItemPacket(Hand hand, int sequence);
 

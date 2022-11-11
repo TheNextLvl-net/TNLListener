@@ -17,9 +17,10 @@ public abstract class UseItemOnPacket extends PacketBuilder {
     private Hand hand;
     private BlockTargetResult target;
     private int sequence;
+    private long timestamp;
 
-    public static UseItemOnPacket create(Hand hand, BlockTargetResult target, int sequence) {
-        return Mapping.get().packetManager().incoming().useItemOnPacket(hand, target, sequence);
+    public static UseItemOnPacket create(Hand hand, BlockTargetResult target, int sequence, long timestamp) {
+        return Mapping.get().packetManager().incoming().useItemOnPacket(hand, target, sequence, timestamp);
     }
 
     @Getter
