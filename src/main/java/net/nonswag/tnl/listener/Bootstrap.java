@@ -1,18 +1,17 @@
 package net.nonswag.tnl.listener;
 
 import net.nonswag.core.Core;
+import net.nonswag.core.api.annotation.FieldsAreNullableByDefault;
+import net.nonswag.core.api.annotation.MethodsReturnNonnullByDefault;
 import net.nonswag.core.api.logger.Logger;
 import net.nonswag.core.api.message.Message;
 import net.nonswag.tnl.holograms.Holograms;
 import net.nonswag.tnl.listener.api.plugin.TNLPlugin;
 import net.nonswag.tnl.listener.api.settings.Settings;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+@FieldsAreNullableByDefault
+@MethodsReturnNonnullByDefault
 public final class Bootstrap extends TNLPlugin {
-
-    @Nullable
     private static Bootstrap instance = null;
 
     {
@@ -58,7 +57,6 @@ public final class Bootstrap extends TNLPlugin {
         }
     }
 
-    @Nonnull
     public static Bootstrap getInstance() {
         assert instance != null;
         return instance;
