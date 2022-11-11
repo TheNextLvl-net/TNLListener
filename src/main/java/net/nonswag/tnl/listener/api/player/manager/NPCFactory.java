@@ -114,7 +114,8 @@ public abstract class NPCFactory extends Manager {
     }
 
     public void update(FakePlayer fakePlayer, String name) {
-        if (name.isEmpty() || !isLoaded(fakePlayer) || !fakePlayer.canSee().test(getPlayer())) return;
+        if (!isLoaded(fakePlayer) || !fakePlayer.canSee().test(getPlayer())) return;
+        if (nameTags.containsKey(fakePlayer)) getPlayer().hologramManager().unload(nameTags.get(fakePlayer));
         String id = fakePlayer.getPlayer().getGameProfile().getUniqueId().toString();
         Hologram hologram = new Hologram(id).canSee(player -> player.equals(getPlayer()));
         hologram.setLocation(fakePlayer.getLocation().clone().add(0, 1.78, 0));
