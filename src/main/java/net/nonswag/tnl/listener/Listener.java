@@ -2,6 +2,8 @@ package net.nonswag.tnl.listener;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.nonswag.core.api.annotation.FieldsAreNonnullByDefault;
+import net.nonswag.core.api.annotation.MethodsReturnNonnullByDefault;
 import net.nonswag.core.api.logger.Logger;
 import net.nonswag.core.api.message.Placeholder;
 import net.nonswag.core.api.message.key.Key;
@@ -26,24 +28,24 @@ import net.nonswag.tnl.manager.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.Team;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.File;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 
+@FieldsAreNonnullByDefault
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public final class Listener extends PluginBuilder {
 
     @Getter
-    @Nonnull
     public static final Listener instance = new Listener();
 
     @Setter
-    @Nonnull
     private static String serverName = ServerProperties.getInstance().getOrDefault("server-name", "");
     @Getter
-    @Nonnull
     private static Version version = Version.UNKNOWN;
     @Getter
     @Setter
@@ -166,31 +168,28 @@ public final class Listener extends PluginBuilder {
         Placeholder.Registry.register(new Placeholder("gamemode", player -> ((TNLPlayer) player).getGamemode().getName()));
     }
 
-    @Nonnull
     public static List<TNLPlayer> getOnlinePlayers() {
         return getOnlinePlayers(false);
     }
 
-    @Nonnull
     private static List<TNLPlayer> getOnlinePlayers(boolean inject) {
         List<TNLPlayer> players = new ArrayList<>();
         Bukkit.getOnlinePlayers().forEach(all -> players.add(TNLPlayer.cast(all, inject)));
         return players;
     }
 
-    public static void broadcast(@Nonnull String message) {
+    public static void broadcast(String message) {
         getOnlinePlayers().forEach(all -> all.messenger().sendMessage(message));
     }
 
-    public static void broadcast(@Nonnull Key key, @Nonnull TNLPlayer player, @Nonnull Placeholder... placeholders) {
+    public static void broadcast(Key key, TNLPlayer player, Placeholder... placeholders) {
         getOnlinePlayers().forEach(all -> all.messenger().sendMessage(key, player, placeholders));
     }
 
-    public static void broadcast(@Nonnull Key key, @Nonnull Placeholder... placeholders) {
+    public static void broadcast(Key key, Placeholder... placeholders) {
         getOnlinePlayers().forEach(all -> all.messenger().sendMessage(key, placeholders));
     }
 
-    @Nonnull
     public static String getServerName() {
         if (serverName.equals("Unknown Server") || serverName.replace(" ", "").isEmpty()) {
             setServerName(new File("").getAbsoluteFile().getName());
