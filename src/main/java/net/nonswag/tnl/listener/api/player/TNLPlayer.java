@@ -272,6 +272,12 @@ public abstract class TNLPlayer implements CommandSource, PlatformPlayer, TNLEnt
     }
 
     @Nullable
+    public static TNLPlayer cast(int id) {
+        for (Player all : Bukkit.getOnlinePlayers()) if (all.getEntityId() == id) return cast(all);
+        return null;
+    }
+
+    @Nullable
     public static TNLPlayer cast(String name) {
         Player player = Bukkit.getPlayer(name);
         if (player != null) return cast(player);
