@@ -103,7 +103,7 @@ public final class Sidebar {
         return this;
     }
 
-    private Sidebar hideScore(int score) {
+    public Sidebar hideScore(int score) {
         Entry name = Entry.getById(score);
         if (name != null && objective.getScore(name.getName()).isScoreSet()) {
             getScoreboardManager().getScoreboard().resetScores(name.getName());
