@@ -30,11 +30,7 @@ public abstract class InterfaceManager extends Manager {
             return;
         }
         if (!gui.getOpenListener().onOpen(getPlayer())) return;
-        if (current != null) {
-            if (!current.getCloseListener().onClose(getPlayer(), true)) return;
-            if (current.getCloseSound() != null) getPlayer().soundManager().playSound(current.getCloseSound());
-            current.removeViewer(getPlayer());
-        }
+        if (current != null && current.getCloseListener().onClose(getPlayer(), true)) current.removeViewer(getPlayer());
         this.GUI = gui;
         if (!gui.getViewers().contains(getPlayer())) gui.addViewer(getPlayer());
         if (gui.getOpenSound() != null && current == null) getPlayer().soundManager().playSound(gui.getOpenSound());
