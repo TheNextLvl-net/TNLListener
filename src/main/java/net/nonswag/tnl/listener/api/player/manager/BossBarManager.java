@@ -45,8 +45,8 @@ public abstract class BossBarManager extends Manager {
         if (thread != null) {
             thread.interrupt();
             bossBarTimers.put(bossBar.getId(), Bootstrap.getInstance().async(() -> hideBossBar(bossBar), millis));
-        }
-        updateBossBar(bossBar);
+            updateBossBar(bossBar);
+        } else sendBossBar(bossBar);
     }
 
     public void hideBossBar(TNLBossBar bossBar) {

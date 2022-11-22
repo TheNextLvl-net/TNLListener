@@ -58,7 +58,7 @@ public abstract class TNLPlayer implements CommandSource, PlatformPlayer, TNLEnt
         return player;
     }
 
-    public TNLPlayer bukkit(Player player) {
+    protected TNLPlayer bukkit(Player player) {
         this.player = player;
         return this;
     }
