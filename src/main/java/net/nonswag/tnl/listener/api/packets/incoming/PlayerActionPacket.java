@@ -24,7 +24,15 @@ public abstract class PlayerActionPacket extends PacketBuilder {
         DROP_ALL_ITEMS,
         DROP_ITEM,
         RELEASE_USE_ITEM,
-        SWAP_ITEM_WITH_OFFHAND
+        SWAP_ITEM_WITH_OFFHAND;
+
+        public boolean isInteraction() {
+            return equals(ABORT_DESTROY_BLOCK) || equals(STOP_DESTROY_BLOCK) || equals(START_DESTROY_BLOCK);
+        }
+
+        public boolean isItemAction() {
+            return equals(DROP_ITEM) || equals(DROP_ALL_ITEMS) || equals(RELEASE_USE_ITEM) || equals(SWAP_ITEM_WITH_OFFHAND);
+        }
     }
 
     public static PlayerActionPacket create(Action action, BlockPosition position, Direction direction, int sequence) {

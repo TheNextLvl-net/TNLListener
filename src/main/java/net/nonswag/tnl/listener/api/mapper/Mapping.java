@@ -18,7 +18,6 @@ import net.nonswag.tnl.listener.api.player.GameProfile;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import net.nonswag.tnl.listener.api.plugin.PluginBuilder;
 import net.nonswag.tnl.listener.api.plugin.PluginHelper;
-import net.nonswag.tnl.listener.api.plugin.Updatable;
 import net.nonswag.tnl.listener.api.version.Version;
 import net.nonswag.tnl.listener.api.world.WorldHelper;
 import org.bukkit.Location;
@@ -42,7 +41,7 @@ import java.lang.annotation.Target;
 import java.net.URLClassLoader;
 
 @FieldsAreNullableByDefault
-public abstract class Mapping extends PluginBuilder implements Updatable {
+public abstract class Mapping extends PluginBuilder {
     private static Mapping instance = null;
     private Info info = null;
     @Getter
