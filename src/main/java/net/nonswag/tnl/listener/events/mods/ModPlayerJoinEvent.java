@@ -2,20 +2,17 @@ package net.nonswag.tnl.listener.events.mods;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.nonswag.core.api.annotation.FieldsAreNullableByDefault;
 import net.nonswag.tnl.listener.api.event.ModPlayerEvent;
 import net.nonswag.tnl.listener.api.mods.ModPlayer;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 @Getter
 @Setter
-public abstract class ModPlayerJoinEvent extends ModPlayerEvent {
-
-    @Nullable
+@FieldsAreNullableByDefault
+public abstract class ModPlayerJoinEvent<P extends ModPlayer> extends ModPlayerEvent<P> {
     private String disconnectReason;
 
-    protected ModPlayerJoinEvent(@Nonnull ModPlayer modPlayer) {
-        super(modPlayer);
+    protected ModPlayerJoinEvent(P player) {
+        super(player);
     }
 }

@@ -9,7 +9,6 @@ import net.nonswag.core.api.command.CommandSource;
 @ToString
 @EqualsAndHashCode(callSuper = false)
 public abstract class CommandEvent extends TNLEvent {
-
     private final CommandSource source;
     private final String fullCommand;
 

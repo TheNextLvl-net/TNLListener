@@ -3,7 +3,6 @@ package net.nonswag.tnl.listener.api.event;
 import com.destroystokyo.paper.event.server.ServerExceptionEvent;
 import com.destroystokyo.paper.exception.ServerEventException;
 import lombok.Getter;
-import lombok.Setter;
 import net.nonswag.core.api.logger.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Cancellable;
@@ -14,14 +13,9 @@ import org.bukkit.plugin.RegisteredListener;
 
 import javax.annotation.Nonnull;
 
-@Getter
-@Setter
-public abstract class TNLEvent extends Event implements Cancellable {
-
+public abstract class TNLEvent extends Event {
     @Getter
     private static final HandlerList handlerList = new HandlerList();
-
-    private boolean cancelled = false;
 
     protected TNLEvent() {
         super(!Bukkit.isPrimaryThread());
@@ -39,7 +33,7 @@ public abstract class TNLEvent extends Event implements Cancellable {
                 Logger.error.println(string);
             }
         }
-        return !isCancelled();
+        return !(this instanceof Cancellable cancellable) || !cancellable.isCancelled();
     }
 
     @Nonnull

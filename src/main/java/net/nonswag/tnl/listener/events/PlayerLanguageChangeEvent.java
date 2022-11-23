@@ -1,36 +1,23 @@
 package net.nonswag.tnl.listener.events;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.core.api.language.Language;
 import net.nonswag.tnl.listener.api.event.PlayerEvent;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 
-import javax.annotation.Nonnull;
-
+@Getter
+@Setter
 public class PlayerLanguageChangeEvent extends PlayerEvent {
+    private final Language lastLanguage, newLanguage;
 
-    @Nonnull
-    private final Language lastLanguage;
-    @Nonnull
-    private final Language newLanguage;
+    public PlayerLanguageChangeEvent(TNLPlayer player, Language lastLanguage) {
+        this(player, lastLanguage, player.data().getLanguage());
+    }
 
-    public PlayerLanguageChangeEvent(@Nonnull TNLPlayer player, @Nonnull Language lastLanguage) {
+    public PlayerLanguageChangeEvent(TNLPlayer player, Language lastLanguage, Language newLanguage) {
         super(player);
         this.lastLanguage = lastLanguage;
-        this.newLanguage = player.data().getLanguage();
-    }
-
-    @Nonnull
-    public Language getLastLanguage() {
-        return lastLanguage;
-    }
-
-    @Nonnull
-    public Language getNewLanguage() {
-        return newLanguage;
-    }
-
-    @Override
-    public boolean isCancelled() {
-        return false;
+        this.newLanguage = newLanguage;
     }
 }

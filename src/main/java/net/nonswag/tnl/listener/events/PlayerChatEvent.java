@@ -1,42 +1,27 @@
 package net.nonswag.tnl.listener.events;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.tnl.listener.api.event.PlayerEvent;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
+import org.bukkit.event.Cancellable;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class PlayerChatEvent extends PlayerEvent {
-
-    @Nonnull
+@Getter
+@Setter
+public class PlayerChatEvent extends PlayerEvent implements Cancellable {
     private String message;
     @Nullable
     private String format = null;
+    private boolean cancelled;
 
-    public PlayerChatEvent(@Nonnull TNLPlayer player, @Nonnull String message) {
+    public PlayerChatEvent(TNLPlayer player, String message) {
         super(player);
         this.message = message;
     }
 
     public boolean isCommand() {
         return getMessage().startsWith("/");
-    }
-
-    @Nullable
-    public String getFormat() {
-        return format;
-    }
-
-    public void setFormat(@Nullable String format) {
-        this.format = format;
-    }
-
-    public void setMessage(@Nonnull String message) {
-        this.message = message;
-    }
-
-    @Nonnull
-    public String getMessage() {
-        return message;
     }
 }

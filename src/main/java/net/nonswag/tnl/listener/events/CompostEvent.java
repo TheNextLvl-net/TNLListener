@@ -6,22 +6,16 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.Levelled;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nonnull;
-
 @Getter
 public class CompostEvent extends TNLEvent {
-
-    @Nonnull
     private final Block composter;
-    @Nonnull
-    private final Levelled level;
-    @Nonnull
+    private final Levelled data;
     private final ItemStack item;
 
-    public CompostEvent(@Nonnull Block composter, @Nonnull ItemStack item) {
-        if (!(composter.getBlockData() instanceof Levelled)) throw new IllegalArgumentException();
+    public CompostEvent(Block composter, ItemStack item) {
+        if (!(composter.getBlockData() instanceof Levelled data)) throw new IllegalArgumentException();
         this.composter = composter;
-        this.level = ((Levelled) composter.getBlockData());
+        this.data = data;
         this.item = item;
     }
 }

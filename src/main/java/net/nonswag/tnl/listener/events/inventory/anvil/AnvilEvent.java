@@ -6,16 +6,13 @@ import net.nonswag.tnl.listener.api.item.TNLItem;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.inventory.AnvilInventory;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 @Getter
 public abstract class AnvilEvent extends PlayerEvent {
-
-    @Nonnull
     private final AnvilInventory anvil;
 
-    protected AnvilEvent(@Nonnull TNLPlayer player, @Nonnull AnvilInventory anvil) {
+    protected AnvilEvent(TNLPlayer player, AnvilInventory anvil) {
         super(player);
         this.anvil = anvil;
     }

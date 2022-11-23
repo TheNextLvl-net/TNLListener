@@ -1,22 +1,17 @@
 package net.nonswag.tnl.listener.events;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.nonswag.core.api.command.CommandSource;
 import net.nonswag.tnl.listener.api.event.CommandEvent;
 
-import javax.annotation.Nonnull;
-
+@Getter
+@Setter
 public class InsufficientPermissionEvent extends CommandEvent {
+    private String permission;
 
-    @Nonnull
-    private final String permission;
-
-    public InsufficientPermissionEvent(@Nonnull CommandSource source, @Nonnull String fullCommand, @Nonnull String permission) {
+    public InsufficientPermissionEvent(CommandSource source, String fullCommand, String permission) {
         super(source, fullCommand);
         this.permission = permission;
-    }
-
-    @Nonnull
-    public String getPermission() {
-        return permission;
     }
 }

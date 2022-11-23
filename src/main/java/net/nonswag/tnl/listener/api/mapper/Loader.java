@@ -4,7 +4,6 @@ import net.nonswag.core.api.file.helper.FileHelper;
 import net.nonswag.core.api.logger.Logger;
 import net.nonswag.tnl.listener.Listener;
 import net.nonswag.tnl.listener.api.mapper.errors.MappingError;
-import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,33 +12,17 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.jar.JarFile;
 
 public final class Loader {
 
     static final File MAPPINGS_FOLDER = new File("plugins/Listener/Mappings");
-    static final File MAPPINGS_UPDATE_FOLDER = new File("plugins/Listener/Mappings/", Bukkit.getUpdateFolder());
 
     private Loader() {
     }
 
     public static boolean load() throws MappingError {
         FileHelper.create(MAPPINGS_FOLDER);
-        FileHelper.create(MAPPINGS_UPDATE_FOLDER);
-        File[] updates = MAPPINGS_UPDATE_FOLDER.listFiles((file, name) -> name.endsWith(".jar"));
-        if (updates != null) {
-            try {
-                for (File file : updates) {
-                    Path target = new File(MAPPINGS_FOLDER, file.getName()).toPath();
-                    Files.move(file.toPath(), target, StandardCopyOption.REPLACE_EXISTING);
-                }
-            } catch (IOException e) {
-                Logger.error.println("Failed to update mappings", e);
-            }
-        }
         File[] files = MAPPINGS_FOLDER.listFiles((file, name) -> name.endsWith(".jar"));
         if (files == null) throw new MappingError("No mappings found in <'" + MAPPINGS_FOLDER.getAbsolutePath() + "'>");
         for (File file : files) {

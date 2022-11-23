@@ -10,7 +10,6 @@ import net.nonswag.core.api.errors.DownloadException;
 import net.nonswag.core.api.file.helper.FileDownloader;
 import net.nonswag.core.api.file.helper.JsonHelper;
 import net.nonswag.core.api.logger.Logger;
-import net.nonswag.tnl.listener.api.mapper.Mapping;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
@@ -34,11 +33,7 @@ public class PluginUpdate {
     private boolean upToDate = false;
     private boolean downloaded = false;
     private boolean failed = false;
-    private boolean mapping = false;
     private boolean accessible = true;
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
-    private boolean suggested = false;
     @Nullable
     private final String key;
 
@@ -61,11 +56,6 @@ public class PluginUpdate {
         this(plugin.getName(), new File("plugins/" + plugin.getName() + ".jar").lastModified() / 1000, key);
     }
 
-    public PluginUpdate(Mapping mapping) {
-        this(mapping.info().id(), mapping.getFile().lastModified() / 1000, null);
-        this.mapping = true;
-    }
-
     private boolean updateAccess() {
         if (getKey() != null) {
             String url = VERIFICATION_URL + getPlugin() + "&code=" + getKey();
@@ -86,42 +76,36 @@ public class PluginUpdate {
     }
 
     public void update() {
-        tip();
         try {
             if (!updateAccess()) return;
             JsonElement root = retrievePluginAPI();
             if (root.isJsonObject()) {
-                String type = isMapping() ? "mapping" : "plugin";
                 JsonElement plugin = root.getAsJsonObject().get(getPlugin());
                 if (plugin != null && plugin.isJsonObject()) {
                     setLatestUpdate(plugin.getAsJsonObject().get("last-update").getAsDouble());
                     setUpToDate(getCurrentVersion() >= getLatestUpdate());
-                } else Logger.error.println("<'" + getPlugin() + "'> is not a (public) " + type + " by TheNextLvl.net");
+                } else Logger.error.println("<'" + getPlugin() + "'> is not a (public) plugin by TheNextLvl.net");
             } else Logger.error.println("Invalid server respond", root.toString());
         } catch (MalformedJsonException e) {
             Logger.error.println("Failed to retrieve plugin api", e);
             setFailed(true);
         } catch (Exception e) {
-            String type = isMapping() ? "mapping" : "plugin";
-            Logger.error.println("Failed to update " + type + " <'" + getPlugin() + "'>", e);
+            Logger.error.println("Failed to update plugin <'" + getPlugin() + "'>", e);
             setFailed(true);
         }
     }
 
     public void downloadUpdate() {
-        tip();
         if (isFailed() || !isAccessible()) return;
         if (!isUpToDate()) {
             try {
                 String name = getPlugin().concat(".jar");
                 String url = getKey() != null ? (VERIFICATION_URL + getPlugin() + "&code=" + getKey()) : (PLUGIN_URL + name);
-                if (isMapping()) FileDownloader.download(url, new File(Mapping.get().getUpdateFolder(), name));
-                else FileDownloader.download(url, new File(Bukkit.getUpdateFolderFile(), name));
+                FileDownloader.download(url, new File(Bukkit.getUpdateFolderFile(), name));
                 Logger.debug.println("Downloaded latest version of <'" + getPlugin() + "'>");
                 setDownloaded(true);
             } catch (DownloadException e) {
-                String type = isMapping() ? "mapping" : "plugin";
-                Logger.error.printf("Failed to update %s <'%s'>", type, getPlugin()).println();
+                Logger.error.printf("Failed to update plugin <'%s'>", getPlugin()).println();
                 if (getKey() != null) {
                     Logger.error.println("It seems like <'" + getKey() + "'> is not a valid license for this product");
                     Plugin pl = Bukkit.getPluginManager().getPlugin(getPlugin());
@@ -168,12 +152,5 @@ public class PluginUpdate {
 
     public JsonElement retrievePluginAPI() throws IOException {
         return retrievePluginAPI(API_URL);
-    }
-
-    protected void tip() {
-        if (Bukkit.isPrimaryThread() && !suggested) {
-            Logger.tip.println("Run the updater of <'" + getPlugin() + "'> async", "this will prevent possible lags");
-            suggested = true;
-        }
     }
 }

@@ -6,35 +6,21 @@ import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nonnull;
-
 @Getter
 public class PlayerDamageBlockEvent extends PlayerEvent {
-
-    @Nonnull
     private final Block block;
-    @Nonnull
-    private final BlockDamageType blockDamageType;
+    private final Type type;
+    private final ItemStack item;
 
-    public PlayerDamageBlockEvent(@Nonnull TNLPlayer player, @Nonnull Block block, @Nonnull BlockDamageType blockDamageType) {
+    public PlayerDamageBlockEvent(TNLPlayer player, Block block, Type type) {
         super(player);
+        this.item = getPlayer().inventoryManager().getItemInMainHand();
         this.block = block;
-        this.blockDamageType = blockDamageType;
+        this.type = type;
     }
 
-    @Nonnull
-    public ItemStack getItem() {
-        return getPlayer().inventoryManager().getItemInMainHand();
-    }
-
-    public enum BlockDamageType {
-        START_DESTROY_BLOCK,
-        ABORT_DESTROY_BLOCK,
-        STOP_DESTROY_BLOCK,
-        UNKNOWN;
-
-        BlockDamageType() {
-        }
+    public enum Type {
+        START_DESTROY_BLOCK, ABORT_DESTROY_BLOCK, STOP_DESTROY_BLOCK, UNKNOWN;
 
         public boolean isUnknown() {
             return equals(UNKNOWN);
@@ -50,20 +36,6 @@ public class PlayerDamageBlockEvent extends PlayerEvent {
 
         public boolean isItemAction() {
             return !(isUnknown() && isInteraction());
-        }
-
-        @Nonnull
-        public static BlockDamageType fromString(@Nonnull String string) {
-            try {
-                return valueOf(string.toUpperCase());
-            } catch (Exception ignored) {
-                return UNKNOWN;
-            }
-        }
-
-        @Nonnull
-        public static BlockDamageType fromObject(@Nonnull Object object) {
-            return fromString(object.toString());
         }
     }
 }

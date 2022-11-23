@@ -7,7 +7,7 @@ import net.nonswag.core.api.reflection.Reflection;
 import net.nonswag.tnl.listener.Listener;
 import net.nonswag.tnl.listener.api.plugin.PluginHelper;
 import net.nonswag.tnl.listener.api.version.Version;
-import net.nonswag.tnl.listener.events.UnregisterCommandsEvent;
+import net.nonswag.tnl.listener.events.CommandsUnregisterEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.plugin.Plugin;
@@ -89,7 +89,7 @@ public record CommandManager(Plugin plugin) {
 
     public static void unregisterCommands(List<String> commands) {
         if (commands.isEmpty()) return;
-        UnregisterCommandsEvent event = new UnregisterCommandsEvent(commands);
+        CommandsUnregisterEvent event = new CommandsUnregisterEvent(commands);
         if (!event.call()) return;
         Map<String, Command> map = PluginHelper.getInstance().getCommands();
         for (String command : event.getCommands()) map.remove(command);
