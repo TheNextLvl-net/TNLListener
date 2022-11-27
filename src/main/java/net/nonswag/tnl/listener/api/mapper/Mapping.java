@@ -5,6 +5,7 @@ import net.nonswag.core.api.annotation.FieldsAreNullableByDefault;
 import net.nonswag.core.api.logger.Logger;
 import net.nonswag.tnl.listener.api.bossbar.TNLBossBar;
 import net.nonswag.tnl.listener.api.enchantment.Enchant;
+import net.nonswag.tnl.listener.api.entity.EntityHelper;
 import net.nonswag.tnl.listener.api.entity.TNLArmorStand;
 import net.nonswag.tnl.listener.api.entity.TNLEntityPlayer;
 import net.nonswag.tnl.listener.api.entity.TNLFallingBlock;
@@ -117,6 +118,8 @@ public abstract class Mapping extends PluginBuilder {
     public abstract WorldHelper worldHelper();
 
     public abstract LogManager logManager();
+
+    public abstract EntityHelper entityHelper();
 
     public abstract PacketManager packetManager();
 
