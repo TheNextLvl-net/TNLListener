@@ -44,7 +44,7 @@ public final class Listener extends PluginBuilder {
     public static final Listener instance = new Listener();
 
     @Setter
-    private static String serverName = ServerProperties.getInstance().getOrDefault("server-name", "");
+    private static String serverName = ServerProperties.getInstance().getString("server-name", "");
     @Getter
     private static Version version = Version.UNKNOWN;
     @Getter
@@ -104,11 +104,11 @@ public final class Listener extends PluginBuilder {
                         }
                     } else Logger.warn.printf("The server <'%s'> is not setup yet", server).println();
                 } else {
-                    Settings.getConfig().setValue("server-" + server, "host:port");
+                    Settings.getConfig().set("server-" + server, "host:port");
                     Logger.debug.printf("Found new server <'%s'>", server).println();
                 }
             } else {
-                Settings.getConfig().setValue("server-" + server, "host:port");
+                Settings.getConfig().set("server-" + server, "host:port");
                 Logger.debug.printf("Found new server <'%s'>", server).println();
             }
         }

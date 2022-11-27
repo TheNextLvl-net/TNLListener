@@ -32,9 +32,9 @@ public final class Manager extends PluginBuilder {
 
     @Override
     public void enable() {
-        configuration.setValueIfAbsent("auto-reload", isAutoReload());
-        configuration.setValueIfAbsent("plugins-gui", isPluginsGUI());
-        configuration.setValueIfAbsent("everyone-can-see-plugins", isPublishPlugins());
+        configuration.setIfAbsent("auto-reload", isAutoReload());
+        configuration.setIfAbsent("plugins-gui", isPluginsGUI());
+        configuration.setIfAbsent("everyone-can-see-plugins", isPublishPlugins());
         setAutoReload(configuration.getBoolean("auto-reload"));
         setPluginsGUI(configuration.getBoolean("plugins-gui"));
         setPublishPlugins(configuration.getBoolean("everyone-can-see-plugins"));

@@ -48,18 +48,18 @@ public final class Settings {
                     List<String> value = config.getStringList(setting.getKey());
                     ((Setting<List<String>>) setting).setValue(value);
                 } else if (setting.getValue() instanceof Integer) {
-                    Integer value = config.getInteger(setting.getKey());
+                    int value = config.getInt(setting.getKey());
                     ((Setting<Integer>) setting).setValue(value);
                 } else {
                     Logger.warn.println("Unset Setting Type <'" + setting.getValue().getClass().getSimpleName() + "'>", new IOException("unset setting type"));
                 }
-            } else if (setting.getValue() instanceof String value) config.setValue(setting.getKey(), value);
-            else if (setting.getValue() instanceof Boolean value) config.setValue(setting.getKey(), value);
-            else if (setting.getValue() instanceof Byte value) config.setValue(setting.getKey(), value);
-            else if (setting.getValue() instanceof Integer value) config.setValue(setting.getKey(), value);
+            } else if (setting.getValue() instanceof String value) config.set(setting.getKey(), value);
+            else if (setting.getValue() instanceof Boolean value) config.set(setting.getKey(), value);
+            else if (setting.getValue() instanceof Byte value) config.set(setting.getKey(), value);
+            else if (setting.getValue() instanceof Integer value) config.set(setting.getKey(), value);
             else if (setting.getValue() instanceof List) {
                 List<String> value = (List<String>) setting.getValue();
-                config.setValue(setting.getKey(), value);
+                config.set(setting.getKey(), value);
             } else {
                 Logger.error.println("Unset Setting Type <'" + setting.getValue().getClass().getSimpleName() + "'>", new IOException("unset setting type"));
             }
