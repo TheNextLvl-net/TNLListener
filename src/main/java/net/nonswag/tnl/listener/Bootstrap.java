@@ -14,15 +14,19 @@ import net.nonswag.tnl.listener.api.settings.Settings;
 public final class Bootstrap extends TNLPlugin {
     private static Bootstrap instance = null;
 
-    {
+    static {
         try {
             Core.init();
-            instance = this;
             Logger.debug.setCondition(Settings.DEBUG::getValue);
             Logger.tip.setCondition(Settings.TIPS::getValue);
+            Listener.initialize();
         } catch (Exception e) {
             Logger.error.println("An error occurred while initializing the Core", e);
         }
+    }
+
+    {
+        instance = this;
     }
 
     @Override

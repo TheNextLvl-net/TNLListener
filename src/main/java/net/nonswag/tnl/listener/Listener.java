@@ -56,12 +56,7 @@ public final class Listener extends PluginBuilder {
     @Nullable
     private static Team.OptionStatus nametagVisibility = null;
 
-    private Listener() {
-        super(Listener.class, Bootstrap.getInstance());
-    }
-
-    @Override
-    public void load() {
+    static void initialize() {
         for (Version version : Version.values()) {
             if (version.equals(Version.UNKNOWN)) continue;
             for (String v : version.getVersions()) {
@@ -86,6 +81,14 @@ public final class Listener extends PluginBuilder {
         LogManager.getInstance().initialize();
         Mapping.get().setEnabled(true);
         Messages.loadAll();
+    }
+
+    private Listener() {
+        super(Listener.class, Bootstrap.getInstance());
+    }
+
+    @Override
+    public void load() {
         registerPlaceholders();
     }
 
