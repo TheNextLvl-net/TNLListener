@@ -79,7 +79,6 @@ public final class Listener extends PluginBuilder {
         if (!info.website().isEmpty()) Logger.debug.println("Website: " + info.website());
         if (!info.description().isEmpty()) Logger.debug.println("Description: " + info.description());
         LogManager.getInstance().initialize();
-        Mapping.get().setEnabled(true);
         Messages.loadAll();
     }
 
@@ -89,6 +88,7 @@ public final class Listener extends PluginBuilder {
 
     @Override
     public void load() {
+        Mapping.get().setEnabled(true);
         registerPlaceholders();
     }
 
