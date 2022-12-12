@@ -123,6 +123,8 @@ public abstract class TNLPlayer implements CommandSource, PlatformPlayer, TNLEnt
         InitializeBorderPacket.create(border).send(this);
     }
 
+    public abstract AdvancementManager advancementManager();
+
     public abstract PermissionManager permissionManager();
 
     public abstract DataManager data();
@@ -195,68 +197,68 @@ public abstract class TNLPlayer implements CommandSource, PlatformPlayer, TNLEnt
         return getModHandler(clazz);
     }
 
-    @Deprecated
     @Override
+    @Deprecated
     public void setLocation(Location location) {
         worldManager().teleport(location);
     }
 
-    @Deprecated
     @Override
+    @Deprecated
     public void setLocation(double x, double y, double z) {
         setLocation(x, y, z, 0, 0);
     }
 
-    @Deprecated
     @Override
+    @Deprecated
     public void setLocation(double x, double y, double z, float yaw, float pitch) {
         worldManager().teleport(new Location(worldManager().getWorld(), x, y, z, yaw, pitch));
     }
 
-    @Deprecated
     @Override
+    @Deprecated
     public void setItem(SlotType slot, TNLItem item) {
         inventoryManager().getInventory().setItem(slot.bukkit(), item);
     }
 
-    @Deprecated
     @Override
+    @Deprecated
     public void setGlowing(boolean glowing) {
         abilityManager().setGlowing(glowing);
     }
 
-    @Deprecated
     @Override
+    @Deprecated
     public void setCapeVisibility(boolean visible) {
         skinManager().setCapeVisibility(visible);
     }
 
-    @Deprecated
     @Override
+    @Deprecated
     public boolean getCapeVisibility() {
         return skinManager().getCapeVisibility();
     }
 
-    @Deprecated
     @Override
+    @Deprecated
     public boolean hasPermission(String permission) {
         return permissionManager().hasPermission(permission);
     }
 
-    @Deprecated
     @Override
+    @Deprecated
     public void sendMessage(String... strings) {
         for (String string : strings) messenger().sendMessage(string);
     }
 
-    @Deprecated
     @Override
+    @Deprecated
     public void sendMessage(Key key, Placeholder... placeholders) {
         messenger().sendMessage(key, placeholders);
     }
 
-    @Deprecated
     @Override
+    @Deprecated
     public void sendMessage(Key key, PlatformPlayer platformPlayer, Placeholder... placeholders) {
         messenger().sendMessage(key, platformPlayer, placeholders);
     }
