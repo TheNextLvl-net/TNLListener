@@ -27,6 +27,13 @@
         </plugins>
     </build>
 
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <url>https://repositories.thenextlvl.net/repository/releases/</url>
+        </repository>
+    </distributionManagement>
+
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
