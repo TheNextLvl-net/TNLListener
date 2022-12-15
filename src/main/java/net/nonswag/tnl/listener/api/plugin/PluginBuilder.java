@@ -4,7 +4,6 @@ import lombok.Getter;
 import net.nonswag.core.api.logger.Logger;
 import net.nonswag.core.api.object.Condition;
 import net.nonswag.core.api.reflection.Reflection;
-import net.nonswag.tnl.listener.Bootstrap;
 import net.nonswag.tnl.listener.api.command.CommandManager;
 import net.nonswag.tnl.listener.api.event.EventManager;
 import net.nonswag.tnl.listener.api.scheduler.Task;
@@ -13,9 +12,8 @@ import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
+import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.*;
 import org.bukkit.scheduler.BukkitTask;
@@ -26,16 +24,11 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.function.Consumer;
-import java.util.regex.Pattern;
 
 public abstract class PluginBuilder extends PluginBase implements CombinedPlugin {
-
     private final PluginDescriptionFile description;
     private final PluginLogger logger;
-    private final Loader loader;
     private final Plugin owner;
     @Nullable
     private EventManager eventManager = null;
@@ -52,7 +45,6 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
         setDescription("An official TNL-Production");
         setWebsite("https://www.thenextlvl.net");
         this.logger = new PluginLogger(this);
-        this.loader = new Loader();
     }
 
     protected PluginBuilder(String name, String version, String main, Plugin owner) {
@@ -73,6 +65,13 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
 
     protected final void setName(String name) {
         Reflection.Field.set(getDescription(), "name", name);
+    }
+
+    @Nonnull
+    @Override
+    @Deprecated(forRemoval = true)
+    public PluginLoader getPluginLoader() {
+        return null;
     }
 
     protected final void setAuthors(String... authors) {
@@ -267,12 +266,6 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
 
     @Nonnull
     @Override
-    public final Loader getPluginLoader() {
-        return loader;
-    }
-
-    @Nonnull
-    @Override
     public final Server getServer() {
         return Bukkit.getServer();
     }
@@ -318,6 +311,12 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
     @Nullable
     @Override
     public ChunkGenerator getDefaultWorldGenerator(String name, @Nullable String id) {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public BiomeProvider getDefaultBiomeProvider(String world, @Nullable String id) {
         return null;
     }
 
@@ -387,42 +386,6 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
             PluginDescriptionFile description = new PluginDescriptionFile(getName(), getVersion(), getMain());
             Reflection.Field.set(description, "apiVersion", getApi());
             return description;
-        }
-    }
-
-    public class Loader implements PluginLoader {
-
-        @Nonnull
-        @Override
-        public PluginBuilder loadPlugin(File file) {
-            return PluginBuilder.this;
-        }
-
-        @Nonnull
-        @Override
-        public PluginDescriptionFile getPluginDescription(File file) {
-            return PluginBuilder.this.getDescription();
-        }
-
-        @Override
-        public Pattern[] getPluginFileFilters() {
-            return Bootstrap.getInstance().getPluginLoader().getPluginFileFilters();
-        }
-
-        @Nonnull
-        @Override
-        public Map<Class<? extends Event>, Set<RegisteredListener>> createRegisteredListeners(Listener listener, Plugin plugin) {
-            return Bootstrap.getInstance().getPluginLoader().createRegisteredListeners(listener, plugin);
-        }
-
-        @Override
-        public void enablePlugin(Plugin plugin) {
-            PluginBuilder.this.setEnabled(true);
-        }
-
-        @Override
-        public void disablePlugin(Plugin plugin) {
-            PluginBuilder.this.setEnabled(false);
         }
     }
 }

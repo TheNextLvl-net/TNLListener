@@ -130,6 +130,8 @@ public abstract class Mapping extends PluginBuilder {
         Incoming incoming();
     }
 
+    public abstract boolean bungeeCord();
+
     public final Info info() {
         if (info == null) info = getClass().getAnnotation(Info.class);
         if (info == null) throw new MappingError("Mappings must have an @Info annotation");

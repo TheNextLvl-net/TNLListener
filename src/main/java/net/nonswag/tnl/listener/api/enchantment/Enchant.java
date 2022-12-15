@@ -2,6 +2,8 @@ package net.nonswag.tnl.listener.api.enchantment;
 
 import io.papermc.paper.enchantments.EnchantmentRarity;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import net.kyori.adventure.text.Component;
 import net.nonswag.core.api.reflection.Reflection;
 import net.nonswag.tnl.listener.Bootstrap;
@@ -19,6 +21,8 @@ import java.util.*;
 import java.util.function.Predicate;
 
 @Getter
+@Setter
+@Accessors(chain = true)
 public class Enchant extends Enchantment {
 
     @Getter
@@ -70,51 +74,6 @@ public class Enchant extends Enchantment {
         this.itemTarget = target;
     }
 
-    public Enchant setEnchanting(@Nullable Predicate<ItemStack> enchanting) {
-        this.enchanting = enchanting;
-        return this;
-    }
-
-    public Enchant setConflicting(@Nullable Predicate<Enchantment> conflicting) {
-        this.conflicting = conflicting;
-        return this;
-    }
-
-    public Enchant setCursed(boolean cursed) {
-        this.cursed = cursed;
-        return this;
-    }
-
-    public Enchant setMaxLevel(int maxLevel) {
-        this.maxLevel = maxLevel;
-        return this;
-    }
-
-    public Enchant setStartLevel(int startLevel) {
-        this.startLevel = startLevel;
-        return this;
-    }
-
-    public Enchant setTreasure(boolean treasure) {
-        this.treasure = treasure;
-        return this;
-    }
-
-    public Enchant setDiscoverable(boolean discoverable) {
-        this.discoverable = discoverable;
-        return this;
-    }
-
-    public Enchant setTradeable(boolean tradeable) {
-        this.tradeable = tradeable;
-        return this;
-    }
-
-    public Enchant setRarity(EnchantmentRarity rarity) {
-        this.rarity = rarity;
-        return this;
-    }
-
     @Override
     public boolean conflictsWith(@Nonnull Enchantment enchantment) {
         return getConflicting() != null && getConflicting().test(enchantment);
@@ -153,6 +112,12 @@ public class Enchant extends Enchantment {
     protected void unregister() {
         Objects.requireNonNull(Reflection.Field.Static.<Map<NamespacedKey, Enchantment>>get(Enchantment.class, "byKey")).remove(getKey());
         Objects.requireNonNull(Reflection.Field.Static.<Map<String, Enchantment>>get(Enchantment.class, "byName")).remove(getName());
+    }
+
+    @Nonnull
+    @Override
+    public String translationKey() {
+        return getKey().toString();
     }
 
     public enum Rarity {

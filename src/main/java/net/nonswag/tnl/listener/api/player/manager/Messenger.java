@@ -13,6 +13,7 @@ import net.nonswag.core.api.platform.PlatformPlayer;
 import net.nonswag.core.utils.StringUtil;
 import net.nonswag.tnl.listener.Listener;
 import net.nonswag.tnl.listener.api.chat.Conversation;
+import net.nonswag.tnl.listener.api.mapper.Mapping;
 import net.nonswag.tnl.listener.api.packets.outgoing.CustomPayloadPacket;
 import net.nonswag.tnl.listener.api.packets.outgoing.SystemChatPacket;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
@@ -21,7 +22,6 @@ import net.nonswag.tnl.listener.events.PlayerChatEvent;
 import net.nonswag.tnl.listener.utils.Messages;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.messaging.ChannelNameTooLongException;
-import org.spigotmc.SpigotConfig;
 
 import javax.annotation.Nullable;
 import java.io.ByteArrayOutputStream;
@@ -110,7 +110,7 @@ public abstract class Messenger extends Manager {
     }
 
     public void sendPluginMessage(NamespacedKey channel, String... message) {
-        if (SpigotConfig.bungee) sendLegacyPluginMessage(channel, message);
+        if (Mapping.get().bungeeCord()) sendLegacyPluginMessage(channel, message);
         sendModernPluginMessage(channel, message);
     }
 
