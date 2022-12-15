@@ -40,6 +40,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>releases</id>
+            <url>https://repo.thenextlvl.net/repository/maven-public</url>
+        </repository>
+    </repositories>
+    
     <dependencies>
         <dependency>
             <groupId>net.nonswag.core</groupId>
@@ -60,5 +67,4 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
 </project>

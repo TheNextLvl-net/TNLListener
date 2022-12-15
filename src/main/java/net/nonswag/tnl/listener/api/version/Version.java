@@ -52,6 +52,7 @@ public class Version {
     public static final Version v1_18_2 = new Version(758, "1.18.2");
     public static final Version v1_19 = new Version(759, "1.19");
     public static final Version v1_19_1 = new Version(760, "1.19.1", "1.19.2");
+    public static final Version v1_19_3 = new Version(761, "1.19.3");
 
     private final List<String> versions;
     private final int protocol;
