@@ -58,6 +58,7 @@ public interface TNLEntityPlayer extends TNLEntityLiving {
         CROAKING,
         EMERGING,
         SNIFFING,
+        SITTING,
         LONG_JUMPING,
         USING_TONGUE,
         STANDING,
