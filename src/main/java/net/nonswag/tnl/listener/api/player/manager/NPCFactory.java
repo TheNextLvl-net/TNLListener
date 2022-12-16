@@ -60,7 +60,8 @@ public abstract class NPCFactory extends Manager {
         WorldManager manager = getPlayer().worldManager();
         if (!manager.getWorld().equals(fakePlayer.getLocation().getWorld())) return false;
         if (checkDistance && manager.getLocation().distance(fakePlayer.getLocation()) > LOADING_RANGE) return false;
-        PlayerInfoPacket.create(fakePlayer.getPlayer(), PlayerInfoPacket.Action.ADD_PLAYER).send(getPlayer());
+        PlayerInfoUpdatePacket.Entry entry = new PlayerInfoUpdatePacket.Entry(fakePlayer.getPlayer());
+        PlayerInfoUpdatePacket.create(PlayerInfoUpdatePacket.Action.ADD_PLAYER, entry).send(getPlayer());
         AddPlayerPacket.create(fakePlayer.getPlayer()).send(getPlayer());
         EntityMetadataPacket.create(fakePlayer.getPlayer().bukkit()).send(getPlayer());
         SetEquipmentPacket.create(fakePlayer.getPlayer().bukkit()).send(getPlayer());
@@ -95,7 +96,7 @@ public abstract class NPCFactory extends Manager {
 
     public void hide(FakePlayer fakePlayer) {
         if (!isLoaded(fakePlayer)) return;
-        PlayerInfoPacket.create(fakePlayer.getPlayer(), PlayerInfoPacket.Action.REMOVE_PLAYER).send(getPlayer());
+        PlayerInfoRemovePacket.create(fakePlayer.getPlayer().getGameProfile().getUniqueId()).send(getPlayer());
         RemoveEntitiesPacket.create(fakePlayer.getPlayer().getEntityId()).send(getPlayer());
         if (nameTags.containsKey(fakePlayer)) getPlayer().hologramManager().unload(nameTags.get(fakePlayer));
         nameTags.remove(fakePlayer);

@@ -10,7 +10,6 @@ import javax.annotation.Nullable;
 @Getter
 @ToString
 public enum Gamemode {
-    UNKNOWN("Unknown", -1),
     SURVIVAL("Survival", 0),
     CREATIVE("Creative", 1),
     ADVENTURE("Adventure", 2),
@@ -22,10 +21,6 @@ public enum Gamemode {
     Gamemode(String name, int id) {
         this.name = name;
         this.id = id;
-    }
-
-    public boolean isUnknown() {
-        return equals(UNKNOWN);
     }
 
     public boolean isSurvival() {
@@ -45,7 +40,7 @@ public enum Gamemode {
     }
 
     public boolean isVincible() {
-        return isUnknown() || isSurvival() || isAdventure();
+        return isSurvival() || isAdventure();
     }
 
     public boolean isInvincible() {

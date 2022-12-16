@@ -17,22 +17,17 @@ public abstract class ChatCommandPacket extends PacketBuilder {
     private Instant timeStamp;
     private long salt;
     private Entry[] argumentSignatures;
-    private boolean signedPreview;
     private LastSeenMessages.Update lastSeenMessages;
 
     @Getter
     @Setter
+    @AllArgsConstructor
     public static class Entry {
         private String name;
         private final byte[] signature;
-
-        public Entry(String name, byte[] signature) {
-            this.name = name;
-            this.signature = signature;
-        }
     }
 
-    public static ChatCommandPacket create(String command, Instant timeStamp, long salt, Entry[] argumentSignatures, boolean signedPreview, LastSeenMessages.Update lastSeenMessages) {
-        return Mapping.get().packetManager().incoming().chatCommandPacket(command, timeStamp, salt, argumentSignatures, signedPreview, lastSeenMessages);
+    public static ChatCommandPacket create(String command, Instant timeStamp, long salt, Entry[] argumentSignatures, LastSeenMessages.Update lastSeenMessages) {
+        return Mapping.get().packetManager().incoming().chatCommandPacket(command, timeStamp, salt, argumentSignatures, lastSeenMessages);
     }
 }

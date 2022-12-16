@@ -12,7 +12,8 @@ import net.nonswag.tnl.listener.api.entity.TNLEntityPlayer;
 import net.nonswag.tnl.listener.api.event.FakePlayerEvent;
 import net.nonswag.tnl.listener.api.packets.outgoing.AnimatePacket;
 import net.nonswag.tnl.listener.api.packets.outgoing.EntityStatusPacket;
-import net.nonswag.tnl.listener.api.packets.outgoing.PlayerInfoPacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.PlayerInfoRemovePacket;
+import net.nonswag.tnl.listener.api.packets.outgoing.PlayerInfoUpdatePacket;
 import net.nonswag.tnl.listener.api.player.GameProfile;
 import net.nonswag.tnl.listener.api.player.Hand;
 import net.nonswag.tnl.listener.api.player.Skin;
@@ -94,12 +95,13 @@ public class FakePlayer {
     }
 
     public FakePlayer hideTabListName(TNLPlayer receiver) {
-        PlayerInfoPacket.create(getPlayer(), PlayerInfoPacket.Action.REMOVE_PLAYER).send(receiver);
+        PlayerInfoRemovePacket.create(getPlayer().getGameProfile().getUniqueId()).send(receiver);
         return this;
     }
 
     public FakePlayer showTabListName(TNLPlayer receiver) {
-        PlayerInfoPacket.create(getPlayer(), PlayerInfoPacket.Action.ADD_PLAYER).send(receiver);
+        PlayerInfoUpdatePacket.Entry entry = new PlayerInfoUpdatePacket.Entry(getPlayer());
+        PlayerInfoUpdatePacket.create(PlayerInfoUpdatePacket.Action.ADD_PLAYER, entry).send(receiver);
         return this;
     }
 

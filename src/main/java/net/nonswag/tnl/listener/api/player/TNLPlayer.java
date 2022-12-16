@@ -2,6 +2,7 @@ package net.nonswag.tnl.listener.api.player;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.text.Component;
 import net.nonswag.core.api.command.CommandSource;
 import net.nonswag.core.api.logger.Logger;
 import net.nonswag.core.api.message.Placeholder;
@@ -18,7 +19,6 @@ import net.nonswag.tnl.listener.api.item.TNLItem;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import net.nonswag.tnl.listener.api.mods.ModPlayer;
 import net.nonswag.tnl.listener.api.mods.labymod.LabyPlayer;
-import net.nonswag.tnl.listener.api.packets.outgoing.GameEventPacket;
 import net.nonswag.tnl.listener.api.packets.outgoing.InitializeBorderPacket;
 import net.nonswag.tnl.listener.api.player.manager.*;
 import net.nonswag.tnl.listener.api.registrations.RegistrationManager;
@@ -33,7 +33,8 @@ import org.bukkit.plugin.Plugin;
 
 import javax.annotation.Nullable;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.HashMap;
+import java.util.UUID;
 
 @Setter
 public abstract class TNLPlayer implements CommandSource, PlatformPlayer, TNLEntityPlayer {
@@ -68,6 +69,11 @@ public abstract class TNLPlayer implements CommandSource, PlatformPlayer, TNLEnt
         return bukkit().getName();
     }
 
+    @Override
+    public Component getDisplayName() {
+        return bukkit().displayName();
+    }
+
     public abstract void setName(Plugin plugin, String name);
 
     public UUID getUniqueId() {
@@ -79,6 +85,11 @@ public abstract class TNLPlayer implements CommandSource, PlatformPlayer, TNLEnt
     @Override
     public int getEntityId() {
         return bukkit().getEntityId();
+    }
+
+    @Override
+    public boolean isListed() {
+        return bukkit().isAllowingServerListings();
     }
 
     public boolean isOnline() {
@@ -98,11 +109,7 @@ public abstract class TNLPlayer implements CommandSource, PlatformPlayer, TNLEnt
     }
 
     public void setGamemode(Gamemode gamemode) {
-        Bootstrap.getInstance().sync(() -> {
-            bukkit().setGameMode(gamemode.bukkit());
-            if (!gamemode.isUnknown()) return;
-            GameEventPacket.create(GameEventPacket.CHANGE_GAMEMODE, gamemode.getId()).send(this);
-        });
+        Bootstrap.getInstance().sync(() -> bukkit().setGameMode(gamemode.bukkit()));
     }
 
     @Override

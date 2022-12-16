@@ -27,13 +27,11 @@ public interface Incoming {
 
     ChangeDifficultyPacket changeDifficultyPacket(Difficulty difficulty);
 
-    ChatAckPacket chatAckPacket(LastSeenMessages.Update lastSeenMessages);
+    ChatAckPacket chatAckPacket(int offset);
 
-    ChatCommandPacket chatCommandPacket(String command, Instant timeStamp, long salt, ChatCommandPacket.Entry[] argumentSignatures, boolean signedPreview, LastSeenMessages.Update lastSeenMessages);
+    ChatCommandPacket chatCommandPacket(String command, Instant timeStamp, long salt, ChatCommandPacket.Entry[] argumentSignatures, LastSeenMessages.Update lastSeenMessages);
 
-    ChatPacket chatPacket(String message, Instant timeStamp, long salt, byte[] signature, boolean signedPreview, LastSeenMessages.Update lastSeenMessages);
-
-    ChatPreviewPacket chatPreviewPacket(int queryId, String query);
+    ChatPacket chatPacket(String message, Instant timeStamp, long salt, @Nullable byte[] signature, LastSeenMessages.Update lastSeenMessages);
 
     ClientCommandPacket clientCommandPacket(ClientCommandPacket.Action action);
 

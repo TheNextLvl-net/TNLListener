@@ -18,9 +18,9 @@ import javax.annotation.ParametersAreNullableByDefault;
 public abstract class ServerDataPacket extends PacketBuilder {
     private Component motd;
     private String serverIcon;
-    private boolean chatPreview, secureChat;
+    private boolean chatPreview;
 
-    public static ServerDataPacket create(Component motd, String serverIcon, boolean chatPreview, boolean secureChat) {
-        return Mapping.get().packetManager().outgoing().serverDataPacket(motd, serverIcon, chatPreview, secureChat);
+    public static ServerDataPacket create(Component motd, String serverIcon, boolean chatPreview) {
+        return Mapping.get().packetManager().outgoing().serverDataPacket(motd, serverIcon, chatPreview);
     }
 }

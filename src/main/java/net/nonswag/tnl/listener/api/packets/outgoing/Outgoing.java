@@ -22,8 +22,6 @@ import java.util.UUID;
 
 public interface Outgoing {
 
-    ChatPreviewPacket chatPreviewPacket(int queryId, @Nullable Component query);
-
     SetSimulationDistancePacket setSimulationDistancePacket(int simulationDistance);
 
     SetCarriedItemPacket setCarriedItemPacket(int slot);
@@ -90,7 +88,9 @@ public interface Outgoing {
 
     OpenScreenPacket openScreenPacket(int containerId, OpenScreenPacket.Type type, Component title);
 
-    PlayerInfoPacket playerInfoPacket(Player player, PlayerInfoPacket.Action action);
+    PlayerInfoUpdatePacket playerInfoUpdatePacket(List<PlayerInfoUpdatePacket.Action> actions, List<PlayerInfoUpdatePacket.Entry> entries);
+
+    PlayerInfoRemovePacket playerInfoRemovePacket(List<UUID> profileIds);
 
     ContainerSetSlotPacket containerSetSlotPacket(int containerId, int stateId, int slot, @Nullable ItemStack itemStack);
 
@@ -117,8 +117,6 @@ public interface Outgoing {
     HorseScreenOpenPacket horseScreenOpenPacket(int containerId, int size, int entityId);
 
     CommandSuggestionsPacket commandSuggestionsPacket(int id, CommandSuggestionsPacket.Suggestions suggestions);
-
-    SetDisplayChatPreviewPacket setDisplayChatPreviewPacket(boolean enabled);
 
     ResourcePackPacket resourcePackPacket(String url, @Nullable String hash, @Nullable Component prompt, boolean required);
 
@@ -172,7 +170,7 @@ public interface Outgoing {
 
     SetHealthPacket setHealthPacket(float health, int food, float saturation);
 
-    ServerDataPacket serverDataPacket(@Nullable Component motd, @Nullable String serverIcon, boolean chatPreview, boolean secureChat);
+    ServerDataPacket serverDataPacket(@Nullable Component motd, @Nullable String serverIcon, boolean chatPreview);
 
     SectionBlocksUpdatePacket sectionBlocksUpdatePacket(long section, short[] positions, int[] states, boolean suppressLightUpdates);
 
