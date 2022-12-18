@@ -1,34 +1,35 @@
 package net.nonswag.tnl.listener.api.player.manager;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.kyori.adventure.text.Component;
+import net.nonswag.core.api.annotation.FieldsAreNullableByDefault;
 import net.nonswag.tnl.listener.api.packets.outgoing.ResourcePackPacket;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNullableByDefault;
 
 @Getter
+@Setter
+@FieldsAreNullableByDefault
+@ParametersAreNullableByDefault
 public abstract class ResourceManager extends Manager {
+    private String resourcePackUrl, resourcePackHash;
+    private Action action;
 
-    @Nullable
-    protected String resourcePackUrl = null;
-    @Nullable
-    protected String resourcePackHash = null;
-    @Nullable
-    protected Action action = null;
-
-    public void setResourcePack(String url) {
+    public void sendResourcePack(@Nonnull String url) {
         ResourcePackPacket.create(url).send(getPlayer());
     }
 
-    public void setResourcePack(String url, @Nullable String hash) {
+    public void sendResourcePack(@Nonnull String url, String hash) {
         ResourcePackPacket.create(url, hash).send(getPlayer());
     }
 
-    public void setResourcePack(String url, @Nullable String hash, @Nullable Component prompt) {
+    public void sendResourcePack(@Nonnull String url, String hash, Component prompt) {
         ResourcePackPacket.create(url, hash, prompt).send(getPlayer());
     }
 
-    public void setResourcePack(String url, @Nullable String hash, @Nullable Component prompt, boolean required) {
+    public void sendResourcePack(@Nonnull String url, String hash, Component prompt, boolean required) {
         ResourcePackPacket.create(url, hash, prompt, required).send(getPlayer());
     }
 

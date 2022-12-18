@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.tnl.listener.api.chat.LastSeenMessages;
+import net.nonswag.tnl.listener.api.chat.MessageSignature;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
 import java.time.Instant;
@@ -24,7 +25,7 @@ public abstract class ChatCommandPacket extends PacketBuilder {
     @AllArgsConstructor
     public static class Entry {
         private String name;
-        private final byte[] signature;
+        private final MessageSignature signature;
     }
 
     public static ChatCommandPacket create(String command, Instant timeStamp, long salt, Entry[] argumentSignatures, LastSeenMessages.Update lastSeenMessages) {

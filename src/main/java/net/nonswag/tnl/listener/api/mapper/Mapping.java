@@ -77,23 +77,6 @@ public abstract class Mapping extends PluginBuilder {
         }
     }
 
-    @Override
-    @Deprecated
-    public final Mapping register() {
-        return this;
-    }
-
-    @Override
-    @Deprecated
-    public final Mapping unregister() {
-        return this;
-    }
-
-    @Override
-    public final boolean isRegistered() {
-        return true;
-    }
-
     @net.nonswag.core.api.annotation.Info("The version this mapping is made for")
     public abstract Version getVersion();
 

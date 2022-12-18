@@ -17,7 +17,7 @@ public final class Manager extends PluginBuilder {
 
     @Getter
     @Nonnull
-    private static final Manager instance = (Manager) new Manager().register();
+    private static final Manager instance = new Manager();
 
     @Nonnull
     private static final PropertyFile configuration = new PropertyFile("plugins/Listener/Manager/", "config.properties");

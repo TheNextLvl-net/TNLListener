@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import net.nonswag.tnl.listener.api.gui.Interaction;
 import net.nonswag.tnl.listener.api.item.TNLItem;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 
@@ -17,6 +18,8 @@ public abstract class ContainerClickPacket extends PacketBuilder {
     private ClickType clickType;
     private TNLItem item;
     private HashMap<Integer, TNLItem> changedSlots;
+
+    public abstract Interaction.Type getInteractionType();
 
     public enum ClickType {
         PICKUP,

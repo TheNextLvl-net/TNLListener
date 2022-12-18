@@ -3,6 +3,10 @@ package net.nonswag.tnl.listener.api.packets.outgoing;
 import net.kyori.adventure.text.Component;
 import net.nonswag.tnl.listener.api.advancement.Advancement;
 import net.nonswag.tnl.listener.api.border.VirtualBorder;
+import net.nonswag.tnl.listener.api.chat.ChatType;
+import net.nonswag.tnl.listener.api.chat.Filter;
+import net.nonswag.tnl.listener.api.chat.MessageSignature;
+import net.nonswag.tnl.listener.api.chat.SignedMessageBody;
 import net.nonswag.tnl.listener.api.item.SlotType;
 import net.nonswag.tnl.listener.api.item.TNLItem;
 import net.nonswag.tnl.listener.api.location.BlockPosition;
@@ -11,7 +15,9 @@ import net.nonswag.tnl.listener.api.nbt.NBTTag;
 import net.nonswag.tnl.listener.api.player.Hand;
 import org.bukkit.*;
 import org.bukkit.boss.BossBar;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -167,6 +173,8 @@ public interface Outgoing {
     UpdateAdvancementsPacket updateAdvancementsPacket(boolean reset, HashMap<NamespacedKey, Advancement.Builder> added, List<NamespacedKey> removed, HashMap<NamespacedKey, Advancement.Progress> progress);
 
     LevelEventPacket levelEventPacket(int eventId, BlockPosition position, int data, boolean global);
+
+    PlayerChatPacket playerChatPacket(UUID sender, int index, @Nullable MessageSignature signature, SignedMessageBody body, @Nullable Component unsignedContent, Filter filter, ChatType chatType);
 
     SetHealthPacket setHealthPacket(float health, int food, float saturation);
 

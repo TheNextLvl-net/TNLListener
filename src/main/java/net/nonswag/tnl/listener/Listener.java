@@ -22,6 +22,7 @@ import net.nonswag.tnl.listener.api.server.ServerInfo;
 import net.nonswag.tnl.listener.api.server.UpdateRunnable;
 import net.nonswag.tnl.listener.api.settings.Settings;
 import net.nonswag.tnl.listener.api.version.Version;
+import net.nonswag.tnl.listener.handlers.GlobalPacketHandler;
 import net.nonswag.tnl.listener.listeners.*;
 import net.nonswag.tnl.listener.utils.Messages;
 import net.nonswag.tnl.manager.Manager;
@@ -131,6 +132,7 @@ public final class Listener extends PluginBuilder {
         eventManager.registerListener(new InteractListener());
         eventManager.registerListener(new ServerListener());
         eventManager.registerListener(new WorldListener());
+        GlobalPacketHandler.init();
         getOnlinePlayers(true).forEach(all -> all.pipeline().inject());
         updateTeams();
         UpdateRunnable.start();

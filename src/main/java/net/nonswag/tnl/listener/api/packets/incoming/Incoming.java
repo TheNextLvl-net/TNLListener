@@ -1,6 +1,8 @@
 package net.nonswag.tnl.listener.api.packets.incoming;
 
+import net.nonswag.tnl.listener.api.chat.ChatSession;
 import net.nonswag.tnl.listener.api.chat.LastSeenMessages;
+import net.nonswag.tnl.listener.api.chat.MessageSignature;
 import net.nonswag.tnl.listener.api.item.TNLItem;
 import net.nonswag.tnl.listener.api.location.BlockPosition;
 import net.nonswag.tnl.listener.api.location.Direction;
@@ -31,7 +33,7 @@ public interface Incoming {
 
     ChatCommandPacket chatCommandPacket(String command, Instant timeStamp, long salt, ChatCommandPacket.Entry[] argumentSignatures, LastSeenMessages.Update lastSeenMessages);
 
-    ChatPacket chatPacket(String message, Instant timeStamp, long salt, @Nullable byte[] signature, LastSeenMessages.Update lastSeenMessages);
+    ChatPacket chatPacket(String message, Instant timeStamp, long salt, @Nullable MessageSignature signature, LastSeenMessages.Update lastSeenMessages);
 
     ClientCommandPacket clientCommandPacket(ClientCommandPacket.Action action);
 
@@ -110,6 +112,8 @@ public interface Incoming {
     SetStructureBlockPacket setStructureBlockPacket(BlockPosition position, SetStructureBlockPacket.Type type, SetStructureBlockPacket.Mode mode, String name, BlockPosition offset, Vector size, Mirror mirror, Rotation rotation, String metadata, boolean ignoreEntities, boolean showAir, boolean showBoundingBox, float integrity, long seed);
 
     SignUpdatePacket signUpdatePacket(BlockPosition position, String[] lines);
+
+    ChatSessionUpdatePacket chatSessionUpdatePacket(ChatSession session);
 
     SwingPacket swingPacket(Hand hand);
 

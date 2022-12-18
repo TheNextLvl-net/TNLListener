@@ -70,8 +70,8 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
     @Nonnull
     @Override
     @Deprecated(forRemoval = true)
-    public PluginLoader getPluginLoader() {
-        return null;
+    public final PluginLoader getPluginLoader() {
+        throw new UnsupportedOperationException();
     }
 
     protected final void setAuthors(String... authors) {
@@ -144,21 +144,6 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
         } catch (Throwable t) {
             Logger.error.println("There was an error while disabling plugin <'" + getName() + "'>", t);
         }
-    }
-
-    public PluginBuilder register() {
-        unregister();
-        PluginHelper.getInstance().getPlugins().add(this);
-        return this;
-    }
-
-    public PluginBuilder unregister() {
-        PluginHelper.getInstance().getPlugins().removeIf(plugin -> plugin.getName().equals(getName()));
-        return this;
-    }
-
-    public boolean isRegistered() {
-        return PluginHelper.getInstance().getPlugins().contains(this);
     }
 
     public final EventManager getEventManager() {

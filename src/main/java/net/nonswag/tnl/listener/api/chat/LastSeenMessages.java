@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.BitSet;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,5 +19,12 @@ public class LastSeenMessages {
     public static class Update {
         private int offset;
         private BitSet acknowledged;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class Packed {
+        private List<MessageSignature.Packed> entries;
     }
 }
