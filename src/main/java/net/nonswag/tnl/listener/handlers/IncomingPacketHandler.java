@@ -42,7 +42,6 @@ import java.io.DataInputStream;
 class IncomingPacketHandler {
 
     static void init(EventManager manager) {
-        if (Settings.BETTER_CHAT.getValue()) betterChat(manager);
         manager.registerPacketReader(ClientCommandPacket.class, (player, packet, cancelled) -> {
             if (!packet.getAction().equals(ClientCommandPacket.Action.REQUEST_STATS)) return;
             cancelled.set(true);
@@ -178,15 +177,6 @@ class IncomingPacketHandler {
             if (gui == null) return;
             if (gui.getCloseSound() != null) player.soundManager().playSound(gui.getCloseSound());
             gui.getCloseListener().onClose(player, true);
-        });
-    }
-
-    private static void betterChat(EventManager manager) {
-        manager.registerPacketReader(ChatPacket.class, (player, packet, cancelled) -> {
-            if (packet.getMessage().startsWith("/")) return;
-            PlayerChatEvent chatEvent = new PlayerChatEvent(player, packet.getMessage());
-            player.messenger().chat(chatEvent);
-            cancelled.set(true);
         });
     }
 }

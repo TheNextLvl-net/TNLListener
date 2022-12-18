@@ -210,6 +210,8 @@ public interface Outgoing {
 
     MoveEntityPacket.Position moveEntityPacket(int entityId, double x, double y, double z, boolean onGround);
 
+    DisguisedChatPacket disguisedChatPacket(Component message, ChatType chatType);
+
     <P> Class<? extends OutgoingPacket> map(Class<P> clazz);
 
     <P> PacketBuilder map(P packet);

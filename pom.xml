@@ -6,7 +6,7 @@
 
     <groupId>net.nonswag.tnl</groupId>
     <artifactId>listener</artifactId>
-    <version>6.1.0</version>
+    <version>6.2.0</version>
 
     <build>
         <plugins>

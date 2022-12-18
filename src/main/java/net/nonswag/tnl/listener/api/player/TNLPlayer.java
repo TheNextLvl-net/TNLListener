@@ -2,6 +2,7 @@ package net.nonswag.tnl.listener.api.player;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.nonswag.core.api.command.CommandSource;
 import net.nonswag.core.api.logger.Logger;
@@ -330,6 +331,11 @@ public abstract class TNLPlayer implements CommandSource, PlatformPlayer, TNLEnt
 
     public static TNLPlayer cast(Player player) {
         return cast(player, false);
+    }
+
+    @Nullable
+    public static TNLPlayer cast(Audience audience) {
+        return audience instanceof Player ? cast((Player) audience) : null;
     }
 
     @Nullable

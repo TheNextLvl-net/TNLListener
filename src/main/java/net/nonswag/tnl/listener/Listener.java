@@ -125,13 +125,14 @@ public final class Listener extends PluginBuilder {
             }
         });
         if (Settings.PLUGIN_MANAGER.getValue()) Manager.getInstance().setEnabled(true);
-        EventManager eventManager = Bootstrap.getInstance().getEventManager();
-        if (Settings.BETTER_COMMANDS.getValue()) eventManager.registerListener(new CommandListener());
-        eventManager.registerListener(new ConnectionListener());
-        eventManager.registerListener(new InventoryListener());
-        eventManager.registerListener(new InteractListener());
-        eventManager.registerListener(new ServerListener());
-        eventManager.registerListener(new WorldListener());
+        EventManager manager = Bootstrap.getInstance().getEventManager();
+        if (Settings.BETTER_COMMANDS.getValue()) manager.registerListener(new CommandListener());
+        if (Settings.BETTER_CHAT.getValue()) manager.registerListener(new ChatListener());
+        manager.registerListener(new ConnectionListener());
+        manager.registerListener(new InventoryListener());
+        manager.registerListener(new InteractListener());
+        manager.registerListener(new ServerListener());
+        manager.registerListener(new WorldListener());
         GlobalPacketHandler.init();
         getOnlinePlayers(true).forEach(all -> all.pipeline().inject());
         updateTeams();

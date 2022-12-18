@@ -15,7 +15,8 @@ public final class Settings {
     public static final Setting<Boolean> PLUGIN_MANAGER = new Setting<>("enable-plugin-manager", true);
     public static final Setting<Boolean> BETTER_COMMANDS = new Setting<>("better-commands", true);
     public static final Setting<Boolean> BETTER_CHAT = new Setting<>("better-chat", true);
-    public static final Setting<Boolean> CHAT_PINGS = new Setting<>("chat-pings", true);
+    public static final Setting<Boolean> LOG_CHAT = new Setting<>("log-chat", false);
+    public static final Setting<Boolean> CHAT_MENTIONS = new Setting<>("chat-mentions", true);
     public static final Setting<Boolean> BETTER_TNT = new Setting<>("better-tnt", true);
     public static final Setting<Boolean> BETTER_FALLING_BLOCKS = new Setting<>("better-falling-blocks", true);
     public static final Setting<Boolean> PUNISH_SPAMMING = new Setting<>("punish-spamming", true);

@@ -3,7 +3,6 @@ package net.nonswag.tnl.listener.api.player.manager;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.nonswag.core.api.annotation.FieldsAreNullableByDefault;
-import net.nonswag.core.api.logger.Color;
 import net.nonswag.core.api.logger.Logger;
 import net.nonswag.core.api.message.Message;
 import net.nonswag.core.api.message.Placeholder;
@@ -16,11 +15,6 @@ import net.nonswag.tnl.listener.api.chat.Conversation;
 import net.nonswag.tnl.listener.api.mapper.Mapping;
 import net.nonswag.tnl.listener.api.packets.outgoing.CustomPayloadPacket;
 import net.nonswag.tnl.listener.api.packets.outgoing.SystemChatPacket;
-import net.nonswag.tnl.listener.api.player.TNLPlayer;
-import net.nonswag.tnl.listener.api.settings.Settings;
-import net.nonswag.tnl.listener.events.ChatMentionEvent;
-import net.nonswag.tnl.listener.events.PlayerChatEvent;
-import net.nonswag.tnl.listener.utils.Messages;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.messaging.ChannelNameTooLongException;
 
@@ -62,36 +56,6 @@ public abstract class Messenger extends Manager {
         }
         else message = key.message();
         sendMessage(Message.format(message, player, placeholders), false);
-    }
-
-    public void chat(PlayerChatEvent event) {
-        String message = Color.Minecraft.unColorize(event.getMessage(), '§');
-        if (Color.unColorize(message.replace(" ", "")).isEmpty()) return;
-        if (Conversation.test(event, event.getPlayer(), event.getMessage())) return;
-        if (!event.call()) return;
-        message = Color.Minecraft.unColorize(event.getMessage(), '§');
-        String[] strings = message.split(" ");
-        if (event.getFormat() == null) event.setFormat(Messages.CHAT_FORMAT.message());
-        Placeholder color = new Placeholder("color", event.getPlayer().scoreboardManager().getTeam().getColor().toString());
-        if (Settings.BETTER_CHAT.getValue()) for (TNLPlayer all : event.getReceivers()) {
-            if (!message.toLowerCase().contains(all.getName().toLowerCase())) continue;
-            for (String string : strings) {
-                if (!string.equalsIgnoreCase("@" + all.getName())) continue;
-                String replacement = Message.format(Messages.CHAT_MENTION.message(), new Placeholder("player", all.getName()), color);
-                message = message.replace(string + " ", replacement);
-                message = message.replace(string, replacement);
-                if (all.equals(event.getPlayer())) continue;
-                ChatMentionEvent mentionEvent = new ChatMentionEvent(event.getPlayer(), all);
-                if (!mentionEvent.call()) continue;
-                all.soundManager().playSound(mentionEvent.getSound(), 1f, 1f);
-            }
-        }
-        Placeholder coloredMessage = new Placeholder("colored_message", Color.colorize(message, '&'));
-        Placeholder text = new Placeholder("message", Color.unColorize(message, '&'));
-        // PlayerChatPacket.create(getPlayer().getUniqueId(), )
-        for (TNLPlayer all : event.getReceivers()) {
-            all.messenger().sendMessage(event.getFormat(), event.getPlayer(), color, text, coloredMessage);
-        }
     }
 
     public void sendPluginMessage(String channel, String... message) {

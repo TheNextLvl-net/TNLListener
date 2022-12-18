@@ -2,7 +2,7 @@ package net.nonswag.tnl.listener.api.chat;
 
 import lombok.Getter;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
-import net.nonswag.tnl.listener.events.PlayerChatEvent;
+import org.bukkit.event.Cancellable;
 
 import java.util.function.BiPredicate;
 
@@ -21,13 +21,11 @@ public class Conversation {
         return this;
     }
 
-    public static boolean test(PlayerChatEvent chatEvent, TNLPlayer player, String message) {
+    public static boolean test(Cancellable event, TNLPlayer player, String message) {
         Conversation conversation = player.messenger().getConversation();
-        if (player.messenger().isInConversation() && conversation != null) {
-            chatEvent.setCancelled(true);
-            if (conversation.getResponse().test(player, message)) player.messenger().stopConversation();
-            return true;
-        }
-        return false;
+        if (!player.messenger().isInConversation() || conversation == null) return false;
+        if (conversation.getResponse().test(player, message)) player.messenger().stopConversation();
+        event.setCancelled(true);
+        return true;
     }
 }

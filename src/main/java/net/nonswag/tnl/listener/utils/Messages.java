@@ -59,7 +59,7 @@ public final class Messages {
 
     private static void loadRoot() {
         Message.getRoot().setDefault(CHAT_FORMAT, "§8[%color%%world%§8] §f%display_name% §8» %color%%message%");
-        Message.getRoot().setDefault(CHAT_MENTION, "§8(§3%player%§8) %color%");
+        Message.getRoot().setDefault(CHAT_MENTION, "§8(§3%player%§8)%color%");
         Message.getRoot().save();
     }
 
