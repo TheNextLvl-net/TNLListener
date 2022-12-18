@@ -43,6 +43,10 @@ public abstract class WorldManager extends Manager {
         return getPlayer().bukkit().getEyeLocation();
     }
 
+    public Chunk getChunk() {
+        return getPlayer().bukkit().getChunk();
+    }
+
     public void setVelocity(Vector vector) {
         getPlayer().bukkit().setVelocity(vector);
     }
