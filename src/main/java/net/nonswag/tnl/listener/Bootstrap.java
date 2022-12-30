@@ -4,7 +4,6 @@ import net.nonswag.core.Core;
 import net.nonswag.core.api.annotation.FieldsAreNullableByDefault;
 import net.nonswag.core.api.annotation.MethodsReturnNonnullByDefault;
 import net.nonswag.core.api.logger.Logger;
-import net.nonswag.core.api.message.Message;
 import net.nonswag.tnl.holograms.Holograms;
 import net.nonswag.tnl.listener.api.plugin.TNLPlugin;
 import net.nonswag.tnl.listener.api.settings.Settings;
@@ -18,7 +17,6 @@ public final class Bootstrap extends TNLPlugin {
         try {
             Core.init();
             Logger.debug.setCondition(Settings.DEBUG::getValue);
-            Logger.tip.setCondition(Settings.TIPS::getValue);
             Listener.initialize();
         } catch (Exception e) {
             Logger.error.println("An error occurred while initializing the Core", e);
@@ -55,7 +53,6 @@ public final class Bootstrap extends TNLPlugin {
         try {
             Listener.getInstance().startupFinished();
             Holograms.getInstance().startupFinished();
-            Message.saveDefaults();
         } catch (Exception t) {
             Logger.error.println("An error occurred after startup was finished", t);
         }

@@ -55,7 +55,7 @@
         <dependency>
             <groupId>net.nonswag.core</groupId>
             <artifactId>core-api</artifactId>
-            <version>1.5</version>
+            <version>1.6.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

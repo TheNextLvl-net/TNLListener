@@ -10,7 +10,6 @@ import java.util.List;
 
 public final class Settings {
     public static final Setting<Boolean> DEBUG = new Setting<>("debug", true);
-    public static final Setting<Boolean> TIPS = new Setting<>("tips", true);
     public static final Setting<Boolean> DELETE_OLD_LOGS = new Setting<>("delete-old-logs", true);
     public static final Setting<Boolean> PLUGIN_MANAGER = new Setting<>("enable-plugin-manager", true);
     public static final Setting<Boolean> BETTER_COMMANDS = new Setting<>("better-commands", true);
