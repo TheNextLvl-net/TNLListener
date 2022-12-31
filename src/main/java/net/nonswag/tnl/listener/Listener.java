@@ -67,12 +67,10 @@ public final class Listener extends PluginBuilder {
             }
         }
         if (version.equals(Version.UNKNOWN)) {
-            Logger.error.printf("Your server version (%s) is unknown", Bukkit.getVersion()).println();
-            Bukkit.getPluginManager().disablePlugin(Bootstrap.getInstance());
-            return;
+            throw new IllegalStateException("Unknown server version: %s".concat(Bukkit.getVersion()));
         }
         if (!net.nonswag.tnl.listener.api.mapper.Loader.load()) {
-            throw new MappingError("Found no Mapping for your version (" + getVersion() + ")");
+            throw new MappingError("Found no Mapping for your version: ".concat(getVersion().getRecentVersion()));
         }
         Mapping.get().onLoad();
         Mapping.Info info = Mapping.get().info();

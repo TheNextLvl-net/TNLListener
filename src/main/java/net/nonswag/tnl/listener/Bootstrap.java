@@ -5,6 +5,7 @@ import net.nonswag.core.api.annotation.FieldsAreNullableByDefault;
 import net.nonswag.core.api.annotation.MethodsReturnNonnullByDefault;
 import net.nonswag.core.api.logger.Logger;
 import net.nonswag.tnl.holograms.Holograms;
+import net.nonswag.tnl.listener.api.mapper.errors.MappingError;
 import net.nonswag.tnl.listener.api.plugin.TNLPlugin;
 import net.nonswag.tnl.listener.api.settings.Settings;
 
@@ -18,6 +19,8 @@ public final class Bootstrap extends TNLPlugin {
             Core.init();
             Logger.debug.setCondition(Settings.DEBUG::getValue);
             Listener.initialize();
+        } catch (MappingError e) {
+            e.printStackTrace();
         } catch (Exception e) {
             Logger.error.println("An error occurred while initializing the Core", e);
         }
