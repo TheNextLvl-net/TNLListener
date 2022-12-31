@@ -11,17 +11,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.File;
 import java.util.function.Consumer;
 
-public abstract class TNLPlugin extends JavaPlugin implements CombinedPlugin, Updatable {
+public abstract class TNLPlugin extends JavaPlugin implements CombinedPlugin {
 
     private final EventManager eventManager = new EventManager(this);
     private final CommandManager commandManager = new CommandManager(this);
     private final RegistrationManager registrationManager = new RegistrationManager(this);
-    @Nullable
-    protected PluginUpdate updater = null;
 
     @Override
     public final void onLoad() {
@@ -79,12 +76,6 @@ public abstract class TNLPlugin extends JavaPlugin implements CombinedPlugin, Up
     @Override
     public File getFile() {
         return super.getFile();
-    }
-
-    @Nullable
-    @Override
-    public PluginUpdate getUpdater() {
-        return updater == null ? updater = new PluginUpdate(this) : updater;
     }
 
     @Override

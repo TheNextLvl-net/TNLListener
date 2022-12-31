@@ -2,14 +2,14 @@ package net.nonswag.tnl.manager.commands;
 
 import net.nonswag.core.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
-import net.nonswag.tnl.manager.Manager;
+import net.nonswag.tnl.manager.api.config.Config;
 
 import javax.annotation.Nonnull;
 
 public class PluginsCommand extends TNLCommand {
 
     public PluginsCommand() {
-        super("plugins", Manager.getInstance().isPublishPlugins() ? null : "tnl.manage", "pl");
+        super("plugins", Config.getInstance().isPublishPlugins() ? null : "tnl.manage", "pl");
     }
 
     @Override

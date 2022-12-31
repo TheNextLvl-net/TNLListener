@@ -5,7 +5,7 @@ import net.nonswag.tnl.listener.api.command.exceptions.InsufficientPermissionExc
 import net.nonswag.tnl.listener.api.command.simple.SimpleCommand;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import net.nonswag.tnl.listener.api.plugin.PluginManager;
-import net.nonswag.tnl.manager.Manager;
+import net.nonswag.tnl.manager.api.config.Config;
 import net.nonswag.tnl.manager.commands.subcommands.*;
 import net.nonswag.tnl.manager.gui.PluginsGUI;
 
@@ -16,25 +16,22 @@ import java.util.List;
 public class PluginCommand extends SimpleCommand {
 
     public PluginCommand() {
-        super("plugin", Manager.getInstance().isPublishPlugins() ? null : "tnl.manage");
+        super("plugin", Config.getInstance().isPublishPlugins() ? null : "tnl.manage");
         addSubCommand(new PluginInfo());
         addSubCommand(new PluginList());
         addSubCommand(new PluginEnable());
-        addSubCommand(new PluginAutoReload());
         addSubCommand(new PluginDisable());
         addSubCommand(new PluginLoad());
-        addSubCommand(new PluginInstall());
         addSubCommand(new PluginReload());
         addSubCommand(new PluginUnload());
-        addSubCommand(new PluginUpdate());
     }
 
     public static void sendPlugins(CommandSource source) {
-        if (Manager.getInstance().isPublishPlugins() || source.hasPermission("tnl.manage")) {
-            if (!Manager.getInstance().isPluginsGUI() || !(source instanceof TNLPlayer player)) {
-                List<String> pluginList = PluginManager.getPlugins(false);
-                source.sendMessage("%prefix% §7Plugins §8(§6" + pluginList.size() + "§8)§8: §6" + String.join("§8, §6", pluginList));
-            } else player.interfaceManager().openGUI(PluginsGUI.getInstance());
-        } else throw new InsufficientPermissionException("tnl.manage");
+        if (Config.getInstance().isPublishPlugins() || source.hasPermission("tnl.manage"))
+            throw new InsufficientPermissionException("tnl.manage");
+        if (!Config.getInstance().isPluginsGUI() || !(source instanceof TNLPlayer player)) {
+            List<String> plugins = PluginManager.getPlugins(false);
+            source.sendMessage("%prefix% §7Plugins §8(§6" + plugins.size() + "§8)§8: §6" + String.join("§8, §6", plugins));
+        } else player.interfaceManager().openGUI(PluginsGUI.getInstance());
     }
 }

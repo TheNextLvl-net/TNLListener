@@ -11,7 +11,7 @@ import java.util.List;
 public final class Settings {
     public static final Setting<Boolean> DEBUG = new Setting<>("debug", true);
     public static final Setting<Boolean> DELETE_OLD_LOGS = new Setting<>("delete-old-logs", true);
-    public static final Setting<Boolean> PLUGIN_MANAGER = new Setting<>("enable-plugin-manager", true);
+    public static final Setting<Boolean> PLUGIN_MANAGEMENT = new Setting<>("enable-plugin-management", false);
     public static final Setting<Boolean> BETTER_COMMANDS = new Setting<>("better-commands", true);
     public static final Setting<Boolean> BETTER_CHAT = new Setting<>("better-chat", true);
     public static final Setting<Boolean> LOG_CHAT = new Setting<>("log-chat", false);
@@ -19,12 +19,10 @@ public final class Settings {
     public static final Setting<Boolean> BETTER_TNT = new Setting<>("better-tnt", true);
     public static final Setting<Boolean> BETTER_FALLING_BLOCKS = new Setting<>("better-falling-blocks", true);
     public static final Setting<Boolean> PUNISH_SPAMMING = new Setting<>("punish-spamming", true);
-    public static final Setting<Boolean> AUTO_UPDATER = new Setting<>("auto-updater", true);
     public static final Setting<Boolean> TAB_COMPLETER = new Setting<>("tab-completer", true);
     public static final Setting<Boolean> FIRST_JOIN_MESSAGE = new Setting<>("first-join-message", true);
     public static final Setting<Boolean> JOIN_MESSAGE = new Setting<>("join-message", true);
     public static final Setting<Boolean> QUIT_MESSAGE = new Setting<>("quit-message", true);
-    public static final Setting<Boolean> CUSTOM_ITEM_NAMES = new Setting<>("custom-item-names", true);
     public static final Setting<Integer> SERVER_UPDATE_TIMEOUT = new Setting<>("server-update-timeout", 3000);
     public static final Setting<Integer> SERVER_UPDATE_TIME = new Setting<>("server-update-time", 5000);
     public static final Setting<String> TAB_COMPLETE_BYPASS_PERMISSION = new Setting<>("tab-complete-bypass-permission", "tnl.tab");

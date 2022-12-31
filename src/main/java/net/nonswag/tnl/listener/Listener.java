@@ -16,7 +16,6 @@ import net.nonswag.tnl.listener.api.mapper.Mapping;
 import net.nonswag.tnl.listener.api.mapper.errors.MappingError;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import net.nonswag.tnl.listener.api.plugin.PluginBuilder;
-import net.nonswag.tnl.listener.api.plugin.PluginUpdate;
 import net.nonswag.tnl.listener.api.server.Server;
 import net.nonswag.tnl.listener.api.server.ServerInfo;
 import net.nonswag.tnl.listener.api.server.UpdateRunnable;
@@ -116,13 +115,7 @@ public final class Listener extends PluginBuilder {
         }
         if (Settings.DELETE_OLD_LOGS.getValue()) deleteOldLogs();
         Settings.getConfig().save();
-        Bootstrap.getInstance().async(() -> {
-            if (Settings.AUTO_UPDATER.getValue()) {
-                PluginUpdate updater = Bootstrap.getInstance().getUpdater();
-                if (updater != null) updater.downloadUpdate();
-            }
-        });
-        if (Settings.PLUGIN_MANAGER.getValue()) Manager.getInstance().setEnabled(true);
+        Manager.getInstance().setEnabled(true);
         EventManager manager = Bootstrap.getInstance().getEventManager();
         if (Settings.BETTER_COMMANDS.getValue()) manager.registerListener(new CommandListener());
         if (Settings.BETTER_CHAT.getValue()) manager.registerListener(new ChatListener());
