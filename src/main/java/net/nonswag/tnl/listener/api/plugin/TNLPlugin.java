@@ -25,8 +25,7 @@ public abstract class TNLPlugin extends JavaPlugin implements CombinedPlugin {
         try {
             load();
         } catch (Throwable t) {
-            Logger.error.println("There was an error while loading plugin <'" + getName() + "'>");
-            t.printStackTrace();
+            Logger.error.println("There was an error while loading plugin <'" + getName() + "'>", t);
         }
     }
 
@@ -36,8 +35,7 @@ public abstract class TNLPlugin extends JavaPlugin implements CombinedPlugin {
             if (!isEnabled()) throw new IllegalStateException("called <'onEnable'> before <'setEnabled(true)'>");
             enable();
         } catch (Throwable t) {
-            Logger.error.println("There was an error while enabling plugin <'" + getName() + "'>");
-            t.printStackTrace();
+            Logger.error.println("There was an error while enabling plugin <'" + getName() + "'>", t);
         }
     }
 
@@ -53,8 +51,7 @@ public abstract class TNLPlugin extends JavaPlugin implements CombinedPlugin {
                 getEventManager().unregisterAll();
             }
         } catch (Throwable t) {
-            Logger.error.println("There was an error while disabling plugin <'" + getName() + "'>");
-            t.printStackTrace();
+            Logger.error.println("There was an error while disabling plugin <'" + getName() + "'>", t);
         }
     }
 
