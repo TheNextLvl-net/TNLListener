@@ -10,6 +10,6 @@
 <dependency>
     <groupId>net.nonswag.tnl</groupId>
     <artifactId>listener</artifactId>
-    <version>6.3.1</version>
+    <version>6.3.2</version>
 </dependency>
  ```

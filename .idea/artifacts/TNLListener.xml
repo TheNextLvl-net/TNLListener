@@ -4,7 +4,7 @@
     <root id="archive" name="TNLListener.jar">
       <element id="module-output" name="TNLListener" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/zaxxer/HikariCP/5.0.1/HikariCP-5.0.1.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/net/nonswag/core/core-api/1.6.2/core-api-1.6.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/net/nonswag/core/core-api/1.6.3/core-api-1.6.3.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
