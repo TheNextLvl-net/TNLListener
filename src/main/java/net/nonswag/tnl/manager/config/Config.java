@@ -1,4 +1,4 @@
-package net.nonswag.tnl.manager.api.config;
+package net.nonswag.tnl.manager.config;
 
 import lombok.Getter;
 import lombok.Setter;
