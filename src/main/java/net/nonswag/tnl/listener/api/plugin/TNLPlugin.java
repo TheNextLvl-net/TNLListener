@@ -1,5 +1,7 @@
 package net.nonswag.tnl.listener.api.plugin;
 
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import net.nonswag.core.api.logger.Logger;
 import net.nonswag.core.api.object.Condition;
 import net.nonswag.tnl.listener.api.command.CommandManager;
@@ -14,8 +16,9 @@ import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.function.Consumer;
 
+@Getter
+@Accessors(makeFinal = true)
 public abstract class TNLPlugin extends JavaPlugin implements CombinedPlugin {
-
     private final EventManager eventManager = new EventManager(this);
     private final CommandManager commandManager = new CommandManager(this);
     private final RegistrationManager registrationManager = new RegistrationManager(this);
@@ -53,20 +56,6 @@ public abstract class TNLPlugin extends JavaPlugin implements CombinedPlugin {
         } catch (Throwable t) {
             Logger.error.println("There was an error while disabling plugin <'" + getName() + "'>", t);
         }
-    }
-
-    @Override
-    public final EventManager getEventManager() {
-        return eventManager;
-    }
-
-    @Override
-    public final CommandManager getCommandManager() {
-        return commandManager;
-    }
-
-    public final RegistrationManager getRegistrationManager() {
-        return registrationManager;
     }
 
     @Nonnull
