@@ -16,12 +16,12 @@ public abstract class DataManager extends Manager {
     protected DataManager() {
         super();
         this.file = new JsonFile("plugins/Listener/Data", getPlayer().getUniqueId() + ".json");
-        JsonObject root = getFile().getJsonElement().getAsJsonObject();
+        JsonObject root = getFile().getRoot().getAsJsonObject();
         if (root.has("language")) setLanguage(Language.fromLocale(root.get("language").getAsString()));
     }
 
     public void export() {
-        JsonObject root = getFile().getJsonElement().getAsJsonObject();
+        JsonObject root = getFile().getRoot().getAsJsonObject();
         root.addProperty("language", language.name());
         getFile().save();
     }
@@ -50,18 +50,18 @@ public abstract class DataManager extends Manager {
 
     @Nullable
     public String get(String key) {
-        JsonObject root = getFile().getJsonElement().getAsJsonObject();
+        JsonObject root = getFile().getRoot().getAsJsonObject();
         return root.has(key) ? root.get(key).getAsString() : null;
     }
 
     public <V> void put(String key, @Nullable V value) {
-        JsonObject root = getFile().getJsonElement().getAsJsonObject();
+        JsonObject root = getFile().getRoot().getAsJsonObject();
         if (value != null) root.addProperty(key, value.toString());
         else remove(key);
     }
 
     public void remove(String key) {
-        getFile().getJsonElement().getAsJsonObject().remove(key);
+        getFile().getRoot().getAsJsonObject().remove(key);
     }
 
     public interface Parser<V> {

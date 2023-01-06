@@ -12,13 +12,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.meta.Repairable;
 
-import javax.annotation.Nonnull;
 import java.util.Objects;
 
 public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onInventoryClick(@Nonnull InventoryClickEvent event) {
+    public void onInventoryClick(InventoryClickEvent event) {
         TNLPlayer player = TNLPlayer.cast(event.getWhoClicked());
         if (!(event.getClickedInventory() instanceof AnvilInventory anvil)) return;
         if (event.getSlot() != 2) return;

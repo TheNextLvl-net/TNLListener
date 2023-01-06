@@ -1,5 +1,6 @@
 package net.nonswag.tnl.listener.listeners;
 
+import net.nonswag.core.api.language.Language;
 import net.nonswag.core.api.logger.Console;
 import net.nonswag.core.api.message.Message;
 import net.nonswag.core.api.message.Placeholder;
@@ -15,15 +16,13 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerCommandSendEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 
-import javax.annotation.Nonnull;
-
 public class CommandListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
-    public void onCommand(@Nonnull PlayerCommandPreprocessEvent event) {
+    public void onCommand(PlayerCommandPreprocessEvent event) {
         TNLPlayer player = TNLPlayer.cast(event.getPlayer());
         String name = event.getMessage().split(" ")[0];
-        if (!(name = name.substring(1)).replace(" ", "").equalsIgnoreCase("")) {
+        if (!(name = name.substring(1)).isBlank()) {
             Command command = PluginHelper.getInstance().getCommand(name);
             if (command == null) {
                 event.setCancelled(true);
@@ -42,12 +41,12 @@ public class CommandListener implements Listener {
     }
 
     @EventHandler
-    public void onCommandSend(@Nonnull PlayerCommandSendEvent event) {
+    public void onCommandSend(PlayerCommandSendEvent event) {
         event.getCommands().removeIf(name -> PluginHelper.getInstance().getCommand(name) == null);
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onConsoleCommand(@Nonnull ServerCommandEvent event) {
+    public void onConsoleCommand(ServerCommandEvent event) {
         String name = event.getCommand().split(" ")[0];
         if (!name.isEmpty()) {
             Command command = PluginHelper.getInstance().getCommand(name);
@@ -55,7 +54,8 @@ public class CommandListener implements Listener {
             event.setCancelled(true);
             UnknownCommandEvent commandEvent = new UnknownCommandEvent(Console.getInstance(), event.getCommand());
             if (!commandEvent.call()) return;
-            event.getSender().sendMessage(Message.format(Messages.UNKNOWN_COMMAND.message(), new Placeholder("command", commandEvent.getCommand())));
+            event.getSender().sendMessage(Message.format(Messages.UNKNOWN_COMMAND.message(Language.AMERICAN_ENGLISH),
+                    new Placeholder("command", commandEvent.getCommand())));
         } else event.setCancelled(true);
     }
 }

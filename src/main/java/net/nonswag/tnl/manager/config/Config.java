@@ -2,11 +2,11 @@ package net.nonswag.tnl.manager.config;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.nonswag.core.api.file.formats.PropertyFile;
+import net.nonswag.core.api.file.formats.PropertiesFile;
 
 @Getter
 @Setter
-public class Config extends PropertyFile {
+public class Config extends PropertiesFile {
     @Getter
     private static final Config instance = new Config();
 
@@ -15,10 +15,10 @@ public class Config extends PropertyFile {
 
     private Config() {
         super("plugins/Listener/Manager", "config.properties");
-        setIfAbsent("plugins-gui", isPluginsGUI());
-        setIfAbsent("everyone-can-see-plugins", isPublishPlugins());
-        setPluginsGUI(getBoolean("plugins-gui"));
-        setPublishPlugins(getBoolean("everyone-can-see-plugins"));
+        getRoot().setIfAbsent("plugins-gui", isPluginsGUI());
+        getRoot().setIfAbsent("everyone-can-see-plugins", isPublishPlugins());
+        setPluginsGUI(getRoot().getBoolean("plugins-gui"));
+        setPublishPlugins(getRoot().getBoolean("everyone-can-see-plugins"));
         save();
     }
 }

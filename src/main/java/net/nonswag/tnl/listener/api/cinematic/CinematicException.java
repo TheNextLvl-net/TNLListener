@@ -1,11 +1,10 @@
 package net.nonswag.tnl.listener.api.cinematic;
 
 import lombok.Getter;
-import net.nonswag.core.api.errors.TNLRuntimeException;
 import net.nonswag.tnl.listener.api.player.manager.CinematicManger;
 
 @Getter
-public abstract class CinematicException extends TNLRuntimeException {
+public abstract class CinematicException extends RuntimeException {
 
     private final Recording recording;
     private final CinematicManger cinematicManger;

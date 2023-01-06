@@ -44,7 +44,8 @@ public final class Listener extends PluginBuilder {
     public static final Listener instance = new Listener();
 
     @Setter
-    private static String serverName = ServerProperties.getInstance().getString("server-name", "");
+    @Getter
+    private static String serverName = ServerProperties.getInstance().getRoot().getString("server-name", new File("").getAbsoluteFile().getName());
     @Getter
     private static Version version = Version.UNKNOWN;
     @Getter
@@ -93,8 +94,8 @@ public final class Listener extends PluginBuilder {
     @Override
     public void enable() {
         for (String server : Settings.SERVERS.getValue()) {
-            if (Settings.getConfig().has("server-" + server)) {
-                String value = Settings.getConfig().get("server-" + server);
+            if (Settings.getConfig().getRoot().has("server-" + server)) {
+                String value = Settings.getConfig().getRoot().getString("server-" + server);
                 if (value != null && !value.isEmpty()) {
                     if (!value.equalsIgnoreCase("host:port")) {
                         try {
@@ -105,11 +106,11 @@ public final class Listener extends PluginBuilder {
                         }
                     } else Logger.warn.printf("The server <'%s'> is not setup yet", server).println();
                 } else {
-                    Settings.getConfig().set("server-" + server, "host:port");
+                    Settings.getConfig().getRoot().set("server-" + server, "host:port");
                     Logger.debug.printf("Found new server <'%s'>", server).println();
                 }
             } else {
-                Settings.getConfig().set("server-" + server, "host:port");
+                Settings.getConfig().getRoot().set("server-" + server, "host:port");
                 Logger.debug.printf("Found new server <'%s'>", server).println();
             }
         }
@@ -185,13 +186,6 @@ public final class Listener extends PluginBuilder {
 
     public static void broadcast(Key key, Placeholder... placeholders) {
         getOnlinePlayers().forEach(all -> all.messenger().sendMessage(key, placeholders));
-    }
-
-    public static String getServerName() {
-        if (serverName.equals("Unknown Server") || serverName.replace(" ", "").isEmpty()) {
-            setServerName(new File("").getAbsoluteFile().getName());
-        }
-        return serverName;
     }
 
     public static void deleteOldLogs() {

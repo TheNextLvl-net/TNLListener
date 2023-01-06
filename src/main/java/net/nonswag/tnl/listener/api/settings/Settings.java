@@ -1,7 +1,7 @@
 package net.nonswag.tnl.listener.api.settings;
 
 import lombok.Getter;
-import net.nonswag.core.api.file.formats.PropertyFile;
+import net.nonswag.core.api.file.formats.PropertiesFile;
 import net.nonswag.core.api.logger.Logger;
 
 import java.io.IOException;
@@ -29,36 +29,36 @@ public final class Settings {
     public static final Setting<List<String>> SERVERS = new Setting<>("servers", new ArrayList<>());
 
     @Getter
-    private static final PropertyFile config = new PropertyFile("plugins/Listener", "settings.properties");
+    private static final PropertiesFile config = new PropertiesFile("plugins/Listener", "settings.properties");
 
     static {
         for (Setting<?> setting : Setting.getList()) {
-            if (config.has(setting.getKey())) {
+            if (config.getRoot().has(setting.getKey())) {
                 if (setting.getValue() instanceof String) {
-                    String value = config.get(setting.getKey());
+                    String value = config.getRoot().getString(setting.getKey());
                     if (value != null) ((Setting<String>) setting).setValue(value);
                 } else if (setting.getValue() instanceof Boolean) {
-                    Boolean value = config.getBoolean(setting.getKey());
+                    Boolean value = config.getRoot().getBoolean(setting.getKey());
                     ((Setting<Boolean>) setting).setValue(value);
                 } else if (setting.getValue() instanceof Byte) {
-                    Byte value = config.getByte(setting.getKey());
+                    Byte value = config.getRoot().getByte(setting.getKey());
                     ((Setting<Byte>) setting).setValue(value);
                 } else if (setting.getValue() instanceof List) {
-                    List<String> value = config.getStringList(setting.getKey());
+                    List<String> value = config.getRoot().getStringList(setting.getKey());
                     ((Setting<List<String>>) setting).setValue(value);
                 } else if (setting.getValue() instanceof Integer) {
-                    int value = config.getInt(setting.getKey());
+                    int value = config.getRoot().getInt(setting.getKey());
                     ((Setting<Integer>) setting).setValue(value);
                 } else {
                     Logger.warn.println("Unset Setting Type <'" + setting.getValue().getClass().getSimpleName() + "'>", new IOException("unset setting type"));
                 }
-            } else if (setting.getValue() instanceof String value) config.set(setting.getKey(), value);
-            else if (setting.getValue() instanceof Boolean value) config.set(setting.getKey(), value);
-            else if (setting.getValue() instanceof Byte value) config.set(setting.getKey(), value);
-            else if (setting.getValue() instanceof Integer value) config.set(setting.getKey(), value);
+            } else if (setting.getValue() instanceof String value) config.getRoot().set(setting.getKey(), value);
+            else if (setting.getValue() instanceof Boolean value) config.getRoot().set(setting.getKey(), value);
+            else if (setting.getValue() instanceof Byte value) config.getRoot().set(setting.getKey(), value);
+            else if (setting.getValue() instanceof Integer value) config.getRoot().set(setting.getKey(), value);
             else if (setting.getValue() instanceof List) {
                 List<String> value = (List<String>) setting.getValue();
-                config.set(setting.getKey(), value);
+                config.getRoot().set(setting.getKey(), value);
             } else {
                 Logger.error.println("Unset Setting Type <'" + setting.getValue().getClass().getSimpleName() + "'>", new IOException("unset setting type"));
             }

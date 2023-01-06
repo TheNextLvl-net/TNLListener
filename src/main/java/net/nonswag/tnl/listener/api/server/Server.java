@@ -3,7 +3,9 @@ package net.nonswag.tnl.listener.api.server;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 import net.nonswag.core.api.file.helper.JsonHelper;
 import net.nonswag.core.api.logger.Logger;
 import net.nonswag.core.api.message.Placeholder;
@@ -25,7 +27,9 @@ import java.util.List;
 import java.util.function.Consumer;
 
 @Getter
+@Setter
 @ToString
+@Accessors(chain = true)
 public class Server {
 
     @Getter
@@ -50,25 +54,6 @@ public class Server {
         Placeholder.Registry.register(new Placeholder("online_" + getName(), this::getPlayerCount));
         Placeholder.Registry.register(new Placeholder("max_online_" + getName(), this::getMaxPlayerCount));
         Placeholder.Registry.register(new Placeholder("status_" + getName(), () -> getStatus().getName()));
-    }
-
-    public Server setStatus(Status status) {
-        this.status = status;
-        return this;
-    }
-
-    private Server setPlayerCount(int playerCount) {
-        this.playerCount = playerCount;
-        return this;
-    }
-
-    private Server setMaxPlayerCount(int maxPlayerCount) {
-        this.maxPlayerCount = maxPlayerCount;
-        return this;
-    }
-
-    public Status getStatus() {
-        return status;
     }
 
     public void update() {

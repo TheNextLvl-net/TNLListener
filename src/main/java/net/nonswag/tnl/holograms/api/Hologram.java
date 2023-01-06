@@ -126,13 +126,13 @@ public class Hologram {
         JsonArray lines = new JsonArray();
         for (int l = 0; l < getLines().size(); l++) lines.add(getLines().get(l) != null ? getLines().get(l) : "");
         object.add("lines", lines);
-        Holograms.getInstance().getSaves().getJsonElement().getAsJsonObject().add(getName(), object);
+        Holograms.getInstance().getSaves().getRoot().getAsJsonObject().add(getName(), object);
         return register();
     }
 
     @Nonnull
     public Hologram delete() {
-        Holograms.getInstance().getSaves().getJsonElement().getAsJsonObject().remove(getName());
+        Holograms.getInstance().getSaves().getRoot().getAsJsonObject().remove(getName());
         return unregister();
     }
 

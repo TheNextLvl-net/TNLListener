@@ -15,12 +15,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import javax.annotation.Nonnull;
-
 public class ConnectionListener implements org.bukkit.event.Listener {
 
     @EventHandler
-    public void onJoin(@Nonnull PlayerJoinEvent event) {
+    public void onJoin(PlayerJoinEvent event) {
         TNLPlayer player = TNLPlayer.cast(event.getPlayer(), true);
         player.pipeline().inject();
         player.debugManager().setBrand("%server%");
@@ -38,7 +36,7 @@ public class ConnectionListener implements org.bukkit.event.Listener {
     }
 
     @EventHandler
-    public void onQuit(@Nonnull PlayerQuitEvent event) {
+    public void onQuit(PlayerQuitEvent event) {
         TNLPlayer player = TNLPlayer.cast(event.getPlayer());
         TNLPlayerQuitEvent quitEvent = new TNLPlayerQuitEvent(player);
         player.hologramManager().unloadAll();
@@ -52,7 +50,7 @@ public class ConnectionListener implements org.bukkit.event.Listener {
 
     @SuppressWarnings("deprecation")
     @EventHandler(ignoreCancelled = true)
-    public void onKick(@Nonnull PlayerKickEvent event) {
+    public void onKick(PlayerKickEvent event) {
         TNLPlayer player = TNLPlayer.cast(event.getPlayer());
         if (event.getReason().equals("disconnect.spam") && !Settings.PUNISH_SPAMMING.getValue()) {
             event.setCancelled(true);

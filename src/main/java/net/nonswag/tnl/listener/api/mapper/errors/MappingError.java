@@ -1,10 +1,8 @@
 package net.nonswag.tnl.listener.api.mapper.errors;
 
-import net.nonswag.core.api.errors.TNLRuntimeException;
-
 import javax.annotation.Nullable;
 
-public class MappingError extends TNLRuntimeException {
+public class MappingError extends RuntimeException {
 
     public MappingError() {
     }

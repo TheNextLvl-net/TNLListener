@@ -9,12 +9,10 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-import javax.annotation.Nonnull;
-
 public class WorldListener implements org.bukkit.event.Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onWorldChange(@Nonnull PlayerChangedWorldEvent event) {
+    public void onWorldChange(PlayerChangedWorldEvent event) {
         TNLPlayer player = TNLPlayer.cast(event.getPlayer());
         Bootstrap.getInstance().async(() -> {
             player.hologramManager().reloadAll();
@@ -23,12 +21,12 @@ public class WorldListener implements org.bukkit.event.Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onMove(@Nonnull PlayerMoveEvent event) {
+    public void onMove(PlayerMoveEvent event) {
         TNLPlayer.cast(event.getPlayer()).npcFactory().updateAll(event.getTo());
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onTeleport(@Nonnull PlayerTeleportEvent event) {
+    public void onTeleport(PlayerTeleportEvent event) {
         if (event.getCause().equals(PlayerTeleportEvent.TeleportCause.UNKNOWN)) return;
         Bootstrap.getInstance().async(() -> {
             TNLPlayer player = TNLPlayer.cast(event.getPlayer());
@@ -37,7 +35,7 @@ public class WorldListener implements org.bukkit.event.Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onRespawn(@Nonnull PlayerRespawnEvent event) {
+    public void onRespawn(PlayerRespawnEvent event) {
         TNLPlayer player = TNLPlayer.cast(event.getPlayer());
         player.hologramManager().reloadAll();
         player.npcFactory().updateAll(event.getRespawnLocation());

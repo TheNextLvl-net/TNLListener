@@ -1,8 +1,8 @@
 package net.nonswag.tnl.listener.api.config;
 
-import net.nonswag.core.api.file.formats.PropertyFile;
+import net.nonswag.core.api.file.formats.PropertiesFile;
 
-public final class ServerProperties extends PropertyFile {
+public final class ServerProperties extends PropertiesFile {
 
     private static final ServerProperties instance = new ServerProperties();
 

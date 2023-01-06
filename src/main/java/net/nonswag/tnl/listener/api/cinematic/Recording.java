@@ -61,7 +61,7 @@ public class Recording implements Cloneable {
             String location = key.getWorld().getName() + ", " + key.getX() + ", " + key.getY() + ", " + key.getZ() + ", " + key.getYaw() + ", " + key.getPitch();
             object.addProperty(location, step.getValue());
         }
-        getSaves().setJsonElement(object);
+        getSaves().setRoot(object);
         getSaves().save();
     }
 
@@ -78,7 +78,7 @@ public class Recording implements Cloneable {
         if (!exists(name)) return null;
         Recording recording = new Recording(name);
         JsonFile config = new JsonFile("plugins/Listener/Cinematics/", name + ".json");
-        JsonObject steps = config.getJsonElement().getAsJsonObject();
+        JsonObject steps = config.getRoot().getAsJsonObject();
         int i = 0;
         for (Map.Entry<String, JsonElement> step : steps.entrySet()) {
             i++;

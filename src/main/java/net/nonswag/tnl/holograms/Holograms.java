@@ -29,14 +29,14 @@ public final class Holograms extends PluginBuilder {
 
     private Holograms() {
         super(Holograms.class, Bootstrap.getInstance());
-        if (!saves.getJsonElement().getAsJsonObject().has("update-time")) {
-            saves.getJsonElement().getAsJsonObject().addProperty("update-time", updateTime);
-        } else setUpdateTime(saves.getJsonElement().getAsJsonObject().get("update-time").getAsLong());
+        if (!saves.getRoot().getAsJsonObject().has("update-time")) {
+            saves.getRoot().getAsJsonObject().addProperty("update-time", updateTime);
+        } else setUpdateTime(saves.getRoot().getAsJsonObject().get("update-time").getAsLong());
     }
 
     @Override
     public void startupFinished() {
-        JsonObject root = saves.getJsonElement().getAsJsonObject();
+        JsonObject root = saves.getRoot().getAsJsonObject();
         root.entrySet().forEach(entry -> {
             if (!entry.getValue().isJsonObject()) return;
             Hologram hologram = Hologram.getOrCreate(entry.getKey());
@@ -52,7 +52,7 @@ public final class Holograms extends PluginBuilder {
             JsonArray lines = object.get("lines").getAsJsonArray();
             lines.forEach(line -> {
                 String string = line.getAsString();
-                if (string != null && !string.replace(" ", "").isEmpty()) hologram.getLines().add(string);
+                if (string != null && !string.isBlank()) hologram.getLines().add(string);
                 else hologram.getLines().add("");
             });
             hologram.register();

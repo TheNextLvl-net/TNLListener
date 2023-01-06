@@ -20,12 +20,10 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nonnull;
-
 public class InteractListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
-    public void onWaterBottleFill(@Nonnull CauldronLevelChangeEvent event) {
+    public void onWaterBottleFill(CauldronLevelChangeEvent event) {
         TNLPlayer player = TNLPlayer.cast(event.getEntity());
         if (!event.getReason().equals(CauldronLevelChangeEvent.ChangeReason.BOTTLE_FILL) || player == null) return;
         ItemStack itemStack = player.inventoryManager().getInventory().getItemInMainHand();
@@ -47,7 +45,7 @@ public class InteractListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onInteract(@Nonnull PlayerInteractEvent event) {
+    public void onInteract(PlayerInteractEvent event) {
         TNLPlayer player = TNLPlayer.cast(event.getPlayer());
         Block block = event.getClickedBlock();
         if (!event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || player.worldManager().isSneaking()) return;
@@ -57,7 +55,7 @@ public class InteractListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onInventoryMove(@Nonnull InventoryMoveItemEvent event) {
+    public void onInventoryMove(InventoryMoveItemEvent event) {
         if (!event.getSource().getType().equals(InventoryType.HOPPER)) return;
         Location location = event.getSource().getLocation();
         if (location == null) return;

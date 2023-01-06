@@ -23,7 +23,7 @@ public record CommandManager(Plugin plugin) {
     private static final List<String> FOR_REMOVAL = new ArrayList<>();
 
     static {
-        if (!configuration.getJsonElement().isJsonArray()) {
+        if (!configuration.getRoot().isJsonArray()) {
             JsonArray array = new JsonArray();
             FOR_REMOVAL.addAll(Arrays.asList("ver", "version", "reload", "rl", "spigot", "weather", "time", "paper",
                     "w", "me", "tm", "stop", "team", "restart", "stopsound", "save-on", "teammsg", "tellraw", "tell",
@@ -36,10 +36,10 @@ public record CommandManager(Plugin plugin) {
                 }
             }
             FOR_REMOVAL.forEach(array::add);
-            configuration.setJsonElement(array);
+            configuration.setRoot(array);
             configuration.save();
         } else {
-            JsonArray array = configuration.getJsonElement().getAsJsonArray();
+            JsonArray array = configuration.getRoot().getAsJsonArray();
             array.forEach(element -> FOR_REMOVAL.add(element.getAsString()));
         }
     }

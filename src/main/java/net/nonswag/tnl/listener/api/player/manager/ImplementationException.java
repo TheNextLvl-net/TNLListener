@@ -1,8 +1,6 @@
 package net.nonswag.tnl.listener.api.player.manager;
 
-import net.nonswag.core.api.errors.TNLRuntimeException;
-
-public class ImplementationException extends TNLRuntimeException {
+public class ImplementationException extends RuntimeException {
 
     public ImplementationException() {
     }
