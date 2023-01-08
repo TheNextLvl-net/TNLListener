@@ -2,7 +2,7 @@
 ```xml
 <repository>
     <id>releases</id>
-    <url>https://repo.thenextlvl.net/repository/maven-public/</url>
+    <url>https://repo.thenextlvl.net/releases/</url>
 </repository>
 ```
  * Artifact Information:
