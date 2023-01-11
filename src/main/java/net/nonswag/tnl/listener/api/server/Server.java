@@ -9,9 +9,8 @@ import lombok.experimental.Accessors;
 import net.nonswag.core.api.file.helper.JsonHelper;
 import net.nonswag.core.api.logger.Logger;
 import net.nonswag.core.api.message.Placeholder;
-import net.nonswag.tnl.listener.Listener;
-import net.nonswag.tnl.listener.api.data.Buffer;
 import net.nonswag.tnl.listener.api.settings.Settings;
+import net.nonswag.tnl.listener.api.version.Version;
 
 import javax.annotation.Nullable;
 import java.io.ByteArrayOutputStream;
@@ -31,7 +30,6 @@ import java.util.function.Consumer;
 @ToString
 @Accessors(chain = true)
 public class Server {
-
     @Getter
     private static final HashMap<String, Server> servers = new HashMap<>();
 
@@ -63,34 +61,21 @@ public class Server {
 
     public void update(Consumer<Server> update) {
         new Thread(() -> {
-            try {
-                Socket socket = new Socket();
+            try (Socket socket = new Socket()) {
                 socket.setSoTimeout(Settings.SERVER_UPDATE_TIMEOUT.getValue());
                 socket.connect(getInetSocketAddress(), Settings.SERVER_UPDATE_TIMEOUT.getValue());
                 try {
-                    JsonElement jsonElement = sendHandshake(socket);
-                    if (jsonElement.isJsonObject()) {
-                        JsonObject jsonObject = jsonElement.getAsJsonObject();
-                        if (jsonObject.has("players") && jsonObject.get("players").isJsonObject()) {
-                            JsonObject players = jsonObject.get("players").getAsJsonObject();
-                            if (players.has("max") && players.has("online")) {
-                                setMaxPlayerCount(players.get("max").getAsInt());
-                                setPlayerCount(players.get("online").getAsInt());
-                                update.accept(setStatus(Status.ONLINE));
-                                return;
-                            }
-                        }
-                    }
-                } catch (Exception ignored) {
+                    JsonObject object = sendHandshake(socket).getAsJsonObject();
+                    JsonObject players = object.getAsJsonObject("players");
+                    setMaxPlayerCount(players.get("max").getAsInt());
+                    setPlayerCount(players.get("online").getAsInt());
+                    setStatus(Status.ONLINE);
+                } catch (Exception e) {
+                    Logger.debug.println("Server has sent an invalid response", e);
+                    setStatus(Status.STARTING).setPlayerCount(0).setMaxPlayerCount(0);
                 }
-                socket.close();
-                setStatus(Status.STARTING);
-                setPlayerCount(0);
-                setMaxPlayerCount(0);
-            } catch (Exception ignored) {
-                setStatus(Status.OFFLINE);
-                setPlayerCount(0);
-                setMaxPlayerCount(0);
+            } catch (Exception e) {
+                setStatus(Status.OFFLINE).setPlayerCount(0).setMaxPlayerCount(0);
             } finally {
                 update.accept(this);
             }
@@ -98,30 +83,53 @@ public class Server {
     }
 
     private JsonElement sendHandshake(Socket socket) throws IOException {
-        if (socket.isConnected()) {
-            DataOutputStream output = new DataOutputStream(socket.getOutputStream());
-            DataInputStream input = new DataInputStream(socket.getInputStream());
-            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-            DataOutputStream handshake = new DataOutputStream(buffer);
-            handshake.writeByte(0x00);
-            Buffer.writeVarInt(handshake, Listener.getVersion().getProtocol());
-            Buffer.writeString(handshake, getInetSocketAddress().getHostName());
-            handshake.writeShort(getInetSocketAddress().getPort());
-            Buffer.writeVarInt(handshake, 1);
-            byte[] handshakeMessage = buffer.toByteArray();
-            Buffer.writeVarInt(output, handshakeMessage.length);
-            output.write(handshakeMessage);
-            output.writeByte(0x01);
-            output.writeByte(0x00);
-            byte[] in = new byte[Buffer.readVarInt(input)];
-            input.readFully(in);
-            String s = new String(in, StandardCharsets.UTF_8);
-            for (int i = 0; i < 4; i++) {
-                if (s.substring(i).startsWith("{")) return JsonHelper.parse(s.substring(i));
-            }
-            Logger.error.println("Server <'" + getName() + "'> has sent a invalid handshake", s);
+        DataOutputStream output = new DataOutputStream(socket.getOutputStream());
+        DataInputStream input = new DataInputStream(socket.getInputStream());
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        DataOutputStream handshake = new DataOutputStream(buffer);
+        handshake.writeByte(0);
+        Serializer.writeVarInt(handshake, Version.latest().getProtocol());
+        Serializer.writeString(handshake, this.getInetSocketAddress().getHostName());
+        handshake.writeShort(this.getInetSocketAddress().getPort());
+        Serializer.writeVarInt(handshake, 1);
+        byte[] handshakeMessage = buffer.toByteArray();
+        Serializer.writeVarInt(output, handshakeMessage.length);
+        output.write(handshakeMessage);
+        output.writeByte(1);
+        output.writeByte(0);
+        byte[] in = new byte[Serializer.readVarInt(input)];
+        input.readFully(in);
+        String json = new String(in, StandardCharsets.UTF_8);
+        for (int i = 0; i < 4; i++) if (json.substring(i).startsWith("{")) return JsonHelper.parse(json.substring(i));
+        throw new IllegalStateException(json);
+    }
+
+    private static class Serializer {
+
+        public static void writeString(DataOutputStream outputStream, String value) throws IOException {
+            byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
+            writeVarInt(outputStream, bytes.length);
+            outputStream.write(bytes);
         }
-        return new JsonObject();
+
+        public static void writeVarInt(DataOutputStream outputStream, int value) throws IOException {
+            while ((value & -128) != 0) {
+                outputStream.writeByte(value & 127 | 128);
+                value >>>= 7;
+            }
+            outputStream.writeByte(value);
+        }
+
+        public static int readVarInt(DataInputStream inputStream) throws IOException {
+            int i = 0;
+            int j = 0;
+            byte k;
+            do {
+                k = inputStream.readByte();
+                i |= (k & 127) << j++ * 7;
+            } while ((k & 128) == 128);
+            return i;
+        }
     }
 
     public static Server wrap(ServerInfo serverInfo) {

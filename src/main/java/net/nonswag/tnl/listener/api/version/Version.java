@@ -96,4 +96,8 @@ public class Version {
     public static List<Version> values() {
         return values;
     }
+
+    public static Version latest() {
+        return values.get(values.size() - 1);
+    }
 }
