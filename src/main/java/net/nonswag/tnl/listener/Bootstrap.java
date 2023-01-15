@@ -8,6 +8,7 @@ import net.nonswag.tnl.holograms.Holograms;
 import net.nonswag.tnl.listener.api.mapper.errors.MappingError;
 import net.nonswag.tnl.listener.api.plugin.TNLPlugin;
 import net.nonswag.tnl.listener.api.settings.Settings;
+import net.nonswag.tnl.listener.utils.Messages;
 
 @FieldsAreNullableByDefault
 @MethodsReturnNonnullByDefault
@@ -17,6 +18,7 @@ public final class Bootstrap extends TNLPlugin {
     static {
         try {
             Core.init();
+            Messages.init();
             Logger.debug.setCondition(Settings.DEBUG::getValue);
             Listener.initialize();
         } catch (MappingError e) {

@@ -78,7 +78,6 @@ public final class Listener extends PluginBuilder {
         if (!info.website().isEmpty()) Logger.debug.println("Website: " + info.website());
         if (!info.description().isEmpty()) Logger.debug.println("Description: " + info.description());
         LogManager.getInstance().initialize();
-        Messages.loadAll();
     }
 
     private Listener() {
@@ -117,14 +116,7 @@ public final class Listener extends PluginBuilder {
         if (Settings.DELETE_OLD_LOGS.getValue()) deleteOldLogs();
         Settings.getConfig().save();
         Manager.getInstance().setEnabled(true);
-        EventManager manager = Bootstrap.getInstance().getEventManager();
-        if (Settings.BETTER_COMMANDS.getValue()) manager.registerListener(new CommandListener());
-        if (Settings.BETTER_CHAT.getValue()) manager.registerListener(new ChatListener());
-        manager.registerListener(new ConnectionListener());
-        manager.registerListener(new InventoryListener());
-        manager.registerListener(new InteractListener());
-        manager.registerListener(new ServerListener());
-        manager.registerListener(new WorldListener());
+        registerListeners();
         GlobalPacketHandler.init();
         getOnlinePlayers(true).forEach(all -> all.pipeline().inject());
         updateTeams();
@@ -150,8 +142,20 @@ public final class Listener extends PluginBuilder {
         if (Settings.BETTER_COMMANDS.getValue()) CommandManager.flushUnregistration();
     }
 
+    private void registerListeners() {
+        EventManager manager = Bootstrap.getInstance().getEventManager();
+        if (Settings.BETTER_COMMANDS.getValue()) manager.registerListener(new CommandListener());
+        if (Settings.BETTER_CHAT.getValue()) manager.registerListener(new ChatListener());
+        manager.registerListener(new ConnectionListener());
+        manager.registerListener(new InventoryListener());
+        manager.registerListener(new InteractListener());
+        manager.registerListener(new ServerListener());
+        manager.registerListener(new WorldListener());
+    }
+
     @SuppressWarnings("deprecation")
-    private static void registerPlaceholders() {
+    private void registerPlaceholders() {
+        Placeholder.Registry.register(new Placeholder("prefix", Messages.PREFIX.message()));
         Placeholder.Registry.register(new Placeholder("server", Listener::getServerName));
         Placeholder.Registry.register(new Placeholder("online", () -> Bukkit.getOnlinePlayers().size()));
         Placeholder.Registry.register(new Placeholder("offline", () -> Bukkit.getOfflinePlayers().length));

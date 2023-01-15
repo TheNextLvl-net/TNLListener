@@ -1,5 +1,7 @@
 package net.nonswag.tnl.listener.utils;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import net.nonswag.core.api.annotation.FieldsAreNonnullByDefault;
 import net.nonswag.core.api.file.formats.MessageFile;
 import net.nonswag.core.api.language.Language;
@@ -8,8 +10,10 @@ import net.nonswag.core.api.message.key.MessageKey;
 import net.nonswag.core.api.message.key.SystemMessageKey;
 
 @FieldsAreNonnullByDefault
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Messages {
 
+    public static final SystemMessageKey PREFIX = new SystemMessageKey("chat-format").register();
     public static final SystemMessageKey CHAT_FORMAT = new SystemMessageKey("chat-format").register();
     public static final SystemMessageKey CHAT_MENTION = new SystemMessageKey("chat-mention").register();
 
@@ -31,22 +35,20 @@ public final class Messages {
     public static final MessageKey FAILED_TO_CONNECT_TO_SERVER = new MessageKey("failed-to-connect-to-server").register();
     public static final MessageKey SERVER_IS_OFFLINE = new MessageKey("server-is-offline").register();
 
-    private Messages() {
+    public static void init() {
+        initRoot();
+        initEnglish();
+        initGerman();
     }
 
-    public static void loadAll() {
-        loadRoot();
-        loadEnglish();
-        loadGerman();
-    }
-
-    private static void loadRoot() {
+    private static void initRoot() {
         Message.ROOT.setDefault(CHAT_FORMAT, "§8[%color%%world%§8] §f%display_name% §8» %color%%message%");
         Message.ROOT.setDefault(CHAT_MENTION, "§8(§3%player%§8)%color%");
+        Message.ROOT.setDefault(PREFIX, "§8[§f§lTNL§8]§r");
         Message.ROOT.save();
     }
 
-    private static void loadEnglish() {
+    private static void initEnglish() {
         MessageFile english = MessageFile.getOrCreate(Language.AMERICAN_ENGLISH);
         english.setDefault(NO_PERMISSION, "%prefix%§c You have no rights §8(§4%permission%§8)");
         english.setDefault(COMMAND_ERROR, "%prefix%§c Failed to execute command §8(§4%command%§8)");
@@ -68,7 +70,7 @@ public final class Messages {
         english.save();
     }
 
-    private static void loadGerman() {
+    private static void initGerman() {
         MessageFile german = MessageFile.getOrCreate(Language.GERMAN);
         german.setDefault(NO_PERMISSION, "%prefix%§c Darauf hast du keine rechte §8(§4%permission%§8)");
         german.setDefault(COMMAND_ERROR, "%prefix%§c Fehler beim ausführen des commands §8(§4%command%§8)");

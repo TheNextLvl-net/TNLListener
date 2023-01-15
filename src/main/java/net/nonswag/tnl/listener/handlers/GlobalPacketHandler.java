@@ -6,7 +6,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 public class GlobalPacketHandler {
-
     public static void init() {
         IncomingPacketHandler.init(Bootstrap.getInstance().getEventManager());
         OutgoingPacketHandler.init(Bootstrap.getInstance().getEventManager());
