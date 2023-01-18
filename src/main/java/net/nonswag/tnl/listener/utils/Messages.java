@@ -13,7 +13,7 @@ import net.nonswag.core.api.message.key.SystemMessageKey;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Messages {
 
-    public static final SystemMessageKey PREFIX = new SystemMessageKey("chat-format").register();
+    public static final SystemMessageKey PREFIX = new SystemMessageKey("prefix").register();
     public static final SystemMessageKey CHAT_FORMAT = new SystemMessageKey("chat-format").register();
     public static final SystemMessageKey CHAT_MENTION = new SystemMessageKey("chat-mention").register();
 
