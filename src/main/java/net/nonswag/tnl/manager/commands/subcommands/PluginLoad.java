@@ -3,7 +3,6 @@ package net.nonswag.tnl.manager.commands.subcommands;
 import com.google.common.io.Files;
 import net.nonswag.core.api.command.CommandSource;
 import net.nonswag.core.api.command.Invocation;
-import net.nonswag.core.api.logger.Logger;
 import net.nonswag.tnl.listener.api.command.exceptions.InvalidUseException;
 import net.nonswag.tnl.listener.api.command.simple.SubCommand;
 import net.nonswag.tnl.listener.api.plugin.PluginManager;
@@ -20,7 +19,6 @@ public class PluginLoad extends SubCommand {
     }
 
     @Override
-    @SuppressWarnings("UnstableApiUsage")
     protected void execute(Invocation invocation) {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
@@ -36,7 +34,7 @@ public class PluginLoad extends SubCommand {
                         source.sendMessage("%prefix% §aSuccessfully loaded plugin §6" + plugin.getName());
                     } catch (Throwable t) {
                         source.sendMessage("%prefix% §cFailed to load plugin §4" + file.getAbsolutePath());
-                        Logger.error.println(t);
+                        t.printStackTrace();
                     }
                 } else source.sendMessage("%prefix% §cThe plugin §4" + plugin.getName() + "§c is already loaded");
             } else source.sendMessage("%prefix% §cThe file §4" + file.getName() + "§c is not a jar file");

@@ -2,13 +2,15 @@ package net.nonswag.tnl.listener.api.settings;
 
 import lombok.Getter;
 import net.nonswag.core.api.file.formats.PropertiesFile;
-import net.nonswag.core.api.logger.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public final class Settings {
+    private static final Logger logger = LoggerFactory.getLogger(Settings.class);
     public static final Setting<Boolean> DEBUG = new Setting<>("debug", true);
     public static final Setting<Boolean> DELETE_OLD_LOGS = new Setting<>("delete-old-logs", true);
     public static final Setting<Boolean> PLUGIN_MANAGEMENT = new Setting<>("enable-plugin-management", false);
@@ -50,7 +52,7 @@ public final class Settings {
                     int value = config.getRoot().getInt(setting.getKey());
                     ((Setting<Integer>) setting).setValue(value);
                 } else {
-                    Logger.warn.println("Unset Setting Type <'" + setting.getValue().getClass().getSimpleName() + "'>", new IOException("unset setting type"));
+                    logger.warn("Unset Setting Type <'" + setting.getValue().getClass().getSimpleName() + "'>", new IOException("unset setting type"));
                 }
             } else if (setting.getValue() instanceof String value) config.getRoot().set(setting.getKey(), value);
             else if (setting.getValue() instanceof Boolean value) config.getRoot().set(setting.getKey(), value);
@@ -60,7 +62,7 @@ public final class Settings {
                 List<String> value = (List<String>) setting.getValue();
                 config.getRoot().set(setting.getKey(), value);
             } else {
-                Logger.error.println("Unset Setting Type <'" + setting.getValue().getClass().getSimpleName() + "'>", new IOException("unset setting type"));
+                logger.error("Unset Setting Type <'" + setting.getValue().getClass().getSimpleName() + "'>", new IOException("unset setting type"));
             }
         }
         config.save();

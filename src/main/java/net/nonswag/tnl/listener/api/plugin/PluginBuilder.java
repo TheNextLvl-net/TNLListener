@@ -1,7 +1,7 @@
 package net.nonswag.tnl.listener.api.plugin;
 
+import io.papermc.paper.plugin.configuration.PluginMeta;
 import lombok.Getter;
-import net.nonswag.core.api.logger.Logger;
 import net.nonswag.core.api.object.Condition;
 import net.nonswag.core.api.reflection.Reflection;
 import net.nonswag.tnl.listener.api.command.CommandManager;
@@ -17,6 +17,9 @@ import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.*;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,6 +30,8 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public abstract class PluginBuilder extends PluginBase implements CombinedPlugin {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PluginBuilder.class);
+
     private final PluginDescriptionFile description;
     private final PluginLogger logger;
     private final Plugin owner;
@@ -74,6 +79,11 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public @NotNull PluginMeta getPluginMeta() {
+        return getDescription();
+    }
+
     protected final void setAuthors(String... authors) {
         Reflection.Field.set(getDescription(), "authors", Arrays.asList(authors));
     }
@@ -116,7 +126,7 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
         try {
             load();
         } catch (Throwable t) {
-            Logger.error.println("There was an error while loading plugin <'" + getName() + "'>", t);
+            LOGGER.error("There was an error while loading plugin <'" + getName() + "'>", t);
         }
     }
 
@@ -126,7 +136,7 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
             if (!enabled) throw new IllegalStateException("called <'onEnable'> before <'setEnabled(true)'>");
             enable();
         } catch (Throwable t) {
-            Logger.error.println("There was an error while enabling plugin <'" + getName() + "'>", t);
+            LOGGER.error("There was an error while enabling plugin <'" + getName() + "'>", t);
         }
     }
 
@@ -142,7 +152,7 @@ public abstract class PluginBuilder extends PluginBase implements CombinedPlugin
                 HandlerList.unregisterAll(this);
             }
         } catch (Throwable t) {
-            Logger.error.println("There was an error while disabling plugin <'" + getName() + "'>", t);
+            LOGGER.error("There was an error while disabling plugin <'" + getName() + "'>", t);
         }
     }
 

@@ -3,11 +3,12 @@ package net.nonswag.tnl.listener.api.cinematic;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.nonswag.core.api.file.formats.JsonFile;
-import net.nonswag.core.api.logger.Logger;
 import net.nonswag.core.api.object.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Recording implements Cloneable {
+    private static final Logger logger = LoggerFactory.getLogger(Recording.class);
 
     private final List<Pair<Location, Long>> steps = new ArrayList<>();
     private final String name;
@@ -95,19 +97,19 @@ public class Recording implements Cloneable {
                         Location location = new Location(world, x, y, z, yaw, pitch);
                         recording.getSteps().add(new Pair<>(location, step.getValue().getAsLong()));
                     } catch (IllegalStateException e) {
-                        Logger.error.println("Can't load timestamp signature <'" + i + "'> of animation <'" + name + "'>");
-                        Logger.error.println("<'" + step.getValue().getAsString() + "'> is not a number");
+                        logger.error("Can't load timestamp signature <'" + i + "'> of animation <'" + name + "'>");
+                        logger.error("<'" + step.getValue().getAsString() + "'> is not a number");
                     } catch (NumberFormatException e) {
-                        Logger.error.println("Can't load Frame <'" + i + "'> of animation <'" + name + "'>");
-                        Logger.error.println(e.getMessage());
+                        logger.error("Can't load Frame <'" + i + "'> of animation <'" + name + "'>");
+                        logger.error(e.getMessage());
                     }
                 } else {
-                    Logger.error.println("Can't load Frame <'" + i + "'> of animation <'" + name + "'>");
-                    Logger.error.println("Can't find world <'" + keys[0] + "'>");
+                    logger.error("Can't load Frame <'" + i + "'> of animation <'" + name + "'>");
+                    logger.error("Can't find world <'" + keys[0] + "'>");
                 }
             } else {
-                Logger.error.println("Can't load Frame <'" + i + "'> of animation <'" + name + "'>");
-                Logger.error.println(String.join(", ", keys));
+                logger.error("Can't load Frame <'" + i + "'> of animation <'" + name + "'>");
+                logger.error(String.join(", ", keys));
             }
         }
         return recording;

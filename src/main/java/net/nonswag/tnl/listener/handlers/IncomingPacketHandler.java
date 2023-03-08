@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import net.kyori.adventure.text.Component;
 import net.nonswag.core.api.file.helper.JsonHelper;
 import net.nonswag.core.api.language.Language;
-import net.nonswag.core.api.logger.Logger;
 import net.nonswag.core.api.message.Message;
 import net.nonswag.tnl.holograms.api.Hologram;
 import net.nonswag.tnl.holograms.api.event.InteractEvent;
@@ -35,11 +34,14 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 
 class IncomingPacketHandler {
+    private static final Logger logger = LoggerFactory.getLogger(IncomingPacketHandler.class);
 
     static void init(EventManager manager) {
         manager.registerPacketReader(ClientCommandPacket.class, (player, packet, cancelled) -> {
@@ -95,7 +97,7 @@ class IncomingPacketHandler {
                 player.labymod().handleMessage(modMessage);
                 new LabyPlayerMessageEvent(player.labymod(), modMessage).call();
             } catch (Exception e) {
-                Logger.error.println("An error occurred while reading a mod message from <'" + namespace + "'>", e);
+                logger.error("An error occurred while reading a mod message from <'" + namespace + "'>", e);
             }
         });
         manager.registerPacketReader(SignUpdatePacket.class, (player, packet, cancelled) -> {

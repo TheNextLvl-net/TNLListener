@@ -1,7 +1,6 @@
 package net.nonswag.tnl.listener.api.player.manager;
 
 import net.nonswag.core.api.file.helper.FileHelper;
-import net.nonswag.core.api.logger.Logger;
 import net.nonswag.tnl.listener.Bootstrap;
 import net.nonswag.tnl.listener.events.inventory.player.InventoryLoadEvent;
 import net.nonswag.tnl.listener.events.inventory.player.InventorySaveEvent;
@@ -19,7 +18,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public abstract class InventoryManager extends Manager {
-
     public PlayerInventory getInventory() {
         return getPlayer().bukkit().getInventory();
     }
@@ -95,7 +93,7 @@ public abstract class InventoryManager extends Manager {
             inventory.set(id, Arrays.asList(contents));
             inventory.save(file);
         } catch (IOException e) {
-            Logger.error.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -118,7 +116,7 @@ public abstract class InventoryManager extends Manager {
             items = new ItemStack[contents.size()];
             for (int i = 0; i < contents.size(); i++) items[i] = (ItemStack) contents.get(i);
         } catch (Exception e) {
-            Logger.error.println(e);
+            e.printStackTrace();
         }
         return items;
     }

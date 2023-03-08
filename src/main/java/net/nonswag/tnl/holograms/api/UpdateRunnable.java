@@ -1,6 +1,5 @@
 package net.nonswag.tnl.holograms.api;
 
-import net.nonswag.core.api.logger.Logger;
 import net.nonswag.tnl.holograms.Holograms;
 import net.nonswag.tnl.listener.Listener;
 
@@ -17,7 +16,7 @@ public class UpdateRunnable {
             }
         } catch (InterruptedException ignored) {
         } catch (Exception e) {
-            Logger.error.println(e);
+            e.printStackTrace();
         }
     }, "hologram-update-task");
 

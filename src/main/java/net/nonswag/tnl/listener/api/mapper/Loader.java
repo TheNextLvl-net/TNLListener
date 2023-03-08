@@ -1,7 +1,6 @@
 package net.nonswag.tnl.listener.api.mapper;
 
 import net.nonswag.core.api.file.helper.FileHelper;
-import net.nonswag.core.api.logger.Logger;
 import net.nonswag.tnl.listener.Listener;
 import net.nonswag.tnl.listener.api.mapper.errors.MappingError;
 
@@ -30,7 +29,7 @@ public final class Loader {
                 load(file);
                 return true;
             } catch (MappingError e) {
-                Logger.error.println(e);
+                e.printStackTrace();
             }
         }
         return false;

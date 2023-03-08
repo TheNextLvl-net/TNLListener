@@ -2,7 +2,6 @@ package net.nonswag.tnl.manager.commands.subcommands;
 
 import net.nonswag.core.api.command.CommandSource;
 import net.nonswag.core.api.command.Invocation;
-import net.nonswag.core.api.logger.Logger;
 import net.nonswag.tnl.listener.api.command.exceptions.InvalidUseException;
 import net.nonswag.tnl.listener.api.command.simple.SubCommand;
 import net.nonswag.tnl.listener.api.plugin.PluginBuilder;
@@ -34,7 +33,7 @@ public class PluginReload extends SubCommand {
                 source.sendMessage("%prefix% §aSuccessfully reloaded plugin §6" + plugin.getName());
             } catch (Throwable t) {
                 source.sendMessage("%prefix% §cAn error has occurred while reloading plugin §4" + plugin.getName());
-                Logger.error.println(t);
+                t.printStackTrace();
             }
         } else {
             source.sendMessage("%prefix% §aEnabling Plugin §6" + plugin.getName());

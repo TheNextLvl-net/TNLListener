@@ -2,7 +2,6 @@ package net.nonswag.tnl.manager.commands.subcommands;
 
 import net.nonswag.core.api.command.CommandSource;
 import net.nonswag.core.api.command.Invocation;
-import net.nonswag.core.api.logger.Logger;
 import net.nonswag.tnl.listener.api.command.exceptions.InvalidUseException;
 import net.nonswag.tnl.listener.api.command.simple.SubCommand;
 import net.nonswag.tnl.listener.api.plugin.PluginBuilder;
@@ -33,7 +32,7 @@ public class PluginUnload extends SubCommand {
             source.sendMessage("%prefix% §aSuccessfully unloaded plugin §6" + plugin.getName());
         } catch (Exception e) {
             source.sendMessage("%prefix% §cAn error has occurred while unloading plugin §4" + plugin.getName());
-            Logger.error.println(e);
+            e.printStackTrace();
         }
     }
 

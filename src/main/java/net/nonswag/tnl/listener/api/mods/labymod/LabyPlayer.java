@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.core.api.annotation.FieldsAreNonnullByDefault;
 import net.nonswag.core.api.annotation.MethodsReturnNonnullByDefault;
-import net.nonswag.core.api.logger.Logger;
 import net.nonswag.core.api.math.Range;
 import net.nonswag.tnl.listener.api.mods.ModMessage;
 import net.nonswag.tnl.listener.api.mods.ModPlayer;
@@ -369,7 +368,7 @@ public abstract class LabyPlayer extends ModPlayer {
             try {
                 setBanner(file.toURI().toURL().toString());
             } catch (MalformedURLException e) {
-                Logger.error.println(e);
+                e.printStackTrace();
             }
         }
 

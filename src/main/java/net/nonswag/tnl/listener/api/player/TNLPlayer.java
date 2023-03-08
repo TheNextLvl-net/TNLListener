@@ -5,7 +5,6 @@ import lombok.Setter;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.nonswag.core.api.command.CommandSource;
-import net.nonswag.core.api.logger.Logger;
 import net.nonswag.core.api.message.Placeholder;
 import net.nonswag.core.api.message.key.Key;
 import net.nonswag.core.api.platform.PlatformPlayer;
@@ -31,6 +30,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import java.nio.charset.StandardCharsets;
@@ -41,6 +42,8 @@ import java.util.UUID;
 public abstract class TNLPlayer implements CommandSource, PlatformPlayer, TNLEntityPlayer {
 
     protected static final HashMap<Player, TNLPlayer> players = new HashMap<>();
+
+    private static final Logger logger = LoggerFactory.getLogger(TNLPlayer.class);
 
     private final VirtualStorage virtualStorage = new VirtualStorage();
     @Getter
@@ -322,7 +325,7 @@ public abstract class TNLPlayer implements CommandSource, PlatformPlayer, TNLEnt
         if (!players.containsKey(player)) players.put(player, tnlPlayer = Mapping.get().createPlayer(player));
         if (!inject && !players.get(player).pipeline().isInjected()) {
             if (tnlPlayer != null) tnlPlayer.pipeline().disconnect("§cAn internal error occurred");
-            else Logger.error.println("Failed to inject player, this could cause severe problems");
+            else logger.error("Failed to inject player, this could cause severe problems");
         } else if (inject && players.get(player).pipeline().isInjected()) {
             throw new IllegalStateException("Player is already injected");
         }

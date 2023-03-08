@@ -5,7 +5,6 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.nonswag.core.api.annotation.FieldsAreNonnullByDefault;
 import net.nonswag.core.api.annotation.MethodsReturnNonnullByDefault;
-import net.nonswag.core.api.logger.Logger;
 import net.nonswag.core.utils.StringUtil;
 import net.nonswag.tnl.listener.Listener;
 import net.nonswag.tnl.listener.api.entity.TNLEntityPlayer;
@@ -19,6 +18,8 @@ import net.nonswag.tnl.listener.api.player.Hand;
 import net.nonswag.tnl.listener.api.player.Skin;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.Location;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -35,6 +36,7 @@ import java.util.function.Predicate;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class FakePlayer {
+    private static final Logger logger = LoggerFactory.getLogger(FakePlayer.class);
 
     @Getter
     private static final List<FakePlayer> fakePlayers = new ArrayList<>();
@@ -70,7 +72,7 @@ public class FakePlayer {
 
     public FakePlayer(String name, Location location, String skin) {
         this(name, location, Skin.getSkin(skin));
-        Logger.warn.println("Please use the properties <'" + getPlayer().getGameProfile().getSkin() + "'> instead of the name '" + player + "'>");
+        logger.warn("Please use the properties <'" + getPlayer().getGameProfile().getSkin() + "'> instead of the name '" + player + "'>");
     }
 
     public void setName(String name) {

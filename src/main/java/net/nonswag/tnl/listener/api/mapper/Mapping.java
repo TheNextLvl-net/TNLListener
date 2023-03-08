@@ -2,7 +2,6 @@ package net.nonswag.tnl.listener.api.mapper;
 
 import lombok.Getter;
 import net.nonswag.core.api.annotation.FieldsAreNullableByDefault;
-import net.nonswag.core.api.logger.Logger;
 import net.nonswag.tnl.listener.api.bossbar.TNLBossBar;
 import net.nonswag.tnl.listener.api.enchantment.Enchant;
 import net.nonswag.tnl.listener.api.entity.EntityHelper;
@@ -31,6 +30,8 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import java.io.File;
@@ -43,6 +44,8 @@ import java.net.URLClassLoader;
 
 @FieldsAreNullableByDefault
 public abstract class Mapping extends PluginBuilder {
+    @Nonnull
+    private static final Logger logger = LoggerFactory.getLogger(Mapping.class);
     private static Mapping instance = null;
     private Info info = null;
     @Getter
@@ -73,7 +76,7 @@ public abstract class Mapping extends PluginBuilder {
         try {
             if (getClass().getClassLoader() instanceof URLClassLoader loader) loader.close();
         } catch (IOException e) {
-            Logger.error.println("Couldn't close URLClassLoader of mapping <'" + getName() + "'>", e);
+            logger.error("Couldn't close URLClassLoader of mapping <'" + getName() + "'>", e);
         }
     }
 

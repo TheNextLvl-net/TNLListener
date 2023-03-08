@@ -7,10 +7,11 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import net.nonswag.core.api.file.helper.JsonHelper;
-import net.nonswag.core.api.logger.Logger;
 import net.nonswag.core.api.message.Placeholder;
 import net.nonswag.tnl.listener.api.settings.Settings;
 import net.nonswag.tnl.listener.api.version.Version;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import java.io.ByteArrayOutputStream;
@@ -30,6 +31,7 @@ import java.util.function.Consumer;
 @ToString
 @Accessors(chain = true)
 public class Server {
+    private static final Logger logger = LoggerFactory.getLogger(Server.class);
     @Getter
     private static final HashMap<String, Server> servers = new HashMap<>();
 
@@ -71,7 +73,7 @@ public class Server {
                     setPlayerCount(players.get("online").getAsInt());
                     setStatus(Status.ONLINE);
                 } catch (Exception e) {
-                    Logger.debug.println("Server has sent an invalid response", e);
+                    logger.debug("Server has sent an invalid response", e);
                     setStatus(Status.STARTING).setPlayerCount(0).setMaxPlayerCount(0);
                 }
             } catch (Exception e) {

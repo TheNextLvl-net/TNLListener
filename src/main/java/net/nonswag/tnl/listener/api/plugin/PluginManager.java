@@ -1,6 +1,5 @@
 package net.nonswag.tnl.listener.api.plugin;
 
-import net.nonswag.core.api.logger.Logger;
 import net.nonswag.core.api.reflection.Reflection;
 import net.nonswag.tnl.listener.Bootstrap;
 import net.nonswag.tnl.listener.api.command.CommandManager;
@@ -12,6 +11,8 @@ import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.FileUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PluginManager {
-
+    private static final Logger logger = LoggerFactory.getLogger(PluginManager.class);
     public static Plugin[] getPlugins() {
         return Bukkit.getPluginManager().getPlugins();
     }
@@ -44,12 +45,12 @@ public class PluginManager {
     public static String getName(Plugin plugin, boolean includeVersion) {
         if (includeVersion) {
             return (plugin.isEnabled() ? "§a" : "§c") + plugin.getName() + " §8(§7" + getVersion(plugin) +
-                    (plugin.getDescription().getAPIVersion() == null || plugin.getDescription().getAPIVersion().isEmpty() ? "*" : "") + "§8)";
+                    (plugin.getPluginMeta().getAPIVersion() == null || plugin.getPluginMeta().getAPIVersion().isEmpty() ? "*" : "") + "§8)";
         } else return (plugin.isEnabled() ? "§a" : "§c") + plugin.getName();
     }
 
     public static String getVersion(Plugin plugin) {
-        return plugin.getDescription().getVersion();
+        return plugin.getPluginMeta().getVersion();
     }
 
     @Nullable
@@ -73,8 +74,8 @@ public class PluginManager {
     public static List<Plugin> getDependencies(Plugin plugin) {
         List<Plugin> dependencies = new ArrayList<>();
         for (Plugin all : getPlugins()) {
-            if ((!all.equals(plugin)) && (all.getDescription().getDepend().contains(plugin.getName()) ||
-                    all.getDescription().getSoftDepend().contains(plugin.getName()))) dependencies.add(all);
+            if ((!all.equals(plugin)) && (all.getPluginMeta().getPluginDependencies().contains(plugin.getName()) ||
+                    all.getPluginMeta().getPluginSoftDependencies().contains(plugin.getName()))) dependencies.add(all);
         }
         return dependencies;
     }
@@ -99,7 +100,7 @@ public class PluginManager {
             try {
                 loader.close();
             } catch (IOException e) {
-                Logger.error.println("Failed to close the class loader of <'" + plugin.getName() + "'>", e);
+                logger.error("Failed to close the class loader of <'" + plugin.getName() + "'>", e);
                 exception = e;
             }
         } else {
@@ -136,9 +137,9 @@ public class PluginManager {
         for (Plugin all : dependencies) {
             File file = getJarFile(plugin);
             if (file == null || !file.exists()) {
-                Logger.error.printf("Could not find jar file of plugin %s", plugin.getName());
+                logger.error("Could not find jar file of plugin " + plugin.getName());
             } else if ((secure = loadSecure(file)) != null) {
-                Logger.error.println("Failed to reload dependency <'" + all.getName() + "'> of plugin <'" + plugin.getName() + "'>", secure);
+                logger.error("Failed to reload dependency <'" + all.getName() + "'> of plugin <'" + plugin.getName() + "'>", secure);
             }
         }
         if (secure != null) throw secure;

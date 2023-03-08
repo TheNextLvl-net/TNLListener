@@ -4,7 +4,6 @@ import lombok.Getter;
 import net.nonswag.core.api.command.CommandSource;
 import net.nonswag.core.api.command.Invocation;
 import net.nonswag.core.api.logger.Console;
-import net.nonswag.core.api.logger.Logger;
 import net.nonswag.core.api.message.Message;
 import net.nonswag.core.api.message.Placeholder;
 import net.nonswag.tnl.listener.api.command.exceptions.CommandException;
@@ -68,10 +67,10 @@ public abstract class TNLCommand extends BukkitCommand implements Usable {
         } catch (Throwable t) {
             if (source instanceof TNLPlayer player) {
                 player.messenger().sendMessage(Messages.COMMAND_ERROR, new Placeholder("command", "/" + getName()));
-                if (player.permissionManager().hasPermission("tnl.admin")) Logger.error.println(t);
+                if (player.permissionManager().hasPermission("tnl.admin")) t.printStackTrace();
             } else {
                 source.sendMessage(Messages.COMMAND_ERROR, new Placeholder("command", "/" + getName()));
-                Logger.error.println(t);
+                t.printStackTrace();
             }
         }
         return true;
@@ -97,10 +96,10 @@ public abstract class TNLCommand extends BukkitCommand implements Usable {
             suggestions = new ArrayList<>();
             if (source instanceof TNLPlayer player) {
                 player.messenger().sendMessage(Messages.TAB_COMPLETE_ERROR, new Placeholder("command", "/" + getName()));
-                if (player.permissionManager().hasPermission("tnl.admin")) Logger.error.println(e);
+                if (player.permissionManager().hasPermission("tnl.admin")) e.printStackTrace();
             } else {
                 source.sendMessage(Messages.TAB_COMPLETE_ERROR, new Placeholder("command", "/" + getName()));
-                Logger.error.println(e);
+                e.printStackTrace();
             }
         }
         suggestions.removeIf(suggestion -> !suggestion.toLowerCase().startsWith(args[args.length - 1].toLowerCase()));

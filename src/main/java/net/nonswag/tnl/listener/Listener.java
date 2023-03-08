@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.nonswag.core.api.annotation.FieldsAreNonnullByDefault;
 import net.nonswag.core.api.annotation.MethodsReturnNonnullByDefault;
-import net.nonswag.core.api.logger.Logger;
 import net.nonswag.core.api.message.Placeholder;
 import net.nonswag.core.api.message.key.Key;
 import net.nonswag.core.api.sql.SQL;
@@ -27,6 +26,8 @@ import net.nonswag.tnl.listener.utils.Messages;
 import net.nonswag.tnl.manager.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.Team;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -39,7 +40,7 @@ import java.util.List;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public final class Listener extends PluginBuilder {
-
+    private static final Logger logger = LoggerFactory.getLogger(Listener.class);
     @Getter
     public static final Listener instance = new Listener();
 
@@ -74,9 +75,9 @@ public final class Listener extends PluginBuilder {
         }
         Mapping.get().onLoad();
         Mapping.Info info = Mapping.get().info();
-        Logger.debug.printf("Using <'%s'> made by <'%s'>", info.name(), String.join(", ", info.authors())).println();
-        if (!info.website().isEmpty()) Logger.debug.println("Website: " + info.website());
-        if (!info.description().isEmpty()) Logger.debug.println("Description: " + info.description());
+        logger.debug("Using <'{}'> made by <'{}'>", info.name(), String.join(", ", info.authors()));
+        if (!info.website().isEmpty()) logger.debug("Website: " + info.website());
+        if (!info.description().isEmpty()) logger.debug("Description: " + info.description());
         LogManager.getInstance().initialize();
     }
 
@@ -99,18 +100,20 @@ public final class Listener extends PluginBuilder {
                     if (!value.equalsIgnoreCase("host:port")) {
                         try {
                             Server s = Server.wrap(new ServerInfo(server, new InetSocketAddress(value.split(":")[0], Integer.parseInt(value.split(":")[1]))));
-                            Logger.debug.printf("Initialized new server <'%s'> (%s:%s)", s.getName(), s.getInetSocketAddress().getHostString(), s.getInetSocketAddress().getPort()).println();
+                            logger.debug("Initialized new server <'{}'> ({}:{})", s.getName(), s.getInetSocketAddress().getHostString(), s.getInetSocketAddress().getPort());
                         } catch (Exception e) {
-                            Logger.error.println("Failed to load server <'" + server + "'>", "The ip-address format is 'host:port' (example localhost:25565)", e.getMessage());
+                            logger.error("Failed to load server <'" + server + "'>");
+                            logger.error("The ip-address format is 'host:port' (example localhost:25565)");
+                            logger.error(e.getMessage());
                         }
-                    } else Logger.warn.printf("The server <'%s'> is not setup yet", server).println();
+                    } else logger.warn("The server <'{}'> is not setup yet", server);
                 } else {
                     Settings.getConfig().getRoot().set("server-" + server, "host:port");
-                    Logger.debug.printf("Found new server <'%s'>", server).println();
+                    logger.debug("Found new server <'{}'>", server);
                 }
             } else {
                 Settings.getConfig().getRoot().set("server-" + server, "host:port");
-                Logger.debug.printf("Found new server <'%s'>", server).println();
+                logger.debug("Found new server <'{}'>", server);
             }
         }
         if (Settings.DELETE_OLD_LOGS.getValue()) deleteOldLogs();
@@ -198,7 +201,7 @@ public final class Listener extends PluginBuilder {
         File[] files = file.listFiles((f, n) -> n.endsWith(".log.gz"));
         if (files == null) return;
         for (File all : files) {
-            if (!all.delete()) Logger.error.println("Failed to delete file <'" + all.getAbsolutePath() + "§8'>");
+            if (!all.delete()) logger.error("Failed to delete file <'" + all.getAbsolutePath() + "§8'>");
         }
     }
 

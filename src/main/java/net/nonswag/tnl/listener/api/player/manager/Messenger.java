@@ -3,7 +3,6 @@ package net.nonswag.tnl.listener.api.player.manager;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.nonswag.core.api.annotation.FieldsAreNullableByDefault;
-import net.nonswag.core.api.logger.Logger;
 import net.nonswag.core.api.message.Message;
 import net.nonswag.core.api.message.Placeholder;
 import net.nonswag.core.api.message.key.Key;
@@ -81,7 +80,7 @@ public abstract class Messenger extends Manager {
         try {
             for (String s : message) dataOutputStream.writeUTF(s);
         } catch (IOException e) {
-            Logger.error.println(e);
+            e.printStackTrace();
         }
         sendPluginMessage(channel, byteArrayOutputStream.toByteArray());
     }

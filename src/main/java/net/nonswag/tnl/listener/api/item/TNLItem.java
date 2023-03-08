@@ -2,7 +2,6 @@ package net.nonswag.tnl.listener.api.item;
 
 import com.google.common.annotations.Beta;
 import net.kyori.adventure.text.Component;
-import net.nonswag.core.api.logger.Logger;
 import net.nonswag.core.api.message.Message;
 import net.nonswag.core.api.object.Condition;
 import net.nonswag.tnl.listener.api.enchantment.Enchant;
@@ -232,7 +231,6 @@ public abstract class TNLItem extends ItemStack {
         return setSkullOwner(Bukkit.getOfflinePlayer(uuid));
     }
 
-    @SuppressWarnings("deprecation")
     public TNLItem setSkullOwner(String name) {
         return setSkullOwner(Bukkit.getOfflinePlayer(name));
     }
@@ -241,7 +239,7 @@ public abstract class TNLItem extends ItemStack {
         try {
             setSkullValue(Base64.getEncoder().encodeToString(("{\"textures\":{\"SKIN\":{\"url\":\"" + new URI(url) + "\"}}}").getBytes()));
         } catch (Exception e) {
-            Logger.error.println(e.getMessage());
+            e.printStackTrace();
         }
         return this;
     }
@@ -250,7 +248,7 @@ public abstract class TNLItem extends ItemStack {
         try {
             modifyNBT("{SkullOwner:{Id:\"" + new UUID(base64.hashCode(), base64.hashCode()) + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}");
         } catch (Exception e) {
-            Logger.error.println(e.getMessage());
+            e.printStackTrace();
         }
         return this;
     }

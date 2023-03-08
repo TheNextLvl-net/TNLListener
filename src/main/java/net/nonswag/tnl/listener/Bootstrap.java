@@ -1,30 +1,34 @@
 package net.nonswag.tnl.listener;
 
 import net.nonswag.core.Core;
-import net.nonswag.core.api.annotation.FieldsAreNullableByDefault;
 import net.nonswag.core.api.annotation.MethodsReturnNonnullByDefault;
-import net.nonswag.core.api.logger.Logger;
+import net.nonswag.core.api.logger.ColoredPrintStream;
 import net.nonswag.tnl.holograms.Holograms;
 import net.nonswag.tnl.listener.api.mapper.errors.MappingError;
 import net.nonswag.tnl.listener.api.plugin.TNLPlugin;
 import net.nonswag.tnl.listener.api.settings.Settings;
 import net.nonswag.tnl.listener.utils.Messages;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@FieldsAreNullableByDefault
+import javax.annotation.Nullable;
+
 @MethodsReturnNonnullByDefault
 public final class Bootstrap extends TNLPlugin {
+    private static final Logger logger = LoggerFactory.getLogger(Bootstrap.class);
+    @Nullable
     private static Bootstrap instance = null;
 
     static {
         try {
             Core.init();
             Messages.init();
-            Logger.debug.setCondition(Settings.DEBUG::getValue);
+            ColoredPrintStream.debug.setCondition(Settings.DEBUG::getValue);
             Listener.initialize();
         } catch (MappingError e) {
             e.printStackTrace();
         } catch (Exception e) {
-            Logger.error.println("An error occurred while initializing the Core", e);
+            logger.error("An error occurred while initializing the Core", e);
         }
     }
 
@@ -37,7 +41,7 @@ public final class Bootstrap extends TNLPlugin {
         try {
             Listener.getInstance().onLoad();
         } catch (Exception e) {
-            Logger.error.println("An error occurred on load", e);
+            logger.error("An error occurred on load", e);
         }
     }
 
@@ -59,7 +63,7 @@ public final class Bootstrap extends TNLPlugin {
             Listener.getInstance().startupFinished();
             Holograms.getInstance().startupFinished();
         } catch (Exception t) {
-            Logger.error.println("An error occurred after startup was finished", t);
+            logger.error("An error occurred after startup was finished", t);
         }
     }
 
