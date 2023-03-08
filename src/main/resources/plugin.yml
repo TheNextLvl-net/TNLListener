@@ -5,3 +5,4 @@ api-version: "1.19"
 load: "STARTUP"
 website: "https://www.thenextlvl.net"
 main: "net.nonswag.tnl.listener.Bootstrap"
+libraries: ["com.mysql:mysql-connector-j:8.0.32"]
